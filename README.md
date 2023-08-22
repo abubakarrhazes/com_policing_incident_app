@@ -1,16 +1,37 @@
 # com_policing_incident_app
 
-A new Flutter project.
+ Community Policing and Incident Reporting System.
 
-## Getting Started
+## Brief Overview of the System
 
-This project is a starting point for a Flutter application.
+Insecurity is a significant issue in the world especially in Nigeria With crimes
+like armed robbery, kidnapping, terrorism, abuses, rape and ritual killing on
+the rise, this system is set out to address the following problems
+AIMS 
 
-A few resources to get you started if this is your first Flutter project:
+ Inadequate response to immediate security incident due to lack
+of information, timely and accurate information
+ Limited avenues for social inclusion and active participation of
+citizens in ensuring community safety
+ Insufficient information sharing and coordination between
+citizen and constituted authorities
+This system goal is to create an incident reporting and management system
+for efficient community policing.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+THE OBJECTIVES ARE:
+1. To perform user research on citizens experience with crime in
+their community and the police report crime
+2. To design an incident reporting and policing system
+3. Design a mobile app for citizens to report crime
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+SYSTEM FEATURES
+The following features were created to give the best user experience while
+promoting social inclusion.
+
+● Report crime via text description, audio, pictures and videos.
+● Feedback feature for police update on crime reported.
+● Location tracker so officers closest to your location are dispatched.
+● Statistics map showing location with the highest crime rates.
+● SOS button for emergency alert to police units and phone contacts.
+● Real-time blog updates and announcements to keep citizens informed.
+● Offline USSD features of the mobile application
