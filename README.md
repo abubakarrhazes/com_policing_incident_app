@@ -2,7 +2,7 @@
 
  Community Policing and Incident Reporting System.
 
-## Getting Started
+## Brief Overview of the System
 
 Insecurity is a significant issue in the world especially in Nigeria With crimes
 like armed robbery, kidnapping, terrorism, abuses, rape and ritual killing on
