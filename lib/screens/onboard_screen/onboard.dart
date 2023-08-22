@@ -4,8 +4,6 @@ import 'model/onboard_model.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/onboard_content.dart';
 
-//import 'package:shared_preferences/shared_preferences.dart';
-
 class Onboard extends StatefulWidget {
   const Onboard({Key? key}) : super(key: key);
 
