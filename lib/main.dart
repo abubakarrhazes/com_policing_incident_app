@@ -5,6 +5,7 @@ import 'package:com_policing_incident_app/screens/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/pages/home_page.dart';
 import 'package:com_policing_incident_app/screens/register.dart';
+import 'package:com_policing_incident_app/screens/welcome_screen.dart';
 //flimport 'package:com_policing_incident_app/screens/screen_selector.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +28,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => Onboard(),
-        '/login': (context) => Login(),
+        '/': (context) => WelcomeScreen(),
+        '/login': (context) => LoginPage(),
         '/register': (context) => Register(),
         '/forgot': (context) => ForgotPassword(),
         '/home': (context) => HomePage(),

@@ -1,15 +1,197 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
+import 'package:com_policing_incident_app/widgets/my_input_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+const MaterialColor black = MaterialColor(
+  0xFF000000,
+  <int, Color>{
+    50: Color(0xFFEEEEEE),
+    100: Color(0xFFBBBBBB),
+    200: Color(0xFF999999),
+    300: Color(0xFF555555),
+    400: Color(0xFF333333),
+    500: Color(0xFF000000),
+    600: Color(0xFF000000),
+    700: Color(0xFF000000),
+    800: Color(0xFF000000),
+    900: Color(0xFF000000),
+  },
+);
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginPageState extends State<LoginPage> {
+  late TextEditingController passwordController;
+  final formKey = GlobalKey<FormState>();
+  final formResult = {};
+
+  @override
+  void initState() {
+    super.initState();
+    passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: const Color(0xFFF3F3F3),
+      body: SafeArea(
+          child: ListView(
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 3,
+            height: MediaQuery.of(context).size.height / 4,
+            child: Image.asset('assets/images/login.png'),
+          ),
+          Card(
+            margin: const EdgeInsets.only(left: 22, right: 22),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            child: Theme(
+              data: ThemeData(primarySwatch: black),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Login',
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black54),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: const [
+                        Expanded(
+                            child: Divider(
+                                indent: 18, endIndent: 12, thickness: 1.5)),
+                        Text(
+                          'via',
+                          style: TextStyle(color: Colors.black45),
+                        ),
+                        Expanded(
+                            child: Divider(
+                                indent: 12, endIndent: 18, thickness: 1.5))
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      height: 32,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkResponse(
+                            onTap: () {},
+                            child: Image.asset(
+                              'assets/images/google.png',
+                            ),
+                          ),
+                          const SizedBox(width: 32),
+                          InkResponse(
+                            onTap: () {},
+                            child: Image.asset(
+                              'assets/images/twitter.png',
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: const [
+                        Expanded(
+                            child: Divider(
+                                indent: 18, endIndent: 12, thickness: 1.5)),
+                        Text(
+                          'or',
+                          style: TextStyle(color: Colors.black45),
+                        ),
+                        Expanded(
+                            child: Divider(
+                                indent: 12, endIndent: 18, thickness: 1.5))
+                      ],
+                    ),
+                    const SizedBox(height: 18),
+                    Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            MyInputField(
+                              hintText: 'Email',
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                            const SizedBox(height: 15),
+                            MyInputField(
+                              hintText: 'Password',
+                              isPassword: true,
+                              keyboardType: TextInputType.visiblePassword,
+                              controller: passwordController,
+                            ),
+                            const SizedBox(height: 20),
+                            CupertinoButton.filled(
+                                // color: Colors.black,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 22),
+                                borderRadius: BorderRadius.circular(24),
+                                onPressed: () {},
+                                child: const Text(
+                                  'Login',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ))
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const Spacer(),
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 24, bottom: 16, left: 8, right: 8),
+            child: Column(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/forgot');
+                    },
+                    child: const Text('Reset Password')),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Don\'t have an account? '),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
+                      child: Text(
+                        'Create one',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          )
+        ],
+      )),
+    );
   }
 }
