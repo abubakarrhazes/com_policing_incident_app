@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
-                          color: Colors.black54),
+                          color: KprimaryColor),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -81,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                                 indent: 18, endIndent: 12, thickness: 1.5)),
                         Text(
                           'via',
-                          style: TextStyle(color: Colors.black45),
+                          style: TextStyle(color: KprimaryColor),
                         ),
                         Expanded(
                             child: Divider(
@@ -142,16 +144,10 @@ class _LoginPageState extends State<LoginPage> {
                               controller: passwordController,
                             ),
                             const SizedBox(height: 20),
-                            CupertinoButton.filled(
-                                // color: Colors.black,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 22),
-                                borderRadius: BorderRadius.circular(24),
-                                onPressed: () {},
-                                child: const Text(
-                                  'Login',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ))
+                            ButtonWidget(
+                              onPress: () {},
+                              text: 'Login',
+                            )
                           ],
                         ))
                   ],
@@ -169,7 +165,10 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/forgot');
                     },
-                    child: const Text('Reset Password')),
+                    child: const Text(
+                      'Reset Password',
+                      style: TextStyle(color: KprimaryColor),
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -181,8 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         'Create one',
                         style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold),
+                            color: KprimaryColor, fontWeight: FontWeight.bold),
                       ),
                     )
                   ],
