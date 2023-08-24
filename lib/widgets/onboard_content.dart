@@ -22,6 +22,7 @@ class OnboardContent extends StatelessWidget {
           text,
           style: const TextStyle(
               color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(
           height: 20,

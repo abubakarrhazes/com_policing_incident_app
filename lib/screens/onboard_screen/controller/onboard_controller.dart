@@ -2,8 +2,10 @@ import 'package:com_policing_incident_app/screens/onboard_screen/model/onboard_m
 
 class OnboardController {
   List<OnboardModel> screens = [
-    OnboardModel('assets/images/com_1.png', 'Report Crime On The Go ',
-        'Have Access to Full Justice Support'),
+    OnboardModel(
+        'assets/images/com_1.png',
+        'Report Crime and Incident On The Go ',
+        'Report Crime Within Your Location and serve as an Eye Witness'),
     OnboardModel('assets/images/com_2.png', 'Send an SOS for an Emergency',
         'Send an SOS for Emergency To alert the police units and Emergency Contacts'),
     OnboardModel(

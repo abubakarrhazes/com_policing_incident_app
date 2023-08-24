@@ -1,3 +1,6 @@
+// ignore_for_file: use_full_hex_values_for_flutter_colors
+
+import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'controller/onboard_controller.dart';
 import 'model/onboard_model.dart';
@@ -43,7 +46,7 @@ class _OnboardState extends State<Onboard> {
             child: const Text(
               'Skip',
               style: TextStyle(
-                  color: Colors.deepPurpleAccent,
+                  color: KprimaryColor,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),
@@ -121,8 +124,7 @@ class _OnboardState extends State<Onboard> {
       height: 6,
       width: currentPageIndex == index ? 20 : 6,
       decoration: BoxDecoration(
-          color:
-              currentPageIndex == index ? Colors.deepPurpleAccent : Colors.grey,
+          color: currentPageIndex == index ? KprimaryColor : Colors.grey,
           borderRadius: BorderRadius.circular(5)),
     );
   }

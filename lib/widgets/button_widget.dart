@@ -1,3 +1,4 @@
+import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
@@ -13,7 +14,7 @@ class ButtonWidget extends StatelessWidget {
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.deepPurpleAccent,
+          color: KprimaryColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(

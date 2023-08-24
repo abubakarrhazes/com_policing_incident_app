@@ -1,5 +1,3 @@
 import 'package:flutter/material.dart';
 
-class GlobalVariables {
-  final Color appColor = Color('#201A8E' as int);
-}
+const KprimaryColor = Color.fromARGB(255, 28, 51, 121);
