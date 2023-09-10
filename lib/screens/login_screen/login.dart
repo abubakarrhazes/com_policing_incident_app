@@ -30,20 +30,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late TextEditingController passwordController;
   final formKey = GlobalKey<FormState>();
   final formResult = {};
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
+  }
+
+  void loginUser() {
+    // Make Api Call From The Auth Service Class
   }
 
   @override
@@ -135,13 +140,14 @@ class _LoginPageState extends State<LoginPage> {
                             MyInputField(
                               hintText: 'Email',
                               keyboardType: TextInputType.emailAddress,
+                              controller: _emailController,
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
                               hintText: 'Password',
                               isPassword: true,
                               keyboardType: TextInputType.visiblePassword,
-                              controller: passwordController,
+                              controller: _passwordController,
                             ),
                             const SizedBox(height: 20),
                             ButtonWidget(

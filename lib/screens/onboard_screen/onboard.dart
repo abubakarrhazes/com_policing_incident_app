@@ -41,7 +41,7 @@ class _OnboardState extends State<Onboard> {
           TextButton(
             onPressed: () async {
               //await _storeOnboardInfo();
-              Navigator.pushNamed(context, '/login');
+              Navigator.pushNamed(context, '/welcome');
             },
             child: const Text(
               'Skip',
@@ -100,7 +100,7 @@ class _OnboardState extends State<Onboard> {
                     onPress: () async {
                       if (currentPageIndex == 2) {
                         //await _storeOnboardInfo();
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, '/welcome');
                       }
                       pageController.nextPage(
                           duration: const Duration(milliseconds: 300),

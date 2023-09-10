@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
+import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -12,6 +14,14 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  bool isViewed = false;
+
+  void _viwedWelcomeScreen() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    isViewed = preferences.getBool('isViewed') ?? true;
+    await preferences.setBool('isViwed', true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -47,6 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   ButtonWidget(
                     onPress: () {
+                      _viwedWelcomeScreen();
                       Navigator.pushNamed(context, '/login');
                     },
                     text: 'Login',
@@ -55,7 +66,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     height: 10,
                   ),
                   ButtonWidget(
-                    onPress: () {},
+                    onPress: () {
+                      _viwedWelcomeScreen();
+                      Navigator.pushNamed(context, '/register');
+                    },
                     text: 'Register',
                   ),
                 ],
