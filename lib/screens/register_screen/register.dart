@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_field
 
 import 'package:com_policing_incident_app/controllers/auth_services.dart';
+import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -30,7 +31,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final formKey = GlobalKey<FormState>();
+  final _registerformKey = GlobalKey<FormState>();
   final AuthService authService = AuthService();
   final formResult = {};
   final TextEditingController _firstNameController = TextEditingController();
@@ -61,6 +62,14 @@ class _RegisterState extends State<Register> {
 
   void registerUser() {
     //API Call from the Auth Services
+    authService.Register(RegisterModel(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        otherName: _otherNameController.text,
+        email: _emailNameController.text,
+        phoneNumber: _phoneNumberController.text,
+        password: _passwordController.text,
+        passwordComfirmation: _comfirmPasswordController.text));
   }
 
   @override
@@ -94,7 +103,7 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 8),
                     Form(
-                        key: formKey,
+                        key: _registerformKey,
                         child: Column(
                           children: [
                             MyInputField(
@@ -141,6 +150,9 @@ class _RegisterState extends State<Register> {
                             ButtonWidget(
                               onPress: () {
                                 //Registration Function Call Here
+                                if (_registerformKey.currentState!.validate()) {
+                                  registerUser();
+                                }
                               },
                               text: 'Create Account',
                             )

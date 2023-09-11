@@ -1,5 +1,7 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
 
+import 'package:com_policing_incident_app/controllers/auth_services.dart';
+import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -30,7 +32,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final formKey = GlobalKey<FormState>();
+  final _loginformKey = GlobalKey<FormState>();
+  final AuthService authService = AuthService();
   final formResult = {};
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -49,6 +52,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void loginUser() {
     // Make Api Call From The Auth Service Class
+    authService.Login(LoginModel(
+        email: _emailController.text, password: _passwordController.text));
   }
 
   @override
@@ -134,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 18),
                     Form(
-                        key: formKey,
+                        key: _loginformKey,
                         child: Column(
                           children: [
                             MyInputField(
@@ -151,7 +156,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             const SizedBox(height: 20),
                             ButtonWidget(
-                              onPress: () {},
+                              onPress: () {
+                                if (_loginformKey.currentState!.validate()) {
+                                  loginUser();
+                                }
+                              },
                               text: 'Login',
                             )
                           ],
