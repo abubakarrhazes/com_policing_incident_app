@@ -11,25 +11,9 @@ import 'package:http/http.dart' as http;
 class AuthService {
   Future<void> Register(RegisterModel user) async {
     try {
-      User userModel = User(
-        userId: '',
-        token: '',
-        firstName: user.firstName,
-        lastName: user.lastName,
-        otherName: user.otherName,
-        dateOfBirth: '',
-        address: '',
-        ninNumber: '',
-        stateOfOrigin: '',
-        phoneNumber: user.phoneNumber,
-        password: user.password,
-        passwordComfirmation: user.passwordComfirmation,
-        email: user.email,
-        userRole: '',
-      );
       http.Response response = await http.post(
           Uri.parse('$authbaseUrl/register'),
-          body: jsonEncode(userModel.toJson()),
+          body: jsonEncode(user.toJson()),
           headers: {
             'Accept': 'application/vnd.api+json',
             'Content-Type': 'application/json',
@@ -61,7 +45,7 @@ class AuthService {
           });
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        print(' Registered successful: $responseData');
+        print('Login Succesfully : $responseData');
       } else {
         print(response.body);
         print(response.statusCode);

@@ -1,7 +1,7 @@
 const express = require ('express');
 const { getAllReportCrime } = require('../controllers/reportController.js');
 
-const {updateUser , deleteUser } = require('../controllers/userController.js');
+const {updateUser , deleteUser, getAllUsers } = require('../controllers/userController.js');
 
 
 const userRoutes = express.Router();
@@ -20,7 +20,7 @@ userRoutes.delete('/:id', deleteUser);
 
 //Get All Users Accounts
 
-userRoutes.get('/getAll-users', getAllReportCrime)
+userRoutes.get('/getAll-users', getAllUsers);
 
 
 

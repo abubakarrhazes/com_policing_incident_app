@@ -3,6 +3,7 @@
 import 'package:com_policing_incident_app/controllers/auth_services.dart';
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/utilities/validators.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -143,16 +144,32 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             MyInputField(
-                              hintText: 'Email',
-                              keyboardType: TextInputType.emailAddress,
-                              controller: _emailController,
-                            ),
+                                hintText: 'Email',
+                                keyboardType: TextInputType.emailAddress,
+                                controller: _emailController,
+                                validator: (value) {
+                                  RegExp emailRegExp = RegExp(
+                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+
+                                  if (value == null || value.isEmpty) {
+                                    return 'Email can\'t be empty';
+                                  } else if (!emailRegExp.hasMatch(value)) {
+                                    return 'Enter a correct email';
+                                  }
+                                  return null;
+                                }),
                             const SizedBox(height: 15),
                             MyInputField(
                               hintText: 'Password',
                               isPassword: true,
                               keyboardType: TextInputType.visiblePassword,
                               controller: _passwordController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Password Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 20),
                             ButtonWidget(

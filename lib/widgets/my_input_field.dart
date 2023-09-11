@@ -5,6 +5,7 @@ class MyInputField extends StatefulWidget {
       {Key? key,
       this.isPassword = false,
       this.hintText,
+      this.icon,
       this.keyboardType,
       this.validator,
       this.onSaved,
@@ -13,6 +14,7 @@ class MyInputField extends StatefulWidget {
 
   final bool isPassword;
   final String? hintText;
+  final Icon? icon;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
@@ -49,6 +51,7 @@ class _MyInputFieldState extends State<MyInputField> {
           hintText: widget.hintText,
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(18))),
+          prefix: widget.icon,
           suffixIcon: widget.isPassword == false
               ? null
               : IconButton(

@@ -1,5 +1,5 @@
 class User {
-  final String userId;
+  final String id;
   final String firstName;
   final String lastName;
   final String otherName;
@@ -15,7 +15,7 @@ class User {
   final String token;
 
   User({
-    required this.userId,
+    required this.id,
     required this.firstName,
     required this.lastName,
     required this.otherName,
@@ -33,17 +33,18 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'user_id': userId,
-      'firstname': firstName,
-      'lastname': lastName,
-      'othername': otherName,
+      '_id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'otherName': otherName,
       'email': email,
       'address': address,
-      'nin_number': ninNumber,
-      'phone_number': phoneNumber,
+      'ninNumber': ninNumber,
+      'phoneNumber': phoneNumber,
       'password': password,
-      'password_comfirmation': passwordComfirmation,
-      'user_role': userRole,
+      'stateOfOrigin': stateOfOrigin,
+      'passwordComfirmation': passwordComfirmation,
+      'userRole': userRole,
       'token': token,
     };
   }

@@ -20,13 +20,13 @@ class RegisterModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'firstname': firstName,
-      'lastname': lastName,
+      'firstName': firstName,
+      'lastName': lastName,
       'email': email,
-      'othername': otherName,
-      'phone_number': phoneNumber,
+      'otherName': otherName,
+      'phoneNumber': phoneNumber,
       'password': password,
-      'password_comfirmation': passwordComfirmation,
+      'passwordcomfirmation': passwordComfirmation,
     };
   }
 }
