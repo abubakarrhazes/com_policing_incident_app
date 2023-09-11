@@ -20,10 +20,6 @@ const updateUser = async (req, res) => {
 
     }
 
-   
-
-
-
 
 };
 
@@ -43,12 +39,11 @@ const deleteUser = async (req,res) =>{
     }
 
 
-
 }
 
 const getAllUsers = async (req,res) =>{
     try{
-        const allUsers =  await User.find();
+        const allUsers =  await User.find({});
 
         return res.status(200).json({msg:"All Users Created In The Database"});
 

@@ -46,7 +46,7 @@ const userSchema = mongoose.Schema({
     phoneNumber :{
         required : true,
         type: String,
-        default: ''
+       
     },
     password : {
         required: true,
@@ -65,8 +65,11 @@ const userSchema = mongoose.Schema({
     userRole : {
         type : String,
         default : 'user',
-    }
+    },
 
+    token : {
+        type: String,
+    }
 
 });
 
