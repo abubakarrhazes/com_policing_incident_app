@@ -5,7 +5,6 @@ class RegisterModel {
   String email;
   String phoneNumber;
   String password;
-
   String passwordComfirmation;
 
   RegisterModel({

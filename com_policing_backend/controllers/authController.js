@@ -10,7 +10,7 @@ const register = async (req, res) => {
 
     try{
         const { firstName, lastName, otherName, email, phoneNumber, password, passwordComfirmation } = req.body;
-        const existingUser = await User.findOne({email : email , phoneNumber : phoneNumber});
+        const existingUser = await User.findOne({email : email });
         if(existingUser){
             return res.status(404).json({msg: " This User  Already Exist"});
 
@@ -82,7 +82,7 @@ const getUsers = async (req, res) => {
 
 
 
-module.exports = {register,login, get};
+module.exports = {register,login, getUsers};
 
 
 

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:com_policing_incident_app/routes/routes.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
@@ -17,11 +18,13 @@ Future<void> main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   isViewed = preferences.getBool('isViewed') ?? true;
   await preferences.setBool('isViewed', true);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final Routes routes = Routes();
 
   // This widget is the root of your application.
   @override
@@ -33,15 +36,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: isViewed == false ? '/' : '/welcome',
-      routes: {
-        '/': (context) => Onboard(),
-        '/welcome': (context) => WelcomeScreen(),
-        '/login': (context) => LoginPage(),
-        '/register': (context) => Register(),
-        '/forgot': (context) => ForgotPassword(),
-        '/home': (context) => HomePage(),
-      },
+      onGenerateRoute: routes.controller,
+      initialRoute: isViewed == false ? routes.onboard : routes.welcome,
     );
   }
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: use_full_hex_values_for_flutter_colors
 
+import 'package:com_policing_incident_app/routes/routes.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'controller/onboard_controller.dart';
@@ -17,6 +18,8 @@ class Onboard extends StatefulWidget {
 final controller = OnboardController();
 int currentPageIndex = 0;
 final pageController = PageController(initialPage: currentPageIndex);
+
+final Routes routes = Routes();
 
 @override
 void dispose() {
@@ -41,7 +44,7 @@ class _OnboardState extends State<Onboard> {
           TextButton(
             onPressed: () async {
               //await _storeOnboardInfo();
-              Navigator.pushNamed(context, '/welcome');
+              Navigator.pushNamed(context, routes.welcome);
             },
             child: const Text(
               'Skip',
@@ -100,7 +103,7 @@ class _OnboardState extends State<Onboard> {
                     onPress: () async {
                       if (currentPageIndex == 2) {
                         //await _storeOnboardInfo();
-                        Navigator.pushNamed(context, '/welcome');
+                        Navigator.pushNamed(context, routes.welcome);
                       }
                       pageController.nextPage(
                           duration: const Duration(milliseconds: 300),

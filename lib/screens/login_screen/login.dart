@@ -2,6 +2,7 @@
 
 import 'package:com_policing_incident_app/controllers/auth_services.dart';
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/validators.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
@@ -53,8 +54,10 @@ class _LoginPageState extends State<LoginPage> {
 
   void loginUser() {
     // Make Api Call From The Auth Service Class
-    authService.Login(LoginModel(
-        email: _emailController.text, password: _passwordController.text));
+    authService.Login(
+        LoginModel(
+            email: _emailController.text, password: _passwordController.text),
+        context);
   }
 
   @override
@@ -195,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/forgot');
+                      Navigator.pushNamed(context, routes.forgot);
                     },
                     child: const Text(
                       'Reset Password',
@@ -207,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Text('Don\'t have an account? '),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/register');
+                        Navigator.pushNamed(context, routes.register);
                       },
                       child: Text(
                         'Create one',

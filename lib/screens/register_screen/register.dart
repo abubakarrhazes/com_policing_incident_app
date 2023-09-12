@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_field
 
 import 'package:com_policing_incident_app/controllers/auth_services.dart';
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
@@ -62,14 +63,16 @@ class _RegisterState extends State<Register> {
 
   void registerUser() {
     //API Call from the Auth Services
-    authService.Register(RegisterModel(
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        otherName: _otherNameController.text,
-        email: _emailNameController.text,
-        phoneNumber: _phoneNumberController.text,
-        password: _passwordController.text,
-        passwordComfirmation: _comfirmPasswordController.text));
+    authService.Register(
+        RegisterModel(
+            firstName: _firstNameController.text,
+            lastName: _lastNameController.text,
+            otherName: _otherNameController.text,
+            email: _emailNameController.text,
+            phoneNumber: _phoneNumberController.text,
+            password: _passwordController.text,
+            passwordComfirmation: _comfirmPasswordController.text),
+        context);
   }
 
   @override
@@ -175,7 +178,7 @@ class _RegisterState extends State<Register> {
                     const Text(' Already  have an account? '),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, routes.login);
                       },
                       child: Text(
                         'Login Here',

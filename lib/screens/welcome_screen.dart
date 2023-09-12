@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ButtonWidget(
                     onPress: () {
                       _viwedWelcomeScreen();
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushNamed(context, routes.login);
                     },
                     text: 'Login',
                   ),
@@ -68,7 +69,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ButtonWidget(
                     onPress: () {
                       _viwedWelcomeScreen();
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pushNamed(context, routes.register);
                     },
                     text: 'Register',
                   ),
