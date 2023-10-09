@@ -2,6 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-String authbaseUrl = "http://172.20.10.4:8080/api/auth";
+String baseUrl = "http://127.0.0.1:5000/api/auth";
 
 const KprimaryColor = Color.fromARGB(255, 28, 51, 121);

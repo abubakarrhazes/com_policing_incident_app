@@ -1,14 +1,19 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:com_policing_incident_app/providers/user_provider.dart';
 import 'package:com_policing_incident_app/routes/routes.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/pages/home_page.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/emergency.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';
 //flimport 'package:com_policing_incident_app/screens/screen_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool isViewed = false;
@@ -18,7 +23,11 @@ Future<void> main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   isViewed = preferences.getBool('isViewed') ?? true;
   await preferences.setBool('isViewed', true);
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+    ),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -30,14 +39,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Community Policing and Incident Reporing App  ',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      onGenerateRoute: routes.controller,
-      initialRoute: isViewed == false ? routes.onboard : routes.welcome,
-    );
+        title: 'Community Policing and Incident Reporing App  ',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        onGenerateRoute: routes.controller,
+        initialRoute:
+            routes.home //isViewed == false ? routes.onboard : routes.welcome,
+        );
   }
 }

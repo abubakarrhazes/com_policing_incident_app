@@ -179,6 +179,8 @@ class _LoginPageState extends State<LoginPage> {
                               onPress: () {
                                 if (_loginformKey.currentState!.validate()) {
                                   loginUser();
+                                  print(_emailController.text);
+                                  print(_passwordController.text);
                                 }
                               },
                               text: 'Login',

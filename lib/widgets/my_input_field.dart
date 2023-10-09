@@ -50,7 +50,7 @@ class _MyInputFieldState extends State<MyInputField> {
               const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           hintText: widget.hintText,
           border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(18))),
+              borderRadius: BorderRadius.all(Radius.circular(5))),
           prefix: widget.icon,
           suffixIcon: widget.isPassword == false
               ? null

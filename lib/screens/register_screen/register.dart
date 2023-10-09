@@ -34,15 +34,18 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final _registerformKey = GlobalKey<FormState>();
   final AuthService authService = AuthService();
+  final bool isLoading = false;
   final formResult = {};
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _otherNameController = TextEditingController();
   final TextEditingController _emailNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _dateOfBirthController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _occupationController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _comfirmPasswordController =
-      TextEditingController();
 
   @override
   void initState() {
@@ -56,8 +59,11 @@ class _RegisterState extends State<Register> {
     _otherNameController.dispose();
     _emailNameController.dispose();
     _phoneNumberController.dispose();
+    _dateOfBirthController.dispose();
+    _stateController.dispose();
+    _occupationController.dispose();
+    _addressController.dispose();
     _passwordController.dispose();
-    _comfirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -65,13 +71,17 @@ class _RegisterState extends State<Register> {
     //API Call from the Auth Services
     authService.Register(
         RegisterModel(
-            firstName: _firstNameController.text,
-            lastName: _lastNameController.text,
-            otherName: _otherNameController.text,
-            email: _emailNameController.text,
-            phoneNumber: _phoneNumberController.text,
-            password: _passwordController.text,
-            passwordComfirmation: _comfirmPasswordController.text),
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+          otherName: _otherNameController.text,
+          email: _emailNameController.text,
+          phoneNumber: _phoneNumberController.text,
+          dateOfBirth: _dateOfBirthController.text,
+          state: _stateController.text,
+          occupation: _occupationController.text,
+          address: _addressController.text,
+          password: _passwordController.text,
+        ),
         context);
   }
 
@@ -137,17 +147,33 @@ class _RegisterState extends State<Register> {
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
+                                hintText: 'Date Of Birth',
+                                keyboardType: TextInputType.datetime,
+                                controller: _dateOfBirthController),
+                            const SizedBox(height: 15),
+                            MyInputField(
+                              hintText: 'State',
+                              keyboardType: TextInputType.text,
+                              controller: _stateController,
+                            ),
+                            const SizedBox(height: 15),
+                            MyInputField(
+                              hintText: 'Occupation',
+                              keyboardType: TextInputType.text,
+                              controller: _occupationController,
+                            ),
+                            const SizedBox(height: 15),
+                            MyInputField(
+                              hintText: 'Address',
+                              keyboardType: TextInputType.text,
+                              controller: _occupationController,
+                            ),
+                            const SizedBox(height: 15),
+                            MyInputField(
                               hintText: 'Password',
                               isPassword: true,
                               keyboardType: TextInputType.visiblePassword,
                               controller: _passwordController,
-                            ),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'Comfirm Password',
-                              isPassword: true,
-                              keyboardType: TextInputType.visiblePassword,
-                              controller: _comfirmPasswordController,
                             ),
                             const SizedBox(height: 20),
                             ButtonWidget(

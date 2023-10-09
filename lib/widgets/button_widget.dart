@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,7 @@ class ButtonWidget extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           color: KprimaryColor,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Center(
           child: Text(

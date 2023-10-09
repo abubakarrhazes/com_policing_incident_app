@@ -52,10 +52,6 @@ const userSchema = mongoose.Schema({
         required: true,
         type: String,
     },
-    passwordComfirmation: {
-        required: true,
-        type: String,
-    },
     stateOfOrigin: {
         type: String,
         trim : true,
