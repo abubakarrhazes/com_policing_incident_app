@@ -7,13 +7,36 @@ import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
 
 class ReportCrime extends StatefulWidget {
-  const ReportCrime({super.key});
+  ReportCrime({super.key});
 
   @override
   State<ReportCrime> createState() => _ReportCrimeState();
 }
 
 class _ReportCrimeState extends State<ReportCrime> {
+  String categories = 'Homocide';
+  String stations = 'Unguwar Rogo Police Division,Sokoto';
+
+  List<String> crimeCategories = [
+    'Homocide',
+    'Robbery',
+    'Sexual Assault and Rape',
+    'Domestic Violence',
+    'Kidnapping',
+    'Reckless Driving',
+    'Online Fraud',
+    'Motor Vehicle Theft',
+    'Arson',
+    'Ritual Killings',
+    'Drug Trafficking / Possession',
+    'Cultism',
+  ];
+
+  List<String> policeStations = [
+    'Unguwar Rogo Police Division,Sokoto',
+    'Dan Marina Police Division,Sokoto',
+    'Dadin Kowa Police Division,Sokoto',
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,8 +68,23 @@ class _ReportCrimeState extends State<ReportCrime> {
                   SizedBox(
                     height: 5,
                   ),
-                  MyInputField(
-                    hintText: 'Select Crime Category',
+                  SizedBox(
+                    child: Column(
+                      children: [
+                        DropdownButton(
+                          value: categories,
+                          items: crimeCategories.map((String item) {
+                            return DropdownMenuItem(
+                                value: item, child: Text(item));
+                          }).toList(),
+                          onChanged: (String? newval) {
+                            setState(() {
+                              categories = newval!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -62,6 +100,8 @@ class _ReportCrimeState extends State<ReportCrime> {
                     height: 5,
                   ),
                   MyInputField(
+                    min: 1,
+                    max: 200,
                     hintText: 'Briefly Decribe about the crime',
                   ),
                   SizedBox(
@@ -119,7 +159,44 @@ class _ReportCrimeState extends State<ReportCrime> {
                       )
                     ],
                   ),
-                  Text('Location'),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Location',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Select Police Station',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    child: Column(
+                      children: [
+                        DropdownButton(
+                          value: stations,
+                          items: policeStations.map((String item) {
+                            return DropdownMenuItem(
+                                value: item, child: Text(item));
+                          }).toList(),
+                          onChanged: (String? newval) {
+                            setState(() {
+                              stations = newval!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     height: 20,
                   ),

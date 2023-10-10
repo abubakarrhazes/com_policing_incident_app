@@ -39,6 +39,7 @@ dependencies:
   http: ^1.1.0
   shared_preferences: ^2.2.0
   provider: ^6.0.5
+  emoji_picker_flutter: ^1.6.2
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 
 class MyInputField extends StatefulWidget {
@@ -8,6 +10,12 @@ class MyInputField extends StatefulWidget {
       this.icon,
       this.keyboardType,
       this.validator,
+      this.formFieldHeight,
+      this.max,
+      this.maxLength,
+      this.prefix,
+      this.min,
+      this.expandable,
       this.onSaved,
       this.controller})
       : super(key: key);
@@ -17,6 +25,12 @@ class MyInputField extends StatefulWidget {
   final Icon? icon;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final double? formFieldHeight;
+  final int? max;
+  final int? min;
+  final int? maxLength;
+  final bool? expandable;
+  final Icon? prefix;
   final void Function(String?)? onSaved;
   final TextEditingController? controller;
 
@@ -35,34 +49,40 @@ class _MyInputFieldState extends State<MyInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      obscureText: visiblePassword,
-      autocorrect: !widget.isPassword,
-      enableSuggestions: !widget.isPassword,
-      keyboardType: widget.keyboardType,
-      validator: widget.validator,
-      onSaved: widget.onSaved,
-      style: const TextStyle(
-          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
-      decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          hintText: widget.hintText,
-          border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5))),
-          prefix: widget.icon,
-          suffixIcon: widget.isPassword == false
-              ? null
-              : IconButton(
-                  onPressed: () {
-                    setState(() {
-                      visiblePassword = !visiblePassword;
-                    });
-                  },
-                  icon: Icon(visiblePassword
-                      ? Icons.visibility
-                      : Icons.visibility_off))),
+    return Container(
+      height: widget.formFieldHeight,
+      child: TextFormField(
+        minLines: widget.min,
+        maxLines: widget.max,
+        expands: widget.expandable == true,
+        controller: widget.controller,
+        obscureText: visiblePassword,
+        autocorrect: !widget.isPassword,
+        enableSuggestions: !widget.isPassword,
+        keyboardType: widget.keyboardType,
+        validator: widget.validator,
+        onSaved: widget.onSaved,
+        style: const TextStyle(
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+        decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            hintText: widget.hintText,
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5))),
+            prefix: widget.prefix,
+            suffixIcon: widget.isPassword == false
+                ? null
+                : IconButton(
+                    onPressed: () {
+                      setState(() {
+                        visiblePassword = !visiblePassword;
+                      });
+                    },
+                    icon: Icon(visiblePassword
+                        ? Icons.visibility
+                        : Icons.visibility_off))),
+      ),
     );
   }
 }

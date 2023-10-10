@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:com_policing_incident_app/screens/pages/live_chat.dart';
 import 'package:com_policing_incident_app/screens/pages/location.dart';
-import 'package:com_policing_incident_app/screens/pages/notification.dart';
+import 'package:com_policing_incident_app/screens/pages/profile_menu_page.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/notification.dart';
 import 'package:com_policing_incident_app/screens/pages/report.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +25,9 @@ class _HomePageState extends State<HomePage> {
     pages = <Widget>[
       MainPage(),
       LocationPage(),
-      NotificationPage(),
+      LiveChatScreen(),
       Reports(),
+      ProfileMenuPage(),
     ];
     super.initState();
   }
@@ -67,13 +70,19 @@ class _HomePageState extends State<HomePage> {
                 tooltip: 'Location',
                 label: 'Location'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                tooltip: 'Notification',
-                label: 'Notification'),
+                icon: Icon(Icons.chat),
+                tooltip: 'Chat Room',
+                label: 'Chat Room'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.file_copy),
                 tooltip: 'Reorts',
-                label: 'Reports')
+                label: 'Reports'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.menu,
+                ),
+                tooltip: 'Menu',
+                label: 'Menu')
           ]),
     );
   }
