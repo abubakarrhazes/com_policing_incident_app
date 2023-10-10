@@ -39,15 +39,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Community Policing and Incident Reporing App  ',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        onGenerateRoute: routes.controller,
-        initialRoute:
-            routes.home //isViewed == false ? routes.onboard : routes.welcome,
-        );
+      title: 'Community Policing and Incident Reporing App  ',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      onGenerateRoute: routes.controller,
+      initialRoute: isViewed == false ? routes.onboard : routes.welcome,
+    );
   }
 }

@@ -178,9 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                             ButtonWidget(
                               onPress: () {
                                 if (_loginformKey.currentState!.validate()) {
-                                  loginUser();
-                                  print(_emailController.text);
-                                  print(_passwordController.text);
+                                  Navigator.pushNamed(context, routes.home);
                                 }
                               },
                               text: 'Login',

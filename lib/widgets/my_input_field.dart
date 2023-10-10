@@ -44,7 +44,6 @@ class _MyInputFieldState extends State<MyInputField> {
   @override
   void initState() {
     super.initState();
-    visiblePassword = widget.isPassword;
   }
 
   @override
@@ -56,9 +55,6 @@ class _MyInputFieldState extends State<MyInputField> {
         maxLines: widget.max,
         expands: widget.expandable == true,
         controller: widget.controller,
-        obscureText: visiblePassword,
-        autocorrect: !widget.isPassword,
-        enableSuggestions: !widget.isPassword,
         keyboardType: widget.keyboardType,
         validator: widget.validator,
         onSaved: widget.onSaved,
@@ -76,7 +72,7 @@ class _MyInputFieldState extends State<MyInputField> {
                 : IconButton(
                     onPressed: () {
                       setState(() {
-                        visiblePassword = !visiblePassword;
+                        visiblePassword = true;
                       });
                     },
                     icon: Icon(visiblePassword
