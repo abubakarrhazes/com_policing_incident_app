@@ -7,20 +7,25 @@ class MediaSelection extends StatelessWidget {
   const MediaSelection({
     required this.text,
     required this.icon,
+    this.onPressed,
   });
   final String text;
   final Icon icon;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: 50,
-      decoration: BoxDecoration(
-        color: KprimaryColor,
-        borderRadius: BorderRadius.circular(30),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+          color: KprimaryColor,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: icon,
       ),
-      child: icon,
     );
   }
 }

@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/media_selection.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -16,6 +19,8 @@ class ReportCrime extends StatefulWidget {
 class _ReportCrimeState extends State<ReportCrime> {
   String categories = 'Homocide';
   String stations = 'Unguwar Rogo Police Division,Sokoto';
+
+  List<File> images = [];
 
   List<String> crimeCategories = [
     'Homocide',
@@ -37,6 +42,14 @@ class _ReportCrimeState extends State<ReportCrime> {
     'Dan Marina Police Division,Sokoto',
     'Dadin Kowa Police Division,Sokoto',
   ];
+
+  void selectImages() async {
+    var imageResponse = await utils.pickUpImage();
+    setState(() {
+      images = imageResponse;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -121,6 +134,9 @@ class _ReportCrimeState extends State<ReportCrime> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       MediaSelection(
+                        onPressed: () {
+                          selectImages();
+                        },
                         text: 'Add Image',
                         icon: Icon(
                           Icons.add_a_photo_outlined,
@@ -131,7 +147,8 @@ class _ReportCrimeState extends State<ReportCrime> {
                         width: 20,
                       ),
                       MediaSelection(
-                        text: 'Add Image',
+                        onPressed: () {},
+                        text: 'Add Video',
                         icon: Icon(
                           Icons.video_file,
                           color: Colors.white,
@@ -141,7 +158,8 @@ class _ReportCrimeState extends State<ReportCrime> {
                         width: 20,
                       ),
                       MediaSelection(
-                        text: 'Add Image',
+                        onPressed: () {},
+                        text: 'Add Audio',
                         icon: Icon(
                           Icons.audio_file_outlined,
                           color: Colors.white,
@@ -151,7 +169,8 @@ class _ReportCrimeState extends State<ReportCrime> {
                         width: 20,
                       ),
                       MediaSelection(
-                        text: 'Add Image',
+                        onPressed: () {},
+                        text: 'Add File',
                         icon: Icon(
                           Icons.file_upload_rounded,
                           color: Colors.white,
