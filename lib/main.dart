@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:com_policing_incident_app/admin/features/admin.dart';
 import 'package:com_policing_incident_app/providers/user_provider.dart';
 import 'package:com_policing_incident_app/routes/routes.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
@@ -21,7 +22,7 @@ bool isViewed = false;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  isViewed = preferences.getBool('isViewed') ?? true;
+  isViewed = preferences.getBool('isViewed') ?? false;
   await preferences.setBool('isViewed', true);
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(

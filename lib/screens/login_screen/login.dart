@@ -63,13 +63,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFF3F3F3),
       body: SafeArea(
-          child: ListView(
+          child: Column(
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width / 3,
-            height: MediaQuery.of(context).size.height / 4,
             child: Image.asset('assets/images/login.png'),
           ),
           Card(
@@ -88,58 +87,6 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
                           color: KprimaryColor),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: const [
-                        Expanded(
-                            child: Divider(
-                                indent: 18, endIndent: 12, thickness: 1.5)),
-                        Text(
-                          'via',
-                          style: TextStyle(color: KprimaryColor),
-                        ),
-                        Expanded(
-                            child: Divider(
-                                indent: 12, endIndent: 18, thickness: 1.5))
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      height: 32,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkResponse(
-                            onTap: () {},
-                            child: Image.asset(
-                              'assets/images/google.png',
-                            ),
-                          ),
-                          const SizedBox(width: 32),
-                          InkResponse(
-                            onTap: () {},
-                            child: Image.asset(
-                              'assets/images/twitter.png',
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: const [
-                        Expanded(
-                            child: Divider(
-                                indent: 18, endIndent: 12, thickness: 1.5)),
-                        Text(
-                          'or',
-                          style: TextStyle(color: Colors.black45),
-                        ),
-                        Expanded(
-                            child: Divider(
-                                indent: 12, endIndent: 18, thickness: 1.5))
-                      ],
                     ),
                     const SizedBox(height: 18),
                     Form(
@@ -190,10 +137,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          const Spacer(),
           Padding(
             padding:
-                const EdgeInsets.only(top: 24, bottom: 16, left: 8, right: 8),
+                const EdgeInsets.only(top: 10, bottom: 16, left: 8, right: 8),
             child: Column(
               children: [
                 TextButton(

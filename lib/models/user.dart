@@ -14,8 +14,8 @@ class User {
   final String occupation;
   final String password;
   final String? state;
-  final String userRole;
-  final String token;
+  final String? userRole;
+  final String? token;
 
   User({
     required this.id,
@@ -53,7 +53,7 @@ class User {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      '_id': id,
       'firstName': firstName,
       'lastName': lastName,
       'otherName': otherName,
@@ -72,7 +72,7 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] as String,
+      id: map['_id'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
       otherName: map['otherName'] as String,

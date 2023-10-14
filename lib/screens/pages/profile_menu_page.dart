@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/profile_tab.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               ProfileTab(
                 icon: Icons.person,
                 onPressed: () {
-                  print('Clicked');
+                  Navigator.pushNamed(context, '/user');
                 },
                 text: 'User Profile',
                 navIcon: Icons.arrow_forward_ios_sharp,
@@ -58,7 +59,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               ProfileTab(
                 icon: Icons.notifications_active,
                 onPressed: () {
-                  print('Notication Tab');
+                  Navigator.pushNamed(context, routes.notifications);
                 },
                 text: 'Notifications',
                 navIcon: Icons.arrow_forward_ios_sharp,
@@ -69,7 +70,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               ProfileTab(
                 icon: Icons.emergency,
                 onPressed: () {
-                  print('Clicked');
+                  Navigator.pushNamed(context, routes.emergency);
                 },
                 text: 'Emergency  ',
                 navIcon: Icons.arrow_forward_ios_sharp,
@@ -80,7 +81,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               ProfileTab(
                 icon: Icons.info,
                 onPressed: () {
-                  print('Clicked');
+                  Navigator.pushNamed(context, routes.more_about);
                 },
                 text: 'More About',
                 navIcon: Icons.arrow_forward_ios_sharp,
@@ -91,7 +92,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               ProfileTab(
                 icon: Icons.settings,
                 onPressed: () {
-                  print('Clicked');
+                  Navigator.pushNamed(context, routes.settings);
                 },
                 text: 'Settings    ',
                 navIcon: Icons.arrow_forward_ios_sharp,
@@ -102,7 +103,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               ProfileTab(
                 icon: Icons.support_agent,
                 onPressed: () {
-                  print('Clicked');
+                  Navigator.pushNamed(context, routes.help_desk);
                 },
                 text: 'Help Desk ',
                 navIcon: Icons.arrow_forward_ios_sharp,

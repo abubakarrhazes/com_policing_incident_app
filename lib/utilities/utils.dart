@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
 
+import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,57 @@ class Utils {
     try {
       var files = await FilePicker.platform
           .pickFiles(type: FileType.image, allowMultiple: true);
+      if (files != null && files.files.isNotEmpty) {
+        for (int i = 0; i < files.files.length; i++) {
+          images.add(File(files.files[i].path!));
+        }
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+
+    return images;
+  }
+
+  Future<List<File>> pickUpAudio() async {
+    List<File> images = [];
+    try {
+      var files = await FilePicker.platform
+          .pickFiles(type: FileType.audio, allowMultiple: true);
+      if (files != null && files.files.isNotEmpty) {
+        for (int i = 0; i < files.files.length; i++) {
+          images.add(File(files.files[i].path!));
+        }
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+
+    return images;
+  }
+
+  Future<List<File>> pickUpVideo() async {
+    List<File> images = [];
+    try {
+      var files = await FilePicker.platform
+          .pickFiles(type: FileType.video, allowMultiple: true);
+      if (files != null && files.files.isNotEmpty) {
+        for (int i = 0; i < files.files.length; i++) {
+          images.add(File(files.files[i].path!));
+        }
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+
+    return images;
+  }
+
+  Future<List<File>> pickUpMedia() async {
+    List<File> images = [];
+    try {
+      var files = await FilePicker.platform
+          .pickFiles(type: FileType.media, allowMultiple: true);
       if (files != null && files.files.isNotEmpty) {
         for (int i = 0; i < files.files.length; i++) {
           images.add(File(files.files[i].path!));

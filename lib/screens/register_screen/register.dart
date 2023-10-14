@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_field
 
 import 'package:com_policing_incident_app/controllers/auth_services.dart';
+import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';

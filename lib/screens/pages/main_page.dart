@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:com_policing_incident_app/providers/user_provider.dart';
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/widgets/action_button.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/custom_delegate.dart';
@@ -132,13 +133,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                         return InkWell(
                           onTap: () {
                             if (index == 0) {
-                              Navigator.pushNamed(context, '/report-crime');
+                              Navigator.pushNamed(context, routes.report_crime);
                             } else if (index == 1) {
-                              Navigator.pushNamed(context, '/report-incident');
+                              Navigator.pushNamed(
+                                  context, routes.report_incident);
                             } else if (index == 2) {
-                              Navigator.pushNamed(context, '/blog');
+                              Navigator.pushNamed(context, routes.blog);
                             } else {
-                              Navigator.pushNamed(context, '/emergency');
+                              Navigator.pushNamed(context, routes.emergency);
                             }
                           },
                           child: Container(

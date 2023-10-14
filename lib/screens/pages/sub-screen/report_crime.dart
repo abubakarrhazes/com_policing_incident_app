@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
 
 import 'dart:io';
 
+import 'package:com_policing_incident_app/controllers/auth_services.dart';
+import 'package:com_policing_incident_app/models/report_crime_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
@@ -17,10 +19,15 @@ class ReportCrime extends StatefulWidget {
 }
 
 class _ReportCrimeState extends State<ReportCrime> {
+  final AuthService authService = AuthService();
+  final TextEditingController _detailsController = TextEditingController();
   String categories = 'Homocide';
   String stations = 'Unguwar Rogo Police Division,Sokoto';
 
   List<File> images = [];
+  List<File> audio = [];
+  List<File> video = [];
+  List<File> media = [];
 
   List<String> crimeCategories = [
     'Homocide',
@@ -48,6 +55,39 @@ class _ReportCrimeState extends State<ReportCrime> {
     setState(() {
       images = imageResponse;
     });
+  }
+
+  void selectAudio() async {
+    var audioResponse = await utils.pickUpAudio();
+    setState(() {
+      audio = audioResponse;
+    });
+  }
+
+  void selectVideo() async {
+    var videoResponse = await utils.pickUpVideo();
+    setState(() {
+      video = videoResponse;
+    });
+  }
+
+  void selectMedia() async {
+    var mediaResponse = await utils.pickUpMedia();
+    setState(() {
+      media = mediaResponse;
+    });
+  }
+
+  void reportCrime() {
+    authService.ReportCrime(
+        ReportCrimeModel(
+          category: categories,
+          details: _detailsController.text,
+          media: images,
+          location: '',
+          station: stations,
+        ),
+        context);
   }
 
   @override
@@ -147,7 +187,9 @@ class _ReportCrimeState extends State<ReportCrime> {
                         width: 20,
                       ),
                       MediaSelection(
-                        onPressed: () {},
+                        onPressed: () {
+                          selectVideo();
+                        },
                         text: 'Add Video',
                         icon: Icon(
                           Icons.video_file,
@@ -158,7 +200,9 @@ class _ReportCrimeState extends State<ReportCrime> {
                         width: 20,
                       ),
                       MediaSelection(
-                        onPressed: () {},
+                        onPressed: () {
+                          selectAudio();
+                        },
                         text: 'Add Audio',
                         icon: Icon(
                           Icons.audio_file_outlined,
@@ -169,7 +213,9 @@ class _ReportCrimeState extends State<ReportCrime> {
                         width: 20,
                       ),
                       MediaSelection(
-                        onPressed: () {},
+                        onPressed: () {
+                          selectMedia();
+                        },
                         text: 'Add File',
                         icon: Icon(
                           Icons.file_upload_rounded,

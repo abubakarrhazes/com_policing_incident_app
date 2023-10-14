@@ -1,4 +1,4 @@
-// ignore_for_file: sized_box_for_whitespace
+// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,8 @@ class MyInputField extends StatefulWidget {
       this.min,
       this.expandable,
       this.onSaved,
-      this.controller})
+      this.controller,
+      String? label})
       : super(key: key);
 
   final bool isPassword;
@@ -58,7 +59,7 @@ class _MyInputFieldState extends State<MyInputField> {
         keyboardType: widget.keyboardType,
         validator: widget.validator,
         onSaved: widget.onSaved,
-        style: const TextStyle(
+        style: TextStyle(
             color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
         decoration: InputDecoration(
             contentPadding:
