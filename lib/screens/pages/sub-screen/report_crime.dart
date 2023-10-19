@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:com_policing_incident_app/controllers/auth_services.dart';
+import 'package:com_policing_incident_app/services/auth_services.dart';
 import 'package:com_policing_incident_app/models/report_crime_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
@@ -19,7 +19,6 @@ class ReportCrime extends StatefulWidget {
 }
 
 class _ReportCrimeState extends State<ReportCrime> {
-  final AuthService authService = AuthService();
   final TextEditingController _detailsController = TextEditingController();
   String categories = 'Homocide';
   String stations = 'Unguwar Rogo Police Division,Sokoto';
@@ -78,17 +77,7 @@ class _ReportCrimeState extends State<ReportCrime> {
     });
   }
 
-  void reportCrime() {
-    authService.ReportCrime(
-        ReportCrimeModel(
-          category: categories,
-          details: _detailsController.text,
-          media: images,
-          location: '',
-          station: stations,
-        ),
-        context);
-  }
+  void reportCrime() {}
 
   @override
   Widget build(BuildContext context) {

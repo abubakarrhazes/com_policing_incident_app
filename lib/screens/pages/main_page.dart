@@ -140,7 +140,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             } else if (index == 2) {
                               Navigator.pushNamed(context, routes.blog);
                             } else {
-                              Navigator.pushNamed(context, routes.emergency);
+                              Navigator.pushNamed(
+                                  context, routes.emergency_request);
                             }
                           },
                           child: Container(

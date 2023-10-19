@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unused_field
 
-import 'package:com_policing_incident_app/controllers/auth_services.dart';
+import 'package:com_policing_incident_app/services/auth_services.dart';
 import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
@@ -34,7 +34,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _registerformKey = GlobalKey<FormState>();
-  final AuthService authService = AuthService();
   final bool isLoading = false;
   final formResult = {};
   final TextEditingController _firstNameController = TextEditingController();
@@ -70,20 +69,6 @@ class _RegisterState extends State<Register> {
 
   void registerUser() {
     //API Call from the Auth Services
-    authService.Register(
-        RegisterModel(
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          otherName: _otherNameController.text,
-          email: _emailNameController.text,
-          phoneNumber: _phoneNumberController.text,
-          dateOfBirth: _dateOfBirthController.text,
-          state: _stateController.text,
-          occupation: _occupationController.text,
-          address: _addressController.text,
-          password: _passwordController.text,
-        ),
-        context);
   }
 
   @override

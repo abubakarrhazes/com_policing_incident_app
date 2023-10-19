@@ -7,7 +7,9 @@ import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/pages/home_page.dart';
-import 'package:com_policing_incident_app/screens/pages/sub-screen/emergency.dart';
+import 'package:com_policing_incident_app/screens/pages/main_page.dart';
+import 'package:com_policing_incident_app/screens/pages/report.dart';
+
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';

@@ -1,19 +1,18 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
 
-import 'package:com_policing_incident_app/controllers/auth_services.dart';
-import 'package:com_policing_incident_app/models/add_emergency_contacts_model.dart';
+import 'package:com_policing_incident_app/services/auth_services.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
 
-class Emergency extends StatefulWidget {
-  const Emergency({super.key});
+class EmergencyRequest extends StatefulWidget {
+  const EmergencyRequest({super.key});
 
   @override
-  State<Emergency> createState() => _EmergencyState();
+  State<EmergencyRequest> createState() => _EmergencyRequestState();
 }
 
-class _EmergencyState extends State<Emergency> {
+class _EmergencyRequestState extends State<EmergencyRequest> {
   final _emergencyNameController = TextEditingController();
   final _emergencyPhoneController = TextEditingController();
   final _emergencyEmailController = TextEditingController();
@@ -108,17 +107,6 @@ class _EmergencyState extends State<Emergency> {
     );
   }
 
-  void addEmergency() {
-    authService.AddEmergencyContacts(
-        AddEmergencyContactsModel(
-            firstName: _emergencyNameController.text,
-            phoneNumber: _emergencyPhoneController.text,
-            email: _emergencyEmailController.text,
-            relation: _emergencyRelationController.text,
-            address: _emergencyAddressController.text),
-        context);
-  }
-
   void getEmergencyContacts() {
     authService.getEmergencyContacts(context);
   }
@@ -137,34 +125,33 @@ class _EmergencyState extends State<Emergency> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'To whom you want contact in Case of Cases',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'To whom you want contact in Case of Cases',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showEmegencyContactDialog(
-                      context,
-                      'Add Emergency Contacts',
-                    );
-                  },
-                  child: Expanded(
+                  SizedBox(
+                    width: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showEmegencyContactDialog(
+                        context,
+                        'Add Emergency Contacts',
+                      );
+                    },
                     child: Container(
                       height: 50,
                       width: 50,
@@ -177,13 +164,13 @@ class _EmergencyState extends State<Emergency> {
                         color: Colors.white,
                       ),
                     ),
-                  ),
-                )
-              ],
-            )
-          ],
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }
