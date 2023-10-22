@@ -8,8 +8,8 @@ class User {
   final String otherName;
   final String DOB;
   final String email;
-  final String address;
-  final String? ninNumber;
+  final String officeAddress;
+  final String? profilePicture;
   final String phoneNumber;
   final String occupation;
   final String password;
@@ -23,8 +23,8 @@ class User {
     required this.otherName,
     required this.DOB,
     required this.email,
-    required this.address,
-    this.ninNumber,
+    required this.officeAddress,
+    this.profilePicture,
     required this.phoneNumber,
     required this.occupation,
     required this.password,
@@ -35,14 +35,14 @@ class User {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      '_id': id,
       'firstName': firstName,
       'lastName': lastName,
       'otherName': otherName,
       'DOB': DOB,
       'email': email,
-      'address': address,
-      'ninNumber': ninNumber,
+      'officeAddress': officeAddress,
+      'profilePicture': profilePicture,
       'phoneNumber': phoneNumber,
       'occupation': occupation,
       'password': password,
@@ -54,14 +54,16 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] as String,
+      id: map['_id'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
       otherName: map['otherName'] as String,
       DOB: map['DOB'] as String,
       email: map['email'] as String,
-      address: map['address'] as String,
-      ninNumber: map['ninNumber'] != null ? map['ninNumber'] as String : null,
+      officeAddress: map['officeAddress'] as String,
+      profilePicture: map['profilePicture'] != null
+          ? map['profilePicture'] as String
+          : null,
       phoneNumber: map['phoneNumber'] as String,
       occupation: map['occupation'] as String,
       password: map['password'] as String,
