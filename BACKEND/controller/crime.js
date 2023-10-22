@@ -11,7 +11,7 @@ const getAllCrime = asyncHandler(async (req, res) => {
   if (status) {
     queryObject["status"] = status;
   }
-  const crime = await Crime.find(queryObject);
+  const crime = await Crime.find(queryObject).populate('user');
   if (crime.length <= 0) return res.json({ message: "No crime reported yet" });
   res.json({
     status: 200,
@@ -22,7 +22,7 @@ const getAllCrime = asyncHandler(async (req, res) => {
 
 const getMyCrime = asyncHandler(async (req, res) => {
   const userId = req.userId;
-  const crime = await Crime.find({ user: userId });
+  const crime = await Crime.find({ user: userId }).populate('user');
   if (!crime) return res.json({ message: "No crime reported yet" });
   res.json({
     status: 200,
@@ -33,7 +33,7 @@ const getMyCrime = asyncHandler(async (req, res) => {
 const getSingleCrime = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (mongoose.isValidObjectId(id)) throw CustomError("Not a valid ID");
-  const crime = await Crime.findById(id);
+  const crime = await Crime.findById(id).populate('user');
   if (!crime) {
     throw CustomError("Crime with ID not found");
   }

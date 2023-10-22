@@ -15,7 +15,11 @@ const {
 } = require("../controller/comment");
 
 router.use(verifyJWT);
+
+// GET ALL COMMENTS AND CREATE A NEW COMMENT
 router.route("/").get(getPostComment).post(createComment);
+
+// delete comment by ID
 router.route("/:id").delete(deleteComment);
 
 module.exports = router;

@@ -46,6 +46,7 @@ const getAccount = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
+  
   if (!id) throw CustomError("User id is required");
   if (!mongoose.isValidObjectId(id)) throw CustomError("Not a valid user id");
 
