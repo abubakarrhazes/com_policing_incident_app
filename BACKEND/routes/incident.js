@@ -11,12 +11,20 @@ const {
 } = require("../controller/incident");
 
 router.use(verifyJWT);
+
+// get all reported INCIDENTS (GET REQUEST) and report an INCIDENTS (POST REQUEST)
 router.route("/").get(getAllIncident).post(createIncident);
-router.get("report", getMyIncident);
+
+// get my incident (that is the logged in users incidents)
+router.get("/my_incidents", getMyIncident);
+
 router
   .route("/:id")
+  // get sigle incident by ID,
   .get(getSingleIncident)
+  //  UPDATE incident by ID,
   .patch(updateIncident)
+  // Delete incident by ID
   .delete(deleteIncident);
 
 module.exports = router;

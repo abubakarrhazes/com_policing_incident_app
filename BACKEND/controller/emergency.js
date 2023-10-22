@@ -6,7 +6,7 @@ const { default: mongoose } = require("mongoose");
 const getAllEmergency = asyncHandler(async (req, res) => {
   const emergency = await Emergency.find({});
   if (emergency.length <= 0)
-    return res.json({ message: "No emergency reported yet" });
+    return res.json({ message: "No emergency reported yet" }).populate('user');
   res.json({
     status: 200,
     message: "success",
@@ -16,7 +16,7 @@ const getAllEmergency = asyncHandler(async (req, res) => {
 
 const getMyEmergency = asyncHandler(async (req, res) => {
   const userId = req.userId;
-  const emergency = await Emergency.find({ user: userId });
+  const emergency = await Emergency.find({ user: userId }).populate('user');
   if (!emergency) return res.json({ message: "No emergency reported yet" });
   res.json({
     status: 200,
@@ -27,7 +27,7 @@ const getMyEmergency = asyncHandler(async (req, res) => {
 const getSingleEmergency = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (mongoose.isValidObjectId(id)) throw CustomError("Not a valid ID");
-  const emergency = await Emergency.findById(id);
+  const emergency = await Emergency.findById(id).populate('user');
   if (!emergency) {
     throw CustomError("Emergency with ID not found");
   }

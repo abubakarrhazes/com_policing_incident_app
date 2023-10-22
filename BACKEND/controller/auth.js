@@ -62,10 +62,12 @@ const register = asyncHandler(async (req, res) => {
   });
 
   const accessToken = await genAccessToken(newUser.id);
+  const user = await User.findOne({ email }).select("-password").exec();
+
   return res.status(200).json({
     status: 200,
     message: `New user ${newUser.firstName} created`,
-    data: { accessToken: accessToken },
+    data: { user: user, accessToken: accessToken },
   });
 });
 
@@ -91,12 +93,13 @@ const login = asyncHandler(async (req, res) => {
   if (!match) {
     throw CustomError("Wrong password", 401);
   }
+  const user = await User.findOne({ email }).select("-password").exec();
 
   const accessToken = await genAccessToken(foundUser.id);
   return res.status(200).json({
     status: 200,
     message: "Success",
-    data: { accessToken: accessToken },
+    data: { user: user, accessToken: accessToken },
   });
 });
 

@@ -11,7 +11,14 @@ const verifyJWT = require("../middleware/verifyJWT");
 
 router.use(verifyJWT);
 router.route("/").get(getAllUsers);
-router.get("account", getAccount);
+
+// get logged in user account details (uses the user ID from the jwt to figure out the logged in user)
+router.get("/account", getAccount);
+
+// get user account details with the user ID
+// update user account details with the ID
+// DELETE user account with the ID
+
 router.route("/:id").get(getSingleUser).patch(updateUser).delete(deleteUser);
 
 module.exports = router;

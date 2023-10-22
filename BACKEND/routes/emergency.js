@@ -11,9 +11,14 @@ const {
 } = require("../controller/emergency");
 
 router.use(verifyJWT);
+
+// GET ALL EMERGENCY AND CREATE NEW EMERGENCY
 router.route("/").get(getAllEmergency).post(createEmergency);
 
-router.get("info", getMyEmergency);
+// GET USER EMERGENCIIES BY JWT
+router.get("/info", getMyEmergency);
+
+// GET USER EMERGENCIES BY EMERGENCY ID,UPDATE AND DELETE BY ID,
 router
   .route("/:id")
   .get(getSingleEmergency)

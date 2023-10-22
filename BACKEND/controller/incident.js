@@ -10,7 +10,7 @@ const getAllIncident = asyncHandler(async (req, res) => {
   if (status) {
     queryObject["status"] = status;
   }
-  const incident = await Incident.find(queryObject);
+  const incident = await Incident.find(queryObject).populate('user');
   if (incident.length <= 0)
     return res.json({ message: "No incident reported yet" });
   res.json({
@@ -22,7 +22,7 @@ const getAllIncident = asyncHandler(async (req, res) => {
 
 const getMyIncident = asyncHandler(async (req, res) => {
   const userId = req.userId;
-  const incident = await Incident.find({ user: userId });
+  const incident = await Incident.find({ user: userId }).populate('user');
   if (!incident) return res.json({ message: "No incident reported yet" });
   res.json({
     status: 200,
@@ -33,7 +33,7 @@ const getMyIncident = asyncHandler(async (req, res) => {
 const getSingleIncident = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (mongoose.isValidObjectId(id)) throw CustomError("Not a valid ID");
-  const incident = await Incident.findById(id);
+  const incident = await Incident.findById(id).populate('user');
   if (!incident) {
     throw CustomError("Incident with ID not found");
   }

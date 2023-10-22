@@ -7,17 +7,32 @@ const mongoose = require("mongoose");
 const errorHandler = require("./middleware/errorHandler");
 const permissions = require("./middleware/permissions");
 const verifyJWT = require("./middleware/verifyJWT");
-
+const cors = require("cors");
 const PORT = process.env.PORT || 3500;
 
+
+
+const cloudinary = require('cloudinary').v2;
+          
+cloudinary.config({ 
+  cloud_name: 'dhiengvju', 
+  api_key: process.env.CLOUDINARY_KEY, 
+  api_secret:  process.env.CLOUDINARY_SECRET
+});
 // Connect to MongoDB
 connectDB();
 
+
+// cloudinary.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
+//   { public_id: "olympic_flag" },
+// function(error, result) {console.log(result); });
+  
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // middleware
 app.use(express.json());
+app.use(cors());
 
 // routes
 app.get("/", (req, res) => {
