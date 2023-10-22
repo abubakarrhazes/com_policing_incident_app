@@ -9,7 +9,7 @@ class UserProvider extends ChangeNotifier {
       firstName: '',
       lastName: '',
       otherName: '',
-      dateOfBirth: '',
+      DOB: '',
       email: '',
       address: '',
       ninNumber: '',
@@ -17,12 +17,13 @@ class UserProvider extends ChangeNotifier {
       occupation: '',
       password: '',
       state: '',
-      userRole: '',
-      token: '');
+      role: '',
+      accessToken: '');
 
   User get user => _user;
 
   void setUser(String user) {
     _user = User.fromJson(user);
+    notifyListeners();
   }
 }

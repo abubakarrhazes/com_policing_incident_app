@@ -3,12 +3,11 @@
 import 'package:com_policing_incident_app/services/auth_services.dart';
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
-import 'package:com_policing_incident_app/services/helpers/auth_helpers.dart';
+
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
-import 'package:com_policing_incident_app/utilities/validators.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 const MaterialColor black = MaterialColor(
@@ -40,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   final formResult = {};
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthService authService = AuthService();
 
   @override
   void initState() {
@@ -53,7 +53,12 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void loginUser() {}
+  void loginUser() {
+    authService.Login(
+        LoginModel(
+            email: _emailController.text, password: _passwordController.text),
+        context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                             ButtonWidget(
                               onPress: () {
                                 if (_loginformKey.currentState!.validate()) {
-                                  Navigator.pushNamed(context, routes.home);
+                                  loginUser();
                                 }
                               },
                               text: 'Login',

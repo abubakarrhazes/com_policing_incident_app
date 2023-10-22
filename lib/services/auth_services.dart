@@ -10,6 +10,7 @@ import 'package:com_policing_incident_app/screens/login_screen/models/login_mode
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
+import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/utilities/utils.dart';
@@ -24,11 +25,12 @@ class AuthService {
   http.Response? response;
   Future<void> Register(RegisterModel user, BuildContext context) async {
     try {
-      response = await http
-          .post(Uri.parse('$baseUrl/register'), body: user.toJson(), headers: {
-        'Accept': 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-      });
+      response = await http.post(Uri.parse('$AuthBaseUrl/signup'),
+          body: user.toJson(),
+          headers: {
+            'Accept': 'application/vnd.api+json',
+            'Content-Type': 'application/json',
+          });
       if (response!.statusCode == 200) {
         final responseData = json.decode(response!.body);
         print('Register  successful: $responseData');
@@ -48,7 +50,7 @@ class AuthService {
   Future<void> Login(LoginModel user, BuildContext context) async {
     try {
       response = await http
-          .post(Uri.parse('$baseUrl/login'), body: user.toJson(), headers: {
+          .post(Uri.parse('$AuthBaseUrl/login'), body: user.toJson(), headers: {
         'Accept': 'application/vnd.api+json',
         'Content-Type': 'application/json',
       });
@@ -73,13 +75,12 @@ class AuthService {
   Future<void> ReportCrime(
       ReportCrimeModel report, BuildContext context) async {
     try {
-      response = await http.post(Uri.parse('$baseUrl/report-crime'),
-          body: report.toJson(),
-          headers: {
-            'Accept': 'application/vnd.api+json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $response'
-          });
+      response = await http
+          .post(Uri.parse('$AuthBaseUrl/'), body: report.toJson(), headers: {
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $response'
+      });
       if (response!.statusCode == 200) {
         final responseData = json.decode(response!.body);
         print(' Login successful: $responseData');
@@ -95,7 +96,7 @@ class AuthService {
   Future<void> ReportIncident(
       ReportCrimeModel report, BuildContext context) async {
     try {
-      response = await http.post(Uri.parse('$baseUrl/report-incident'),
+      response = await http.post(Uri.parse('$AuthBaseUrl/report-incident'),
           body: report.toJson(),
           headers: {
             'Accept': 'application/vnd.api+json',
@@ -115,7 +116,7 @@ class AuthService {
   Future<void> getEmergencyContacts(BuildContext context) async {
     try {
       response =
-          await http.get(Uri.parse('$baseUrl/report-incident'), headers: {
+          await http.get(Uri.parse('$AuthBaseUrl/report-incident'), headers: {
         'Accept': 'application/vnd.api+json',
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $response'
@@ -132,7 +133,7 @@ class AuthService {
 
   Future<List<String>?> fetchReportedCase() async {
     try {
-      response = await http.get(Uri.parse('$baseUrl/'), headers: {
+      response = await http.get(Uri.parse('$AuthBaseUrl/'), headers: {
         'Accept': 'application/vnd.api+json',
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $response'
