@@ -11,6 +11,13 @@ const permissions = expressAsyncHandler(async (req, res, next) => {
 
   const userRoles = user.roles;
 
+  let isVerified = user.isActive
+  if (!isVerified) {
+    throw CustomError(
+          "Email not verified. please verify email."
+        );
+  }
+
   if (req.url.includes("/api/v1/blog/post")) {
     if (
       req.method === "POST" ||

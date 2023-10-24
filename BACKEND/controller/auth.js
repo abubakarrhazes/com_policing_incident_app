@@ -4,8 +4,10 @@ const User = require("../models/userModel");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/notification");
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+const api_url = process.env.API_URL
 
 const genAccessToken = async (user_id) => {
   const accessToken = jwt.sign({ userId: user_id }, ACCESS_TOKEN_SECRET, {
@@ -45,9 +47,6 @@ const register = asyncHandler(async (req, res) => {
     throw CustomError("Password can't be less than five characters", 400);
   }
 
-  // const genSalt = bcrypt.genSalt(10);
-  // const hashPsw = bcrypt.hash(password, genSalt);
-
   const newUser = await User.create({
     firstName,
     lastName,
@@ -61,12 +60,17 @@ const register = asyncHandler(async (req, res) => {
     address,
   });
 
+  console.log(newUser)
   const accessToken = await genAccessToken(newUser.id);
+  
+  let message = sendEmail.verifyEmailResponse(newUser.firstName,accessToken)
+  sendEmail(email,'Email verification',message)
+  
   const user = await User.findOne({ email }).select("-password").exec();
 
   return res.status(200).json({
     status: 200,
-    message: `New user ${newUser.firstName} created`,
+    message: `New user ${newUser.firstName} created. We sent you a confirmation email`,
     data: { user: user, accessToken: accessToken },
   });
 });

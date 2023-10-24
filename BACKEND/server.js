@@ -8,6 +8,8 @@ const errorHandler = require("./middleware/errorHandler");
 const permissions = require("./middleware/permissions");
 const verifyJWT = require("./middleware/verifyJWT");
 const cors = require("cors");
+const createMessage = require("./utils/sendMessage");
+const sendEmail = require("./utils/notification");
 const PORT = process.env.PORT || 3500;
 
 
@@ -23,8 +25,18 @@ cloudinary.config({
 connectDB();
 
 
+
+// cloudinary.api
+// .create_upload_preset(
+//   { name: "my_preset", 
+//     unsigned: true, 
+//     categorization: "google_tagging,google_video_tagging",
+//     auto_tagging: 0.75,
+//     folder: "new-products" })
+//   .then(result => console.log(result));
+  
 // cloudinary.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
-//   { public_id: "olympic_flag" },
+//   { public_id: "olympic_flag",upload_preset: "my_preset" },
 // function(error, result) {console.log(result); });
   
 const storage = multer.memoryStorage();
@@ -50,6 +62,12 @@ app.get("/", (req, res) => {
 //   ])
 // );
 
+// const num = '+2347053225992'
+// createMessage('THIS IS TESTING TWILIO',num)
+
+
+
+// sendEmail('joshuaadah30@gmail.com')
 app.use(
   "/api/v1/auth",
   upload.single("profilePicture"),
@@ -57,11 +75,14 @@ app.use(
 );
 
 app.use(verifyJWT);
+app.use("/api/v1/auth", require("./routes/verifyEmail"));
+
 app.use(permissions);
 app.use("/api/v1/user", require("./routes/user"));
 app.use("/api/v1/crime", require("./routes/crime"));
 app.use("/api/v1/incident", require("./routes/incident"));
 app.use("/api/v1/emergency", require("./routes/emergency"));
+app.use("/api/v1/sos", require("./routes/SOS"));
 app.use("/api/v1/blog/post", upload.single("image"), require("./routes/post"));
 
 app.use("/*", (req, res) => {

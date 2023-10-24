@@ -3,6 +3,8 @@ const Crime = require("../models/crimeModel");
 const { CustomError } = require("../errors/customError");
 const { default: mongoose } = require("mongoose");
 const refNum = require("../utils/genRef");
+const {sendEmail,crimeResponse} = require("../utils/notification");
+const User = require("../models/userModel");
 
 const getAllCrime = asyncHandler(async (req, res) => {
   const { status } = req.query;
@@ -21,7 +23,7 @@ const getAllCrime = asyncHandler(async (req, res) => {
 });
 
 const getMyCrime = asyncHandler(async (req, res) => {
-  const userId = req.userId;
+  const {userId} = req.params;
   const crime = await Crime.find({ user: userId }).populate('user');
   if (!crime) return res.json({ message: "No crime reported yet" });
   res.json({
@@ -59,6 +61,8 @@ const createCrime = asyncHandler(async (req, res) => {
   }
   if (!user) throw CustomError("You must be logged in", 401);
 
+  const foundUser = await User.findById(user).exec()
+  if(!foundUser) throw CustomError("Invalid JWT, You must be logged in", 401);
   // process photo,video,audio,file with multer
   // ******************************************
 
@@ -75,6 +79,11 @@ const createCrime = asyncHandler(async (req, res) => {
     policeUnit,
   });
 
+  const subject = 'Crime Report!'
+  const message = crimeResponse(foundUser.firstName, crime.ref)
+  
+  sendEmail(foundUser.email, subject, message)
+  
   return res.status(200).json({ status: 200, message: "success", data: crime });
 });
 const updateCrime = asyncHandler(async (req, res) => {
