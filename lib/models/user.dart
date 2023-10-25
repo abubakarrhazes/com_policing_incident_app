@@ -33,28 +33,28 @@ class User {
     this.accessToken,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      '_id': id,
+  Map<String, String> toMap() {
+    return <String, String>{
+      'id': id,
       'firstName': firstName,
       'lastName': lastName,
       'otherName': otherName,
       'DOB': DOB,
       'email': email,
       'officeAddress': officeAddress,
-      'profilePicture': profilePicture,
+      'profilePicture': profilePicture!,
       'phoneNumber': phoneNumber,
       'occupation': occupation,
       'password': password,
       'state': state,
-      'role': role,
-      'accessToken': accessToken,
+      'role': role!,
+      'accessToken': accessToken!,
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['_id'] as String,
+      id: map['id'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
       otherName: map['otherName'] as String,

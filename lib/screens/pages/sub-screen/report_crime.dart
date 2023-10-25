@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:com_policing_incident_app/services/auth_services.dart';
 import 'package:com_policing_incident_app/models/report_crime_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';

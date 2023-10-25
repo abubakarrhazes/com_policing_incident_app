@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unused_field, curly_braces_in_flow_control_structures
 
-import 'package:com_policing_incident_app/services/auth_services.dart';
 import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
@@ -66,8 +65,6 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  final AuthService authService = AuthService();
-
   @override
   void initState() {
     super.initState();
@@ -88,6 +85,7 @@ class _RegisterState extends State<Register> {
     super.dispose();
   }
 
+  /*
   void registerUser() {
     //API Call from the Auth Services
     authService.Register(
@@ -104,6 +102,7 @@ class _RegisterState extends State<Register> {
             password: _passwordController.text),
         context);
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +202,7 @@ class _RegisterState extends State<Register> {
                               onPress: () {
                                 //Registration Function Call Here
                                 if (_registerformKey.currentState!.validate()) {
-                                  registerUser();
+                                  //registerUser();
                                 }
                               },
                               text: 'Create Account',

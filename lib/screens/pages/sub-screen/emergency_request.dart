@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:com_policing_incident_app/services/auth_services.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,6 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
   final _emergencyRelationController = TextEditingController();
   final _emergencyAddressController = TextEditingController();
   final _emergencyFormKey = GlobalKey<FormState>();
-  final AuthService authService = AuthService();
   void showEmegencyContactDialog(BuildContext context, String title) {
     showDialog(
       context: context,
@@ -105,10 +103,6 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
         );
       },
     );
-  }
-
-  void getEmergencyContacts() {
-    authService.getEmergencyContacts(context);
   }
 
   @override
