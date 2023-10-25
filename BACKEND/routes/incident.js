@@ -16,7 +16,7 @@ router.use(verifyJWT);
 router.route("/").get(getAllIncident).post(createIncident);
 
 // get my incident (that is the logged in users incidents)
-router.get("/my_incidents", getMyIncident);
+router.get("/:userId/my_incidents", getMyIncident);
 
 router
   .route("/:id")

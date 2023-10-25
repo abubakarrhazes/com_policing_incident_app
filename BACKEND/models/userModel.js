@@ -57,6 +57,10 @@ const userSchema = new mongoose.Schema(
     officeAddress: {
       type: String,
     },
+    isActive: {
+      type: Boolean,
+      default:false
+    }
   },
   {
     timestamps: true,

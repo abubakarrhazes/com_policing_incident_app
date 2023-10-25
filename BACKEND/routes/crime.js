@@ -16,7 +16,7 @@ router.use(verifyJWT);
 router.route("/").get(getAllCrime).post(createCrime);
 
 // get my crime (that is the logged in users crimes)
-router.get("/my_crimes", getMyCrime);
+router.get("/:userId/my_crimes", getMyCrime);
 router
   .route("/:id")
   // get sigle crime by ID,
