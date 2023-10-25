@@ -70,8 +70,13 @@ const register = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     status: 200,
+
     message: `New user ${newUser.firstName} created. We sent you a confirmation email`,
     data: { user: user, accessToken: accessToken },
+
+    message: `New user ${newUser.firstName} created`,
+    data: { accessToken: accessToken },
+
   });
 });
 
@@ -103,7 +108,7 @@ const login = asyncHandler(async (req, res) => {
   return res.status(200).json({
     status: 200,
     message: "Success",
-    data: { user: user, accessToken: accessToken },
+    data: { accessToken: accessToken },
   });
 });
 

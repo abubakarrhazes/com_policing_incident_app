@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, unused_field
 
-import 'package:com_policing_incident_app/controllers/auth_services.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -15,7 +14,6 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _forgot_password_formKey = GlobalKey<FormState>();
-  final AuthService authService = AuthService();
   final formResult = {};
   final TextEditingController _forgotPasswordController =
       TextEditingController();

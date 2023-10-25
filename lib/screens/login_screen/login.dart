@@ -1,14 +1,16 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
 
-import 'package:com_policing_incident_app/controllers/auth_services.dart';
+import 'package:com_policing_incident_app/providers/auth_provider.dart';
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
+
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
-import 'package:com_policing_incident_app/utilities/validators.dart';
+import 'package:com_policing_incident_app/utilities/utils.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const MaterialColor black = MaterialColor(
   0xFF000000,
@@ -35,10 +37,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _loginformKey = GlobalKey<FormState>();
-  final AuthService authService = AuthService();
+
   final formResult = {};
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final Utils utils = Utils();
 
   @override
   void initState() {
@@ -52,125 +55,125 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void loginUser() {
-    // Make Api Call From The Auth Service Class
-    authService.Login(
-        LoginModel(
-            email: _emailController.text, password: _passwordController.text),
-        context);
-  }
+  void loginUser() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFF3F3F3),
-      body: SafeArea(
-          child: Column(
-        children: [
-          SizedBox(
-            child: Image.asset('assets/images/login.png'),
-          ),
-          Card(
-            margin: const EdgeInsets.only(left: 22, right: 22),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-            child: Theme(
-              data: ThemeData(primarySwatch: black),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Login',
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w800,
-                          color: KprimaryColor),
-                    ),
-                    const SizedBox(height: 18),
-                    Form(
-                        key: _loginformKey,
-                        child: Column(
-                          children: [
-                            MyInputField(
-                                hintText: 'Email',
-                                keyboardType: TextInputType.emailAddress,
-                                controller: _emailController,
-                                validator: (value) {
-                                  RegExp emailRegExp = RegExp(
-                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+      body: SafeArea(child: Consumer<AuthProvider>(builder: (context, auth, _) {
+        return Column(
+          children: [
+            SizedBox(
+              child: Image.asset('assets/images/login.png'),
+            ),
+            Card(
+              margin: const EdgeInsets.only(left: 22, right: 22),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Theme(
+                data: ThemeData(primarySwatch: black),
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Login',
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: KprimaryColor),
+                      ),
+                      const SizedBox(height: 18),
+                      Form(
+                          key: _loginformKey,
+                          child: Column(
+                            children: [
+                              MyInputField(
+                                  hintText: 'Email',
+                                  keyboardType: TextInputType.emailAddress,
+                                  controller: _emailController,
+                                  validator: (value) {
+                                    RegExp emailRegExp = RegExp(
+                                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
 
+                                    if (value == null || value.isEmpty) {
+                                      return 'Email can\'t be empty';
+                                    } else if (!emailRegExp.hasMatch(value)) {
+                                      return 'Enter a correct email';
+                                    }
+                                    return null;
+                                  }),
+                              const SizedBox(height: 15),
+                              MyInputField(
+                                hintText: 'Password',
+                                isPassword: true,
+                                keyboardType: TextInputType.visiblePassword,
+                                controller: _passwordController,
+                                validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Email can\'t be empty';
-                                  } else if (!emailRegExp.hasMatch(value)) {
-                                    return 'Enter a correct email';
+                                    return 'Password Required';
                                   }
                                   return null;
-                                }),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'Password',
-                              isPassword: true,
-                              keyboardType: TextInputType.visiblePassword,
-                              controller: _passwordController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Password Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            ButtonWidget(
-                              onPress: () {
-                                if (_loginformKey.currentState!.validate()) {
-                                  Navigator.pushNamed(context, routes.home);
-                                }
-                              },
-                              text: 'Login',
-                            )
-                          ],
-                        ))
-                  ],
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              ButtonWidget(
+                                onPress: () {
+                                  if (_loginformKey.currentState!.validate()) {
+                                    auth.loginUser(
+                                        LoginModel(
+                                            email: _emailController.text,
+                                            password: _passwordController.text),
+                                        context);
+                                  }
+                                },
+                                text: 'Login',
+                              ),
+                            ],
+                          ))
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 10, bottom: 16, left: 8, right: 8),
-            child: Column(
-              children: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, routes.forgot);
-                    },
-                    child: const Text(
-                      'Reset Password',
-                      style: TextStyle(color: KprimaryColor),
-                    )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Don\'t have an account? '),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, routes.register);
+            Padding(
+              padding:
+                  const EdgeInsets.only(top: 10, bottom: 16, left: 8, right: 8),
+              child: Column(
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, routes.forgot);
                       },
-                      child: Text(
-                        'Create one',
-                        style: TextStyle(
-                            color: KprimaryColor, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
-      )),
+                      child: const Text(
+                        'Reset Password',
+                        style: TextStyle(color: KprimaryColor),
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Don\'t have an account? '),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, routes.register);
+                        },
+                        child: Text(
+                          'Create one',
+                          style: TextStyle(
+                              color: KprimaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        );
+      })),
     );
   }
 }

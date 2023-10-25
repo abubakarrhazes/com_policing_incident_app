@@ -18,6 +18,7 @@ class MyInputField extends StatefulWidget {
       this.expandable,
       this.onSaved,
       this.controller,
+      this.onTap,
       String? label})
       : super(key: key);
 
@@ -33,6 +34,7 @@ class MyInputField extends StatefulWidget {
   final bool? expandable;
   final Icon? prefix;
   final void Function(String?)? onSaved;
+  final void Function()? onTap;
   final TextEditingController? controller;
 
   @override
@@ -52,6 +54,7 @@ class _MyInputFieldState extends State<MyInputField> {
     return Container(
       height: widget.formFieldHeight,
       child: TextFormField(
+        onTap: widget.onTap,
         minLines: widget.min,
         maxLines: widget.max,
         expands: widget.expandable == true,

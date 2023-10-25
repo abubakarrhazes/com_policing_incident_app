@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 class ButtonWidget extends StatelessWidget {
   final String text;
   final Function() onPress;
-  ButtonWidget({required this.text, required this.onPress});
+  bool? status = false;
+  ButtonWidget({required this.text, required this.onPress, this.status});
 
   @override
   Widget build(BuildContext context) {

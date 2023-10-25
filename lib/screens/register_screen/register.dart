@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_const_constructors, unused_field
+// ignore_for_file: prefer_const_constructors, unused_field, curly_braces_in_flow_control_structures
 
-import 'package:com_policing_incident_app/controllers/auth_services.dart';
 import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
+
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -34,7 +34,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _registerformKey = GlobalKey<FormState>();
-  final AuthService authService = AuthService();
   final bool isLoading = false;
   final formResult = {};
   final TextEditingController _firstNameController = TextEditingController();
@@ -42,11 +41,29 @@ class _RegisterState extends State<Register> {
   final TextEditingController _otherNameController = TextEditingController();
   final TextEditingController _emailNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _dateOfBirthController = TextEditingController();
+
+  final TextEditingController _dateOfBithController = TextEditingController();
+
   final TextEditingController _stateController = TextEditingController();
   final TextEditingController _occupationController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+      _dateOfBithController.text =
+          selectedDate.toLocal().toString().split(' ')[0];
+    }
+  }
 
   @override
   void initState() {
@@ -60,7 +77,7 @@ class _RegisterState extends State<Register> {
     _otherNameController.dispose();
     _emailNameController.dispose();
     _phoneNumberController.dispose();
-    _dateOfBirthController.dispose();
+    _dateOfBithController.dispose();
     _stateController.dispose();
     _occupationController.dispose();
     _addressController.dispose();
@@ -68,23 +85,24 @@ class _RegisterState extends State<Register> {
     super.dispose();
   }
 
+  /*
   void registerUser() {
     //API Call from the Auth Services
     authService.Register(
         RegisterModel(
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          otherName: _otherNameController.text,
-          email: _emailNameController.text,
-          phoneNumber: _phoneNumberController.text,
-          dateOfBirth: _dateOfBirthController.text,
-          state: _stateController.text,
-          occupation: _occupationController.text,
-          address: _addressController.text,
-          password: _passwordController.text,
-        ),
+            firstName: _firstNameController.text,
+            lastName: _lastNameController.text,
+            otherName: _otherNameController.text,
+            email: _emailNameController.text,
+            phoneNumber: _phoneNumberController.text,
+            dateOfBirth: _dateOfBithController.text,
+            state: _stateController.text,
+            occupation: _occupationController.text,
+            address: _addressController.text,
+            password: _passwordController.text),
         context);
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +168,10 @@ class _RegisterState extends State<Register> {
                             MyInputField(
                                 hintText: 'Date Of Birth',
                                 keyboardType: TextInputType.datetime,
-                                controller: _dateOfBirthController),
+                                onTap: () {
+                                  _selectDate(context);
+                                },
+                                controller: _dateOfBithController),
                             const SizedBox(height: 15),
                             MyInputField(
                               hintText: 'State',
@@ -167,7 +188,7 @@ class _RegisterState extends State<Register> {
                             MyInputField(
                               hintText: 'Address',
                               keyboardType: TextInputType.text,
-                              controller: _occupationController,
+                              controller: _addressController,
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
@@ -181,7 +202,7 @@ class _RegisterState extends State<Register> {
                               onPress: () {
                                 //Registration Function Call Here
                                 if (_registerformKey.currentState!.validate()) {
-                                  registerUser();
+                                  //registerUser();
                                 }
                               },
                               text: 'Create Account',
