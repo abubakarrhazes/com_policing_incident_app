@@ -2,42 +2,27 @@
 import 'dart:convert';
 
 class ReportIncidentModel {
-  final String category;
-  final String details;
-  final String? media;
-  final String location;
-  final String station;
+  String category;
+  String details;
+  String policeUnit;
+  UserLocationData location;
+  List<dynamic>? file = [];
+
   ReportIncidentModel({
     required this.category,
     required this.details,
-    this.media,
+    required this.policeUnit,
     required this.location,
-    required this.station,
+    this.file,
   });
-
-  ReportIncidentModel copyWith({
-    String? category,
-    String? details,
-    String? media,
-    String? location,
-    String? station,
-  }) {
-    return ReportIncidentModel(
-      category: category ?? this.category,
-      details: details ?? this.details,
-      media: media ?? this.media,
-      location: location ?? this.location,
-      station: station ?? this.station,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'category': category,
       'details': details,
-      'media': media,
-      'location': location,
-      'station': station,
+      'policeUnit': policeUnit,
+      'location': location.toMap(),
+      'file': file,
     };
   }
 
@@ -45,9 +30,12 @@ class ReportIncidentModel {
     return ReportIncidentModel(
       category: map['category'] as String,
       details: map['details'] as String,
-      media: map['media'] != null ? map['media'] as String : null,
-      location: map['location'] as String,
-      station: map['station'] as String,
+      policeUnit: map['policeUnit'] as String,
+      location:
+          UserLocationData.fromMap(map['location'] as Map<String, dynamic>),
+      file: map['file'] != null
+          ? List<String>.from(map['file'] as List<dynamic>)
+          : null,
     );
   }
 
@@ -55,29 +43,32 @@ class ReportIncidentModel {
 
   factory ReportIncidentModel.fromJson(String source) =>
       ReportIncidentModel.fromMap(json.decode(source) as Map<String, dynamic>);
+}
 
-  @override
-  String toString() {
-    return 'ReportIncidentModel(category: $category, details: $details, media: $media, location: $location, station: $station)';
+class UserLocationData {
+  double latitude;
+  double logitude;
+  UserLocationData({
+    required this.latitude,
+    required this.logitude,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'latitude': latitude,
+      'logitude': logitude,
+    };
   }
 
-  @override
-  bool operator ==(covariant ReportIncidentModel other) {
-    if (identical(this, other)) return true;
-
-    return other.category == category &&
-        other.details == details &&
-        other.media == media &&
-        other.location == location &&
-        other.station == station;
+  factory UserLocationData.fromMap(Map<String, dynamic> map) {
+    return UserLocationData(
+      latitude: map['latitude'] as double,
+      logitude: map['logitude'] as double,
+    );
   }
 
-  @override
-  int get hashCode {
-    return category.hashCode ^
-        details.hashCode ^
-        media.hashCode ^
-        location.hashCode ^
-        station.hashCode;
-  }
+  String toJson() => json.encode(toMap());
+
+  factory UserLocationData.fromJson(String source) =>
+      UserLocationData.fromMap(json.decode(source) as Map<String, dynamic>);
 }

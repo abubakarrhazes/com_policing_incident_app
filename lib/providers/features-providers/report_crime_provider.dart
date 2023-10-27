@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js';
 
 import 'package:com_policing_incident_app/models/report_crime_model.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_persistance.dart';

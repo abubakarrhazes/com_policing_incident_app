@@ -53,7 +53,7 @@ class Utils {
     List<File> images = [];
     try {
       var files = await FilePicker.platform
-          .pickFiles(type: FileType.video, allowMultiple: true);
+          .pickFiles(type: FileType.any, allowMultiple: true);
       if (files != null && files.files.isNotEmpty) {
         for (int i = 0; i < files.files.length; i++) {
           images.add(File(files.files[i].path!));

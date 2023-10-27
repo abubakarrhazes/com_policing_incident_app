@@ -87,16 +87,19 @@ class AuthProvider {
         _isLoading = false;
         _resMessage = 'Login Successfully $responseData';
 
+        final String accessToken = responseData['data']['accessToken'];
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
         Provider.of<UserPersistance>(context, listen: false)
             .setUser(responseData.toString());
 
-        await prefs.setString(
-            'accessToken', '${responseData['data']['accessToken']}');
+        await prefs.setString('accessToken', accessToken);
 
         //Navigator.pushNamed(context, routes.home);
 
         print(_resMessage);
+
+        print(accessToken);
 
         print(responseData);
       } else {

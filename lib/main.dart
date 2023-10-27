@@ -18,6 +18,7 @@ import 'package:com_policing_incident_app/screens/welcome_screen.dart';
 
 //flimport 'package:com_policing_incident_app/screens/screen_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,6 +48,17 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _requestLocationPermission();
+  }
+
+  void _requestLocationPermission() async {
+    var status = await Permission.location.request();
+    if (status.isGranted) {
+      // Permission granted
+    } else if (status.isPermanentlyDenied) {
+      // Open settings to grant permission
+      openAppSettings();
+    }
   }
 
   // This widget is the root of your application.
@@ -59,8 +71,9 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      onGenerateRoute: routes.controller,
-      initialRoute: isViewed == false ? routes.onboard : routes.welcome,
+      home: ReportCrime(),
+      //onGenerateRoute: routes.controller,
+      //initialRoute: isViewed == false ? routes.onboard : routes.welcome,
     );
   }
 }

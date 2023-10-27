@@ -1,14 +1,18 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, avoid_unnecessary_containers
 
 import 'dart:io';
 
 import 'package:com_policing_incident_app/models/report_crime_model.dart';
+import 'package:com_policing_incident_app/providers/features-providers/report_crime_provider.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/media_selection.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ReportCrime extends StatefulWidget {
   ReportCrime({super.key});
@@ -19,6 +23,10 @@ class ReportCrime extends StatefulWidget {
 
 class _ReportCrimeState extends State<ReportCrime> {
   final TextEditingController _detailsController = TextEditingController();
+  final ReportCrimeProvider reportCrimeProvider = ReportCrimeProvider();
+  double latitude = 0.0;
+  double logitude = 0.0;
+  String address = '';
   String categories = 'Homocide';
   String stations = 'Unguwar Rogo Police Division,Sokoto';
 
@@ -48,35 +56,80 @@ class _ReportCrimeState extends State<ReportCrime> {
     'Dadin Kowa Police Division,Sokoto',
   ];
 
-  void selectImages() async {
-    var imageResponse = await utils.pickUpImage();
+  void selectImages(var imageResponse) async {
+    await utils.pickUpImage();
     setState(() {
       images = imageResponse;
     });
   }
 
-  void selectAudio() async {
-    var audioResponse = await utils.pickUpAudio();
+  void selectAudio(var audioSelect) async {
+    await utils.pickUpAudio();
     setState(() {
-      audio = audioResponse;
+      audio = audioSelect;
     });
   }
 
-  void selectVideo() async {
-    var videoResponse = await utils.pickUpVideo();
+  void selectVideo(var videoResponse) async {
+    await utils.pickUpVideo();
     setState(() {
       video = videoResponse;
     });
   }
 
-  void selectMedia() async {
-    var mediaResponse = await utils.pickUpMedia();
+  void selectMedia(var mediaResponse) async {
+    await utils.pickUpMedia();
     setState(() {
       media = mediaResponse;
     });
   }
 
-  void reportCrime() {}
+  //Get User Location
+
+  void _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      setState(() {
+        latitude = position.latitude;
+        logitude = position.longitude;
+        //_currentLocation = 'Latitude: $latitude, Longitude: $longitude';
+      });
+      // Getting the actual Address Of The Longitude and Latitude
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, logitude);
+      Placemark place = placemarks[0];
+
+      setState(() {
+        address = " ${place.street}, ${place.locality}  ${place.country}";
+      });
+    } on PlatformException catch (e) {
+      if (e.code == 'IO_ERROR') {
+        print('Network error occurred: ${e.message}');
+        // Handle the network error appropriately
+      } else {
+        // Handle other platform exceptions
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+      // Handle other errors
+    }
+  }
+
+  //APi Connecting To The Model Fromtend and Backend
+
+  void reportCrime() {
+    reportCrimeProvider.reportCrime(
+        ReportCrimeModel(
+          category: categories,
+          details: _detailsController.text,
+          file: [images, audio, video, address],
+          policeUnit: stations,
+          location: UserLocationData(latitude: latitude, logitude: logitude),
+        ),
+        context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +216,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                     children: [
                       MediaSelection(
                         onPressed: () {
-                          selectImages();
+                          selectImages(images);
                         },
                         text: 'Add Image',
                         icon: Icon(
@@ -176,7 +229,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                       ),
                       MediaSelection(
                         onPressed: () {
-                          selectVideo();
+                          selectVideo(video);
                         },
                         text: 'Add Video',
                         icon: Icon(
@@ -189,7 +242,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                       ),
                       MediaSelection(
                         onPressed: () {
-                          selectAudio();
+                          selectAudio(audio);
                         },
                         text: 'Add Audio',
                         icon: Icon(
@@ -202,7 +255,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                       ),
                       MediaSelection(
                         onPressed: () {
-                          selectMedia();
+                          selectMedia(media);
                         },
                         text: 'Add File',
                         icon: Icon(
@@ -221,6 +274,33 @@ class _ReportCrimeState extends State<ReportCrime> {
                         color: Colors.black,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () => _getCurrentLocation(),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                size: 25,
+                                color: KprimaryColor,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text('Location'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text('Location : $address')
+                    ],
                   ),
                   SizedBox(
                     height: 20,
