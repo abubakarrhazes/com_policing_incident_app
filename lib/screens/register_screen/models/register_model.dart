@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 import 'dart:convert';
 
 class RegisterModel {
@@ -7,7 +7,7 @@ class RegisterModel {
   String otherName;
   String email;
   String phoneNumber;
-  String dateOfBirth;
+  String DOB;
   String state;
   String occupation;
   String address;
@@ -19,7 +19,7 @@ class RegisterModel {
     required this.otherName,
     required this.email,
     required this.phoneNumber,
-    required this.dateOfBirth,
+    required this.DOB,
     required this.state,
     required this.occupation,
     required this.address,
@@ -33,7 +33,7 @@ class RegisterModel {
       'otherName': otherName,
       'email': email,
       'phoneNumber': phoneNumber,
-      'dateOfBirth': dateOfBirth,
+      'DOB': DOB,
       'state': state,
       'occupation': occupation,
       'address': address,
@@ -48,7 +48,7 @@ class RegisterModel {
       otherName: map['otherName'] as String,
       email: map['email'] as String,
       phoneNumber: map['phoneNumber'] as String,
-      dateOfBirth: map['dateOfBirth'] as String,
+      DOB: map['DOB'] as String,
       state: map['state'] as String,
       occupation: map['occupation'] as String,
       address: map['address'] as String,
@@ -60,4 +60,35 @@ class RegisterModel {
 
   factory RegisterModel.fromJson(String source) =>
       RegisterModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'RegisterModel(firstName: $firstName, lastName: $lastName, otherName: $otherName, email: $email, phoneNumber: $phoneNumber, DOB: $DOB, state: $state, occupation: $occupation, address: $address, password: $password)';
+  }
+
+  RegisterModel copyWith({
+    String? firstName,
+    String? lastName,
+    String? otherName,
+    String? email,
+    String? phoneNumber,
+    String? DOB,
+    String? state,
+    String? occupation,
+    String? address,
+    String? password,
+  }) {
+    return RegisterModel(
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      otherName: otherName ?? this.otherName,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      DOB: DOB ?? this.DOB,
+      state: state ?? this.state,
+      occupation: occupation ?? this.occupation,
+      address: address ?? this.address,
+      password: password ?? this.password,
+    );
+  }
 }

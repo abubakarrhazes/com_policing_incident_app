@@ -9,14 +9,13 @@ import 'package:com_policing_incident_app/providers/persistance_data/user_persis
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
-import 'package:com_policing_incident_app/screens/test.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthProvider extends ChangeNotifier {
+class AuthProvider {
   final requestBaseUrl = Config.AuthBaseUrl;
 
   bool _isLoading = false;
@@ -28,8 +27,6 @@ class AuthProvider extends ChangeNotifier {
 
   void registerUser(RegisterModel registerModel, BuildContext context) async {
     _isLoading = true;
-    notifyListeners();
-
     String url = '$requestBaseUrl/auth/signup';
 
     final requestHeaders = {
@@ -45,8 +42,10 @@ class AuthProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         _isLoading = false;
-        _resMessage = 'Account Created';
-        notifyListeners();
+        final reponseData = json.decode(response.body);
+        _resMessage = 'Account Created $reponseData';
+
+        print(_resMessage);
       } else {
         final res = json.decode(response.body);
 
@@ -54,16 +53,13 @@ class AuthProvider extends ChangeNotifier {
 
         print(res);
         _isLoading = false;
-        notifyListeners();
       }
     } on SocketException catch (_) {
       _isLoading = false;
       _resMessage = "Internet connection is not available`";
-      notifyListeners();
     } catch (e) {
       _isLoading = false;
       _resMessage = "Please try again`";
-      notifyListeners();
 
       print(":::: $e");
     }
@@ -72,7 +68,6 @@ class AuthProvider extends ChangeNotifier {
   //Login
   void loginUser(LoginModel loginModel, BuildContext context) async {
     _isLoading = true;
-    notifyListeners();
 
     String url = '$requestBaseUrl/auth/login';
 
@@ -88,20 +83,22 @@ class AuthProvider extends ChangeNotifier {
           await http.post(Uri.parse(url), headers: requestHeaders, body: body);
 
       if (response.statusCode == 200) {
-        final res = json.decode(response.body);
+        final responseData = json.decode(response.body.toString());
         _isLoading = false;
-        _resMessage = 'Login Successfully';
+        _resMessage = 'Login Successfully $responseData';
 
-        notifyListeners();
-        //
-        final accessToken = res['data']['accessToken'];
-        final id = res['data']['user']['_id'];
-        UserPersistance().saveToken(accessToken);
-        UserPersistance().saveUserId(id);
-        Navigator.pushNamed(context, routes.home);
-        notifyListeners();
-        print(accessToken);
-        print('Id $id');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        Provider.of<UserPersistance>(context, listen: false)
+            .setUser(responseData.toString());
+
+        await prefs.setString(
+            'accessToken', '${responseData['data']['accessToken']}');
+
+        //Navigator.pushNamed(context, routes.home);
+
+        print(_resMessage);
+
+        print(responseData);
       } else {
         final res = json.decode(response.body);
 
@@ -109,12 +106,10 @@ class AuthProvider extends ChangeNotifier {
 
         print(res);
         _isLoading = false;
-        notifyListeners();
       }
     } on SocketException catch (_) {
       _isLoading = false;
       _resMessage = "Internet connection is not available`";
-      notifyListeners();
     } catch (e) {
       print(":::: ${e.toString()}");
     }

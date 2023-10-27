@@ -3,12 +3,13 @@
 import 'package:com_policing_incident_app/providers/persistance_data/user_persistance.dart';
 
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
-import 'package:com_policing_incident_app/screens/test.dart';
+
 import 'package:com_policing_incident_app/widgets/action_button.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/custom_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -47,6 +48,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 3, vsync: this);
 
+    final user = Provider.of<UserPersistance>(context).user;
+
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
@@ -66,7 +69,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
-                      'Hi ',
+                      'Hi W ${user.firstName}',
                       style: const TextStyle(
                           fontSize: 10,
                           color: Colors.black,

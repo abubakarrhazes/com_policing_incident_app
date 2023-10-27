@@ -16,7 +16,7 @@ import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime.
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
-import 'package:com_policing_incident_app/screens/test.dart';
+
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -77,8 +77,7 @@ class Routes {
         return MaterialPageRoute(builder: (context) => HelpDesk());
       case '/success':
         return MaterialPageRoute(builder: (context) => ReportSuccess());
-      case '/test':
-        return MaterialPageRoute(builder: (context) => Test());
+
       case '/emergency-request':
         return MaterialPageRoute(builder: (context) => EmergencyRequest());
 

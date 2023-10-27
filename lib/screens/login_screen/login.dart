@@ -43,6 +43,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final Utils utils = Utils();
 
+  final AuthProvider authProvider = AuthProvider();
+
   @override
   void initState() {
     super.initState();
@@ -55,15 +57,20 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void loginUser() {}
+  void loginUser() {
+    authProvider.loginUser(
+        LoginModel(
+            email: _emailController.text, password: _passwordController.text),
+        context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFF3F3F3),
-      body: SafeArea(child: Consumer<AuthProvider>(builder: (context, auth, _) {
-        return Column(
+      body: SafeArea(
+        child: Column(
           children: [
             SizedBox(
               child: Image.asset('assets/images/login.png'),
@@ -122,11 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                               ButtonWidget(
                                 onPress: () {
                                   if (_loginformKey.currentState!.validate()) {
-                                    auth.loginUser(
-                                        LoginModel(
-                                            email: _emailController.text,
-                                            password: _passwordController.text),
-                                        context);
+                                    loginUser();
                                   }
                                 },
                                 text: 'Login',
@@ -172,8 +175,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             )
           ],
-        );
-      })),
+        ),
+      ),
     );
   }
 }

@@ -33,9 +33,9 @@ class User {
     this.accessToken,
   });
 
-  Map<String, String> toMap() {
+  Map<String, dynamic> toMap() {
     return <String, String>{
-      'id': id,
+      '_id': id,
       'firstName': firstName,
       'lastName': lastName,
       'otherName': otherName,
@@ -54,7 +54,7 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] as String,
+      id: map['_id'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
       otherName: map['otherName'] as String,
@@ -76,6 +76,44 @@ class User {
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) =>
-      User.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory User.fromJson(String source) => User.fromMap(json.decode(source));
+
+  User copyWith({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? otherName,
+    String? DOB,
+    String? email,
+    String? officeAddress,
+    String? profilePicture,
+    String? phoneNumber,
+    String? occupation,
+    String? password,
+    String? state,
+    String? role,
+    String? accessToken,
+  }) {
+    return User(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      otherName: otherName ?? this.otherName,
+      DOB: DOB ?? this.DOB,
+      email: email ?? this.email,
+      officeAddress: officeAddress ?? this.officeAddress,
+      profilePicture: profilePicture ?? this.profilePicture,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      occupation: occupation ?? this.occupation,
+      password: password ?? this.password,
+      state: state ?? this.state,
+      role: role ?? this.role,
+      accessToken: accessToken ?? this.accessToken,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'User(id: $id, firstName: $firstName, lastName: $lastName, otherName: $otherName, DOB: $DOB, email: $email, officeAddress: $officeAddress, profilePicture: $profilePicture, phoneNumber: $phoneNumber, occupation: $occupation, password: $password, state: $state, role: $role, accessToken: $accessToken)';
+  }
 }

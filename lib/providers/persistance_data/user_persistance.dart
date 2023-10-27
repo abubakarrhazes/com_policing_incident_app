@@ -1,68 +1,54 @@
 // ignore_for_file: prefer_final_fields, unused_field, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPersistance extends ChangeNotifier {
-  final Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+  User _user = User(
+      id: '',
+      firstName: '',
+      lastName: '',
+      otherName: '',
+      profilePicture: '',
+      DOB: '',
+      email: '',
+      officeAddress: '',
+      phoneNumber: '',
+      occupation: '',
+      password: '',
+      state: '',
+      role: '',
+      accessToken: '');
 
-  String _accessToken = '';
+  User get user => _user;
 
-  String _id = '';
-
-  String get accessToken => _accessToken;
-
-  String get id => _id;
-
-  void saveToken(String accessToken) async {
-    SharedPreferences value = await _pref;
-
-    value.setString('accessToken', accessToken);
-  }
-
-  void saveUserId(String id) async {
-    SharedPreferences value = await _pref;
-
-    value.setString('_id', id);
-  }
-
-  Future<String> getToken() async {
-    SharedPreferences value = await _pref;
-
-    if (value.containsKey('accessToken')) {
-      String data = value.getString('accessToken')!;
-      _accessToken = data;
+  void setUser(String userData) {
+    try {
+      final Map<String, dynamic> userMap = json.decode(userData);
+      _user = User.fromMap(userMap);
       notifyListeners();
-      return data;
-    } else {
-      _accessToken = '';
-      notifyListeners();
-      return '';
+    } catch (e) {
+      print('Error setting user: $e');
     }
   }
 
-  Future<String> getUserId() async {
-    SharedPreferences value = await _pref;
-
-    if (value.containsKey('_id')) {
-      String data = value.getString('_id')!;
-      _id = data;
+  void setUserFromModel(Map<String, dynamic> userData) {
+    try {
+      _user = User.fromMap(userData);
       notifyListeners();
-      return data;
-    } else {
-      _id = '';
-      notifyListeners();
-      return '';
+    } catch (e) {
+      print('Error setting user from model: $e');
     }
   }
+  /*
 
-  void logOut(BuildContext context) async {
-    final value = await _pref;
-
-    Navigator.push(context, routes.login as Route<Object?>);
-
-    value.clear();
+  void setUserFromModel(User user) {
+    _user = user;
+    notifyListeners();
   }
+  */
 }

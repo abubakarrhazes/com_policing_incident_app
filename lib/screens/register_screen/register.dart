@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_field, curly_braces_in_flow_control_structures
 
 import 'package:com_policing_incident_app/models/user.dart';
+import 'package:com_policing_incident_app/providers/auth_provider.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
 
@@ -48,6 +49,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _occupationController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthProvider authProvider = AuthProvider();
   DateTime selectedDate = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
@@ -85,24 +87,21 @@ class _RegisterState extends State<Register> {
     super.dispose();
   }
 
-  /*
   void registerUser() {
-    //API Call from the Auth Services
-    authService.Register(
+    authProvider.registerUser(
         RegisterModel(
             firstName: _firstNameController.text,
             lastName: _lastNameController.text,
             otherName: _otherNameController.text,
             email: _emailNameController.text,
             phoneNumber: _phoneNumberController.text,
-            dateOfBirth: _dateOfBithController.text,
+            DOB: _dateOfBithController.text,
             state: _stateController.text,
             occupation: _occupationController.text,
             address: _addressController.text,
             password: _passwordController.text),
         context);
   }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +168,7 @@ class _RegisterState extends State<Register> {
                                 hintText: 'Date Of Birth',
                                 keyboardType: TextInputType.datetime,
                                 onTap: () {
-                                  _selectDate(context);
+                                  _selectDate(context).toString();
                                 },
                                 controller: _dateOfBithController),
                             const SizedBox(height: 15),
@@ -202,7 +201,7 @@ class _RegisterState extends State<Register> {
                               onPress: () {
                                 //Registration Function Call Here
                                 if (_registerformKey.currentState!.validate()) {
-                                  //registerUser();
+                                  registerUser();
                                 }
                               },
                               text: 'Create Account',
