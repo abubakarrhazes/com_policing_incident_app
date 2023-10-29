@@ -10,6 +10,7 @@ import 'package:com_policing_incident_app/screens/login_screen/models/login_mode
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
 import 'package:com_policing_incident_app/services/config.dart';
+import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -83,7 +84,7 @@ class AuthProvider {
           await http.post(Uri.parse(url), headers: requestHeaders, body: body);
 
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body.toString());
+        final responseData = json.decode(response.body);
         _isLoading = false;
         _resMessage = 'Login Successfully $responseData';
 
@@ -91,11 +92,11 @@ class AuthProvider {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         Provider.of<UserPersistance>(context, listen: false)
-            .setUser(responseData.toString());
+            .setUser(responseData);
 
         await prefs.setString('accessToken', accessToken);
 
-        //Navigator.pushNamed(context, routes.home);
+        Navigator.pushNamed(context, routes.home);
 
         print(_resMessage);
 
@@ -107,12 +108,15 @@ class AuthProvider {
 
         _resMessage = res['message'];
 
+        utils.showToast(context, _resMessage);
+
         print(res);
         _isLoading = false;
       }
     } on SocketException catch (_) {
       _isLoading = false;
       _resMessage = "Internet connection is not available`";
+      utils.showToast(context, _resMessage);
     } catch (e) {
       print(":::: ${e.toString()}");
     }

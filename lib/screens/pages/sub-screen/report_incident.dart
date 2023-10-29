@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/media_selection.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -24,7 +25,7 @@ class _MyWidgetState extends State<MyWidget> {
   double logitude = 0.0;
   String address = '';
   String categories = 'Homocide';
-  String stations = 'Unguwar Rogo Police Division,Sokoto';
+  String stations = 'zaria police station';
 
   List<File> images = [];
   List<File> audio = [];
@@ -47,10 +48,38 @@ class _MyWidgetState extends State<MyWidget> {
   ];
 
   List<String> policeStations = [
-    'Unguwar Rogo Police Division,Sokoto',
+    'zaria police station',
     'Dan Marina Police Division,Sokoto',
     'Dadin Kowa Police Division,Sokoto',
   ];
+
+  void selectImages(var imageResponse) async {
+    await utils.pickUpImage();
+    setState(() {
+      images = imageResponse;
+    });
+  }
+
+  void selectAudio(var audioSelect) async {
+    await utils.pickUpAudio();
+    setState(() {
+      audio = audioSelect;
+    });
+  }
+
+  void selectVideo(var videoResponse) async {
+    await utils.pickUpVideo();
+    setState(() {
+      video = videoResponse;
+    });
+  }
+
+  void selectMedia(var mediaResponse) async {
+    await utils.pickUpMedia();
+    setState(() {
+      media = mediaResponse;
+    });
+  }
 
   //Getting User Location Data
 
@@ -93,6 +122,7 @@ class _MyWidgetState extends State<MyWidget> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Column(children: [
           Center(
             child: Text(
@@ -141,12 +171,6 @@ class _MyWidgetState extends State<MyWidget> {
                   SizedBox(
                     height: 5,
                   ),
-                  MyInputField(
-                    hintText: 'Select Crime Category',
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Text(
                     'Details',
                     style: TextStyle(
@@ -158,7 +182,16 @@ class _MyWidgetState extends State<MyWidget> {
                     height: 5,
                   ),
                   MyInputField(
+                    min: 1,
+                    max: 200,
                     hintText: 'Briefly Decribe about the crime',
+                    controller: _detailsController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Description is  Required';
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 10,
@@ -177,6 +210,9 @@ class _MyWidgetState extends State<MyWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       MediaSelection(
+                        onPressed: () {
+                          selectImages(images);
+                        },
                         text: 'Add Image',
                         icon: Icon(
                           Icons.add_a_photo_outlined,
@@ -187,7 +223,10 @@ class _MyWidgetState extends State<MyWidget> {
                         width: 20,
                       ),
                       MediaSelection(
-                        text: 'Add Image',
+                        onPressed: () {
+                          selectVideo(video);
+                        },
+                        text: 'Add Video',
                         icon: Icon(
                           Icons.video_file,
                           color: Colors.white,
@@ -197,7 +236,10 @@ class _MyWidgetState extends State<MyWidget> {
                         width: 20,
                       ),
                       MediaSelection(
-                        text: 'Add Image',
+                        onPressed: () {
+                          selectAudio(audio);
+                        },
+                        text: 'Add Audio',
                         icon: Icon(
                           Icons.audio_file_outlined,
                           color: Colors.white,
@@ -207,13 +249,53 @@ class _MyWidgetState extends State<MyWidget> {
                         width: 20,
                       ),
                       MediaSelection(
-                        text: 'Add Image',
+                        onPressed: () {
+                          selectMedia(media);
+                        },
+                        text: 'Add File',
                         icon: Icon(
                           Icons.file_upload_rounded,
                           color: Colors.white,
                         ),
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: 200,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: KprimaryColor),
+                    ),
+                    child: images.isNotEmpty
+                        ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: images.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.all(5),
+                                child: Image.file(
+                                  images[index],
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Text(
+                              'No Media Selected',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   Text('Location'),
                   SizedBox(
@@ -235,12 +317,11 @@ class _MyWidgetState extends State<MyWidget> {
                               SizedBox(
                                 width: 15,
                               ),
-                              Text('Location'),
+                              Text('Location : $address')
                             ],
                           ),
                         ),
                       ),
-                      Text('Location : $address')
                     ],
                   ),
                   SizedBox(

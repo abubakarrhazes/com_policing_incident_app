@@ -28,7 +28,7 @@ class _ReportCrimeState extends State<ReportCrime> {
   double logitude = 0.0;
   String address = '';
   String categories = 'Homocide';
-  String stations = 'Unguwar Rogo Police Division,Sokoto';
+  String stations = 'zaria police station';
 
   List<File> images = [];
   List<File> audio = [];
@@ -51,7 +51,7 @@ class _ReportCrimeState extends State<ReportCrime> {
   ];
 
   List<String> policeStations = [
-    'Unguwar Rogo Police Division,Sokoto',
+    'zaria police station',
     'Dan Marina Police Division,Sokoto',
     'Dadin Kowa Police Division,Sokoto',
   ];
@@ -135,6 +135,7 @@ class _ReportCrimeState extends State<ReportCrime> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Column(children: [
           Center(
             child: Text(
@@ -146,195 +147,245 @@ class _ReportCrimeState extends State<ReportCrime> {
               ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Select Crime Category',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    child: Column(
-                      children: [
-                        DropdownButton(
-                          value: categories,
-                          items: crimeCategories.map((String item) {
-                            return DropdownMenuItem(
-                                value: item, child: Text(item));
-                          }).toList(),
-                          onChanged: (String? newval) {
-                            setState(() {
-                              categories = newval!;
-                            });
-                          },
-                        ),
-                      ],
+          SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Form(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Select Crime Category',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Details',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  MyInputField(
-                    min: 1,
-                    max: 200,
-                    hintText: 'Briefly Decribe about the crime',
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Attach Media (Optional)',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MediaSelection(
-                        onPressed: () {
-                          selectImages(images);
-                        },
-                        text: 'Add Image',
-                        icon: Icon(
-                          Icons.add_a_photo_outlined,
-                          color: Colors.white,
-                        ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    SizedBox(
+                      child: Column(
+                        children: [
+                          DropdownButton(
+                            value: categories,
+                            items: crimeCategories.map((String item) {
+                              return DropdownMenuItem(
+                                  value: item, child: Text(item));
+                            }).toList(),
+                            onChanged: (String? newval) {
+                              setState(() {
+                                categories = newval!;
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      MediaSelection(
-                        onPressed: () {
-                          selectVideo(video);
-                        },
-                        text: 'Add Video',
-                        icon: Icon(
-                          Icons.video_file,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      MediaSelection(
-                        onPressed: () {
-                          selectAudio(audio);
-                        },
-                        text: 'Add Audio',
-                        icon: Icon(
-                          Icons.audio_file_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      MediaSelection(
-                        onPressed: () {
-                          selectMedia(media);
-                        },
-                        text: 'Add File',
-                        icon: Icon(
-                          Icons.file_upload_rounded,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Location',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => _getCurrentLocation(),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.location_on,
-                                size: 25,
-                                color: KprimaryColor,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text('Location'),
-                            ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Details',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    MyInputField(
+                      min: 1,
+                      max: 200,
+                      hintText: 'Briefly Decribe about the crime',
+                      controller: _detailsController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Description is  Required';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Attach Media (Optional)',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MediaSelection(
+                          onPressed: () {
+                            selectImages(images);
+                          },
+                          text: 'Add Image',
+                          icon: Icon(
+                            Icons.add_a_photo_outlined,
+                            color: Colors.white,
                           ),
                         ),
-                      ),
-                      Text('Location : $address')
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Select Police Station',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    child: Column(
-                      children: [
-                        DropdownButton(
-                          value: stations,
-                          items: policeStations.map((String item) {
-                            return DropdownMenuItem(
-                                value: item, child: Text(item));
-                          }).toList(),
-                          onChanged: (String? newval) {
-                            setState(() {
-                              stations = newval!;
-                            });
-                          },
+                        SizedBox(
+                          width: 20,
                         ),
+                        MediaSelection(
+                          onPressed: () {
+                            selectVideo(video);
+                          },
+                          text: 'Add Video',
+                          icon: Icon(
+                            Icons.video_file,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        MediaSelection(
+                          onPressed: () {
+                            selectAudio(audio);
+                          },
+                          text: 'Add Audio',
+                          icon: Icon(
+                            Icons.audio_file_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        MediaSelection(
+                          onPressed: () {
+                            selectMedia(media);
+                          },
+                          text: 'Add File',
+                          icon: Icon(
+                            Icons.file_upload_rounded,
+                            color: Colors.white,
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ButtonWidget(text: 'Send Report', onPress: () {})
-                ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: 200,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: KprimaryColor),
+                      ),
+                      child: images.isNotEmpty
+                          ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: images.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.all(5),
+                                  child: Image.file(
+                                    images[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              },
+                            )
+                          : Center(
+                              child: Text(
+                                'No Media Selected',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Location',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () => _getCurrentLocation(),
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  size: 25,
+                                  color: KprimaryColor,
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('Location'),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text('Location : $address')
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Select Police Station',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      child: Column(
+                        children: [
+                          DropdownButton(
+                            value: stations,
+                            items: policeStations.map((String item) {
+                              return DropdownMenuItem(
+                                  value: item, child: Text(item));
+                            }).toList(),
+                            onChanged: (String? newval) {
+                              setState(() {
+                                stations = newval!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ButtonWidget(
+                        text: 'Send Report',
+                        onPress: () {
+                          reportCrime();
+                        })
+                  ],
+                ),
               ),
             ),
           )

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:com_policing_incident_app/admin/features/admin.dart';
+import 'package:com_policing_incident_app/models/report_incident_model.dart';
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_persistance.dart';
 import 'package:com_policing_incident_app/routes/routes.dart';
@@ -9,9 +10,11 @@ import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/pages/home_page.dart';
 import 'package:com_policing_incident_app/screens/pages/main_page.dart';
+import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/user_profile.dart';
 import 'package:com_policing_incident_app/screens/pages/report.dart';
 
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';
@@ -71,9 +74,9 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ReportCrime(),
+      home: MyWidget(),
       //onGenerateRoute: routes.controller,
-      //initialRoute: isViewed == false ? routes.onboard : routes.welcome,
+      // initialRoute: isViewed == false ? routes.onboard : routes.welcome,
     );
   }
 }
