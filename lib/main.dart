@@ -74,9 +74,8 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ReportCrime(),
-      //onGenerateRoute: routes.controller,
-      // initialRoute: isViewed == false ? routes.onboard : routes.welcome,
+      onGenerateRoute: routes.controller,
+      initialRoute: isViewed == false ? routes.onboard : routes.welcome,
     );
   }
 }
