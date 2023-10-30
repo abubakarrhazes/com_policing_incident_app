@@ -33,7 +33,7 @@ Future<void> main() async {
   isViewed = preferences.getBool('isViewed') ?? false;
   await preferences.setBool('isViewed', true);
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: ((context) => UserPersistance())),
+    ChangeNotifierProvider(create: ((context) => AppRepo())),
   ], child: MyApp()));
 }
 
