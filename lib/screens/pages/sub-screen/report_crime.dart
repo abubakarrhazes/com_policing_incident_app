@@ -292,8 +292,8 @@ class _ReportCrimeState extends State<ReportCrime> {
                                 return Container(
                                   margin: EdgeInsets.all(5),
                                   child: Image.file(
-                                    images[index],
-                                    fit: BoxFit.cover,
+                                    File(images.toString()),
+                                    fit: BoxFit.contain,
                                   ),
                                 );
                               },

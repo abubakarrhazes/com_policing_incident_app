@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_policing_incident_app/models/user.dart';
-import 'package:com_policing_incident_app/providers/persistance_data/user_persistance.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/app_repo.dart';
 
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthProvider {
+class AuthProvider extends ChangeNotifier {
   final requestBaseUrl = Config.AuthBaseUrl;
 
   bool _isLoading = false;
@@ -84,25 +84,11 @@ class AuthProvider {
           await http.post(Uri.parse(url), headers: requestHeaders, body: body);
 
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
+        final responseData = jsonDecode(response.body);
         _isLoading = false;
         _resMessage = 'Login Successfully $responseData';
 
-        final String accessToken = responseData['data']['accessToken'];
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        Provider.of<UserPersistance>(context, listen: false)
-            .setUser(responseData);
-
-        await prefs.setString('accessToken', accessToken);
-
-        Navigator.pushNamed(context, routes.home);
-
         print(_resMessage);
-
-        print(accessToken);
-
-        print(responseData);
       } else {
         final res = json.decode(response.body);
 

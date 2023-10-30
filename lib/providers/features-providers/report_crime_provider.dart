@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_policing_incident_app/models/report_crime_model.dart';
-import 'package:com_policing_incident_app/providers/persistance_data/user_persistance.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/app_repo.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,6 @@ class ReportCrimeProvider {
     _isLoading = true;
     _status = true;
 
-    final userProvider = Provider.of<UserPersistance>(context, listen: false);
     String url = '$requestBaseUrl/api/v1/crime';
 
     final requestHeaders = {
@@ -86,14 +85,12 @@ class ReportCrimeProvider {
       ReportCrimeModel reportCrimeModel, BuildContext context) async {
     _isLoading = true;
     _status = true;
-
-    final userProvider = Provider.of<UserPersistance>(context, listen: false);
     String url = '$requestBaseUrl/api/v1/crime';
 
     final requestHeaders = {
       'Accept': 'application/vnd.api+json',
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer  ${userProvider.user.accessToken}'
+      'Authorization': 'Bearer '
     };
 
     final body = {
