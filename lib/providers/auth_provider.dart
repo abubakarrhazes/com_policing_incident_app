@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_policing_incident_app/models/user.dart';
-import 'package:com_policing_incident_app/providers/persistance_data/app_repo.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';

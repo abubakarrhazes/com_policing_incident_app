@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 import 'dart:convert';
 
-class User {
+import 'package:flutter/material.dart';
+
+class User extends ChangeNotifier{
   final String id;
   final String firstName;
   final String lastName;

@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:com_policing_incident_app/providers/persistance_data/app_repo.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 

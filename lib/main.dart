@@ -3,7 +3,7 @@
 import 'package:com_policing_incident_app/admin/features/admin.dart';
 import 'package:com_policing_incident_app/models/report_incident_model.dart';
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
-import 'package:com_policing_incident_app/providers/persistance_data/app_repo.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 import 'package:com_policing_incident_app/routes/routes.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
@@ -33,7 +33,7 @@ Future<void> main() async {
   isViewed = preferences.getBool('isViewed') ?? false;
   await preferences.setBool('isViewed', true);
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: ((context) => AppRepo())),
+    ChangeNotifierProvider(create: ((context) => UserAdapter())),
   ], child: MyApp()));
 }
 

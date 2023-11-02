@@ -13,7 +13,7 @@ import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/persistance_data/app_repo.dart';
+import '../../providers/persistance_data/user_adapter.dart';
 
 const MaterialColor black = MaterialColor(
   0xFF000000,
@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final providerOfAppRepo = Provider.of<AppRepo>(context);
+    final userAdapter = Provider.of<UserAdapter>(context);
     
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                               ButtonWidget(
                                 onPress: () async {
                                   if (_loginformKey.currentState!.validate()) {
-                                    providerOfAppRepo.user = await loginUser();
+                                    userAdapter.user = await loginUser();
                                   }
                                 },
                                 text: 'Login',
