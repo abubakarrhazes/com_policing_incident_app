@@ -136,6 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                                 onPress: () async {
                                   if (_loginformKey.currentState!.validate()) {
                                     userAdapter.user = await loginUser();
+                                    if(mounted) {
+                                      Navigator.pushNamedAndRemoveUntil(context, routes.home, (route) => false);
+                                    }
                                   }
                                 },
                                 text: 'Login',

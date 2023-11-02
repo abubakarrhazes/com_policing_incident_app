@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_policing_incident_app/models/user.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
@@ -89,8 +90,12 @@ class AuthProvider extends ChangeNotifier {
         _resMessage = 'Login Successfully $responseData';
 
         print(_resMessage);
-
         User user = User.fromMap(responseData['data']['user']);
+
+        final preferences = await Preferences.getInstance();
+        preferences.setAccessToken(responseData['data']['accessToken']);
+        preferences.setUserId(user.id);
+
         return user;
       } else {
         final res = json.decode(response.body);

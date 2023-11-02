@@ -46,6 +46,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final userAdapter = Provider.of<UserAdapter>(context);
     TabController _tabController = TabController(length: 3, vsync: this);
 
     return SafeArea(
@@ -67,7 +68,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
-                      'Hi ',
+                      'Hi ${userAdapter.user?.firstName}',
                       style: const TextStyle(
                           fontSize: 10,
                           color: Colors.black,
