@@ -20,7 +20,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void _viwedWelcomeScreen() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     isViewed = preferences.getBool('isViewed') ?? true;
-    await preferences.setBool('isViwed', true);
+    await preferences.setBool('isViewed', true);
   }
 
   @override
