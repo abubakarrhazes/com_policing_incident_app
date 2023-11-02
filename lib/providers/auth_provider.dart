@@ -67,7 +67,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   //Login
-  void loginUser(LoginModel loginModel, BuildContext context) async {
+  Future<User?> loginUser(LoginModel loginModel, BuildContext context) async {
     _isLoading = true;
 
     String url = '$requestBaseUrl/auth/login';
@@ -89,6 +89,9 @@ class AuthProvider extends ChangeNotifier {
         _resMessage = 'Login Successfully $responseData';
 
         print(_resMessage);
+
+        User user = User.fromMap(responseData['data']['user']);
+        return user;
       } else {
         final res = json.decode(response.body);
 
@@ -106,5 +109,6 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       print(":::: ${e.toString()}");
     }
+    return null;
   }
 }
