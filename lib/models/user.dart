@@ -1,14 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 import 'dart:convert';
 
-class User {
+import 'package:flutter/material.dart';
+
+class User extends ChangeNotifier{
   final String id;
   final String firstName;
   final String lastName;
   final String otherName;
   final String DOB;
   final String email;
-  final String officeAddress;
+  final String? officeAddress;
   final String? profilePicture;
   final String phoneNumber;
   final String occupation;
@@ -33,7 +35,7 @@ class User {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      '_id': id,
       'firstName': firstName,
       'lastName': lastName,
       'otherName': otherName,
@@ -51,17 +53,17 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] as String,
+      id: map['_id'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
       otherName: map['otherName'] as String,
       DOB: map['DOB'] as String,
       email: map['email'] as String,
-      officeAddress: map['officeAddress'] as String,
-      profilePicture: map['profilePicture'] != null
-          ? map['profilePicture'] as String
-          : null,
-      phoneNumber: map['phoneNumber'] as String,
+      officeAddress: map['officeAddress'] as String?,
+      profilePicture: map['profilePicture'] as String?,
+      // TODO: phoneNumber should be String
+      // phoneNumber: map['phoneNumber'] as String,
+      phoneNumber: map['phoneNumber'].toString(),
       occupation: map['occupation'] as String,
       state: map['state'] as String,
       role: map['role'] != null ? map['role'] as String : null,

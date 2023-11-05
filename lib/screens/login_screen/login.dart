@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
 
+import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
@@ -11,6 +12,8 @@ import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../providers/persistance_data/user_adapter.dart';
 
 const MaterialColor black = MaterialColor(
   0xFF000000,
@@ -57,15 +60,18 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void loginUser() {
-    authProvider.loginUser(
+  Future<User?> loginUser() {
+    return authProvider.loginUser(
         LoginModel(
             email: _emailController.text, password: _passwordController.text),
         context);
+  
   }
 
   @override
   Widget build(BuildContext context) {
+    final userAdapter = Provider.of<UserAdapter>(context);
+    
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFF3F3F3),
@@ -127,9 +133,12 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               const SizedBox(height: 20),
                               ButtonWidget(
-                                onPress: () {
+                                onPress: () async {
                                   if (_loginformKey.currentState!.validate()) {
-                                    loginUser();
+                                    userAdapter.user = await loginUser();
+                                    if(mounted) {
+                                      Navigator.pushNamedAndRemoveUntil(context, routes.home, (route) => false);
+                                    }
                                   }
                                 },
                                 text: 'Login',

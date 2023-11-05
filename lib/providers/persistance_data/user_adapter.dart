@@ -7,9 +7,14 @@ import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AppRepo extends ChangeNotifier {
+class UserAdapter extends ChangeNotifier {
   String? _token;
   String? _id;
+  User? _user;
 
-  late User _user;
+  User? get user => _user;
+  set user(User? user){
+    _user = user;
+    notifyListeners();
+  }
 }

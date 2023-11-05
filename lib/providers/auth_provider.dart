@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_policing_incident_app/models/user.dart';
-import 'package:com_policing_incident_app/providers/persistance_data/app_repo.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
@@ -67,7 +68,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   //Login
-  void loginUser(LoginModel loginModel, BuildContext context) async {
+  Future<User?> loginUser(LoginModel loginModel, BuildContext context) async {
     _isLoading = true;
 
     String url = '$requestBaseUrl/auth/login';
@@ -89,6 +90,13 @@ class AuthProvider extends ChangeNotifier {
         _resMessage = 'Login Successfully $responseData';
 
         print(_resMessage);
+        User user = User.fromMap(responseData['data']['user']);
+
+        final preferences = await Preferences.getInstance();
+        preferences.setAccessToken(responseData['data']['accessToken']);
+        preferences.setUserId(user.id);
+
+        return user;
       } else {
         final res = json.decode(response.body);
 
@@ -106,5 +114,6 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       print(":::: ${e.toString()}");
     }
+    return null;
   }
 }
