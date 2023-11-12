@@ -6,6 +6,7 @@ import 'package:com_policing_incident_app/models/report_crime_model.dart';
 import 'package:com_policing_incident_app/providers/features-providers/report_crime_provider.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
+import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/media_selection.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ReportCrime extends StatefulWidget {
   ReportCrime({super.key});
@@ -29,8 +31,9 @@ class _ReportCrimeState extends State<ReportCrime> {
   String address = '';
   String categories = 'Homocide';
   String stations = 'zaria police station';
+  String? path;
 
-  List<File> images = [];
+  List<String> imagesPath = [];
   List<File> audio = [];
   List<File> video = [];
   List<File> media = [];
@@ -56,10 +59,11 @@ class _ReportCrimeState extends State<ReportCrime> {
     'Dadin Kowa Police Division,Sokoto',
   ];
 
-  void selectImages(var imageResponse) async {
-    await utils.pickUpImage();
+  void selectImages() async {
+    final pathFolder = await utils.pickImage(ImageSource.gallery);
+
     setState(() {
-      images = imageResponse;
+      path = pathFolder;
     });
   }
 
@@ -124,7 +128,7 @@ class _ReportCrimeState extends State<ReportCrime> {
         ReportCrimeModel(
           category: categories,
           details: _detailsController.text,
-          file: [images, audio, video, address],
+          file: [imagesPath, audio, video, address],
           policeUnit: stations,
           location: UserLocationData(latitude: latitude, logitude: logitude),
         ),
@@ -224,9 +228,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MediaSelection(
-                          onPressed: () {
-                            selectImages(images);
-                          },
+                          onPressed: selectImages,
                           text: 'Add Image',
                           icon: Icon(
                             Icons.add_a_photo_outlined,
@@ -284,19 +286,15 @@ class _ReportCrimeState extends State<ReportCrime> {
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: KprimaryColor),
                       ),
-                      child: images.isNotEmpty
-                          ? ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: images.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: EdgeInsets.all(5),
-                                  child: Image.file(
-                                    File(images.toString()),
-                                    fit: BoxFit.contain,
-                                  ),
-                                );
-                              },
+                      child: path != null
+                          ? Container(
+                              height: 200,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: FileImage(File(path!)),
+                                ),
+                              ),
                             )
                           : Center(
                               child: Text(

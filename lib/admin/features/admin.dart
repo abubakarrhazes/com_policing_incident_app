@@ -4,6 +4,7 @@ import 'package:com_policing_incident_app/admin/features/widgets/dashboard_data.
 import 'package:com_policing_incident_app/admin/features/widgets/drawer_header_tiles.dart';
 import 'package:com_policing_incident_app/admin/features/widgets/side_menu.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget {
@@ -16,28 +17,40 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Row(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            Row(
+              children: [
+                Avatar.medium(img: NetworkImage('')),
+              ],
+            )
+          ],
+        ),
+        body: Row(
           children: [
+            Expanded(child: SideMenu()),
             Expanded(
-              child: SideMenu(),
+              flex: 3,
+              child: Container(
+                  height: 500,
+                  decoration: BoxDecoration(
+                      color: KprimaryColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text('')),
             ),
             SizedBox(
-              width: 10,
+              width: 20,
             ),
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Container(
-                color: KprimaryColor,
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Container(
-                color: Colors.grey,
+                height: 500,
+                decoration: BoxDecoration(
+                    color: KprimaryColor,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Text(''),
               ),
             ),
           ],

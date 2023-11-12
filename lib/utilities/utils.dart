@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Utils {
   void showSnackBar(BuildContext context, String text) {
@@ -18,8 +20,10 @@ class Utils {
   Future<List<File>> pickUpImage() async {
     List<File> images = [];
     try {
-      var files = await FilePicker.platform
-          .pickFiles(type: FileType.image, allowMultiple: true);
+      FilePickerResult? files = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: true,
+      );
 
       if (files != null && files.files.isNotEmpty) {
         List<File> imagesSelected =
@@ -31,6 +35,20 @@ class Utils {
     }
 
     return images;
+  }
+
+  Future<String> pickImage(ImageSource imageSource) async {
+    try {
+      final _imagePicker = ImagePicker();
+      final _image = await _imagePicker.pickImage(source: imageSource);
+      if (_image != null) {
+        return _image?.path ?? '';
+      }
+      print('No Image Selected');
+    } catch (e) {
+      print(e);
+    }
+    return '';
   }
 
   Future<List<File>> pickUpAudio() async {
@@ -84,7 +102,7 @@ class Utils {
     return images;
   }
 
-  //ShowError Dialog
+//ShowError Dialog
   void showErrorDialog(BuildContext context, String title, String message) {
     showDialog(
       context: context,

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/profile_tab.dart';
@@ -17,6 +19,7 @@ class ProfileMenuPage extends StatefulWidget {
 class _ProfileMenuPageState extends State<ProfileMenuPage> {
   @override
   Widget build(BuildContext context) {
+    final userAdapter = Provider.of<UserAdapter>(context);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -38,7 +41,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 height: 15,
               ),
               Text(
-                '',
+                '${userAdapter.user?.firstName}  ${userAdapter.user?.lastName} ${userAdapter.user?.otherName}',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,

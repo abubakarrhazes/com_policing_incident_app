@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:com_policing_incident_app/admin/features/admin.dart';
-import 'package:com_policing_incident_app/admin/features/routes/admin_routes.dart';
+
 import 'package:com_policing_incident_app/models/report_incident_model.dart';
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
@@ -47,7 +47,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Routes routes = Routes();
-  final AdminRoutes adminRoutes = AdminRoutes();
 
   @override
   void initState() {
@@ -77,7 +76,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       onGenerateRoute: routes.controller,
-      initialRoute: isViewed == false ? routes.onboard : routes.welcome,
+      initialRoute: isViewed == false ? routes.onboard : routes.register,
     );
   }
 }

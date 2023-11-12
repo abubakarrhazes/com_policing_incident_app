@@ -35,13 +35,14 @@ class ReportCrimeProvider {
     _isLoading = true;
     _status = true;
 
+    final userAdapter = Provider.of<UserAdapter>(context, listen: false);
+
     String url = '$requestBaseUrl/api/v1/crime';
 
     final requestHeaders = {
       'Accept': 'application/vnd.api+json',
       'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTMxMDBlZmExZDI3ZmU0MTEzZWU1Y2IiLCJpYXQiOjE2OTg1ODgzOTQsImV4cCI6MTY5ODY3NDc5NH0.c4wfOwrVD4iwJXdGexwd-Cqpic2tgJCsRDW-5V-QLTg '
+      'Authorization': 'Bearer ${userAdapter.user?.accessToken} '
     };
 
     final body = reportCrimeModel.toJson();

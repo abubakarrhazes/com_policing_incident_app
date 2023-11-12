@@ -1,5 +1,8 @@
 // ignore_for_file: constant_identifier_names, prefer_const_constructors, duplicate_ignore, non_constant_identifier_names
 
+import 'package:com_policing_incident_app/admin/features/admin.dart';
+import 'package:com_policing_incident_app/admin/features/screens/dashboard.dart';
+import 'package:com_policing_incident_app/admin/features/screens/sub-screens/add_police_station.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
@@ -43,6 +46,9 @@ class Routes {
   String report_success = '/success';
   String sign_out = '/sign-out';
   String test = '/test';
+  String admin = '/admin';
+  String addPoliceStations = '/add-police-station';
+  String dashboard = '/dashboard';
 
   Route<dynamic> controller(RouteSettings settings) {
     switch (settings.name) {
@@ -80,6 +86,15 @@ class Routes {
 
       case '/emergency-request':
         return MaterialPageRoute(builder: (context) => EmergencyRequest());
+
+      //Admin Routes
+
+      case '/admin':
+        return MaterialPageRoute(builder: (context) => Admin());
+      case '/add-police-station':
+        return MaterialPageRoute(builder: (context) => AddPoliceStation());
+      case '/dashboard':
+        return MaterialPageRoute(builder: (context) => Dashboard());
 
       default:
         throw ("Undefined Routes");

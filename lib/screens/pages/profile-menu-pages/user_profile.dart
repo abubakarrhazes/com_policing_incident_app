@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_unnecessary_containers
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
+import 'package:provider/provider.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -16,6 +18,7 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
+    final userAdapter = Provider.of<UserAdapter>(context);
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: false,
@@ -33,7 +36,7 @@ class _UserProfileState extends State<UserProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Abubakar Nuuman Adam',
+                      '${userAdapter.user}',
                       style: TextStyle(
                         color: KprimaryColor,
                         fontSize: 20,

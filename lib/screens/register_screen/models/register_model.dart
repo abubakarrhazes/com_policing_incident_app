@@ -6,6 +6,7 @@ class RegisterModel {
   String lastName;
   String otherName;
   String email;
+  String? profilePicture;
   String phoneNumber;
   String DOB;
   String state;
@@ -18,6 +19,7 @@ class RegisterModel {
     required this.lastName,
     required this.otherName,
     required this.email,
+    this.profilePicture,
     required this.phoneNumber,
     required this.DOB,
     required this.state,
@@ -32,6 +34,7 @@ class RegisterModel {
       'lastName': lastName,
       'otherName': otherName,
       'email': email,
+      'profilePicture': profilePicture,
       'phoneNumber': phoneNumber,
       'DOB': DOB,
       'state': state,
@@ -47,6 +50,9 @@ class RegisterModel {
       lastName: map['lastName'] as String,
       otherName: map['otherName'] as String,
       email: map['email'] as String,
+      profilePicture: map['profilePicture'] != null
+          ? map['profilePicture'] as String
+          : null,
       phoneNumber: map['phoneNumber'] as String,
       DOB: map['DOB'] as String,
       state: map['state'] as String,
@@ -63,7 +69,7 @@ class RegisterModel {
 
   @override
   String toString() {
-    return 'RegisterModel(firstName: $firstName, lastName: $lastName, otherName: $otherName, email: $email, phoneNumber: $phoneNumber, DOB: $DOB, state: $state, occupation: $occupation, address: $address, password: $password)';
+    return 'RegisterModel(firstName: $firstName, lastName: $lastName, otherName: $otherName, email: $email, profilePicture: $profilePicture, phoneNumber: $phoneNumber, DOB: $DOB, state: $state, occupation: $occupation, address: $address, password: $password)';
   }
 
   RegisterModel copyWith({
@@ -71,6 +77,7 @@ class RegisterModel {
     String? lastName,
     String? otherName,
     String? email,
+    String? profilePicture,
     String? phoneNumber,
     String? DOB,
     String? state,
@@ -83,6 +90,7 @@ class RegisterModel {
       lastName: lastName ?? this.lastName,
       otherName: otherName ?? this.otherName,
       email: email ?? this.email,
+      profilePicture: profilePicture ?? this.profilePicture,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       DOB: DOB ?? this.DOB,
       state: state ?? this.state,

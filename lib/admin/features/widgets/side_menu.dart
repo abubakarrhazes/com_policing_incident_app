@@ -1,13 +1,11 @@
-import 'package:com_policing_incident_app/admin/features/routes/admin_routes.dart';
 import 'package:com_policing_incident_app/admin/features/widgets/drawer_header_tiles.dart';
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:flutter/material.dart';
 
 class SideMenu extends StatelessWidget {
   SideMenu({
     super.key,
   });
-
-  final AdminRoutes adminRoutes = AdminRoutes();
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +34,7 @@ class SideMenu extends StatelessWidget {
         text: 'Crime Reported',
       ),
       DrawerHeaderTiles(
-        onTap: () =>
-            {Navigator.pushNamed(context, adminRoutes.addPoliceStations)},
+        onTap: () => {Navigator.pushNamed(context, routes.addPoliceStations)},
         icon: Icons.local_police,
         text: 'Add Police Station',
       ),

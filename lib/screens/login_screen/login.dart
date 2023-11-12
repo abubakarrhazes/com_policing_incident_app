@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, use_build_context_synchronously
 
 import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
@@ -65,13 +65,12 @@ class _LoginPageState extends State<LoginPage> {
         LoginModel(
             email: _emailController.text, password: _passwordController.text),
         context);
-  
   }
 
   @override
   Widget build(BuildContext context) {
     final userAdapter = Provider.of<UserAdapter>(context);
-    
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFF3F3F3),
@@ -135,9 +134,25 @@ class _LoginPageState extends State<LoginPage> {
                               ButtonWidget(
                                 onPress: () async {
                                   if (_loginformKey.currentState!.validate()) {
-                                    userAdapter.user = await loginUser();
-                                    if(mounted) {
-                                      Navigator.pushNamedAndRemoveUntil(context, routes.home, (route) => false);
+                                    User? loggedInUser = await loginUser();
+
+                                    if (loggedInUser != null) {
+                                      userAdapter.user = loggedInUser;
+
+                                      // Check user role here
+                                      if (loggedInUser.role == 'admin') {
+                                        // User is an admin, navigate to the admin dashboard
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            routes.admin,
+                                            (route) => false);
+                                      } else {
+                                        // User is a regular user, navigate to the user dashboard
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            routes.home,
+                                            (route) => false);
+                                      }
                                     }
                                   }
                                 },

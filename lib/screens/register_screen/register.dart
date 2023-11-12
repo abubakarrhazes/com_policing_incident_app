@@ -1,4 +1,9 @@
-// ignore_for_file: prefer_const_constructors, unused_field, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, unused_field, curly_braces_in_flow_control_structures, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sort_child_properties_last, non_constant_identifier_names
+
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
@@ -6,9 +11,12 @@ import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/screens/register_screen/models/register_model.dart';
 
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
+import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 const MaterialColor black = MaterialColor(
   0xFF000000,
@@ -52,6 +60,8 @@ class _RegisterState extends State<Register> {
   final AuthProvider authProvider = AuthProvider();
   DateTime selectedDate = DateTime.now();
 
+  String? imagePath;
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -65,6 +75,14 @@ class _RegisterState extends State<Register> {
       _dateOfBithController.text =
           selectedDate.toLocal().toString().split(' ')[0];
     }
+  }
+
+  void selectImages() async {
+    final path = await utils.pickImage(ImageSource.gallery);
+
+    setState(() {
+      imagePath = path;
+    });
   }
 
   @override
@@ -88,12 +106,13 @@ class _RegisterState extends State<Register> {
   }
 
   void registerUser() {
-    authProvider.registerUser(
+    authProvider.uploadFile(
         RegisterModel(
             firstName: _firstNameController.text,
             lastName: _lastNameController.text,
             otherName: _otherNameController.text,
             email: _emailNameController.text,
+            profilePicture: imagePath ?? '',
             phoneNumber: _phoneNumberController.text,
             DOB: _dateOfBithController.text,
             state: _stateController.text,
@@ -110,11 +129,6 @@ class _RegisterState extends State<Register> {
       body: SafeArea(
           child: ListView(
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 3,
-            height: MediaQuery.of(context).size.height / 4,
-            child: Image.asset('assets/images/login.png'),
-          ),
           Card(
             margin: const EdgeInsets.only(left: 22, right: 22),
             shape: RoundedRectangleBorder(
@@ -133,6 +147,27 @@ class _RegisterState extends State<Register> {
                           color: KprimaryColor),
                     ),
                     const SizedBox(height: 8),
+                    Stack(
+                      children: [
+                        imagePath != null
+                            ? Avatar.large(img: FileImage(File(imagePath!)))
+                            : Avatar.large(img: NetworkImage('')),
+                        Positioned(
+                          child: IconButton(
+                            onPressed: selectImages,
+                            icon: Icon(
+                              Icons.add_a_photo,
+                              color: KprimaryColor,
+                            ),
+                          ),
+                          bottom: -13,
+                          left: 70,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Form(
                         key: _registerformKey,
                         child: Column(
