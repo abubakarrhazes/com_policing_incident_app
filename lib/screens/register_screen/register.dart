@@ -43,7 +43,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _registerformKey = GlobalKey<FormState>();
-  final bool isLoading = false;
+  bool _isLoading = false;
   final formResult = {};
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -106,7 +106,7 @@ class _RegisterState extends State<Register> {
   }
 
   void registerUser() {
-    authProvider.uploadFile(
+    authProvider.registerUser(
         RegisterModel(
             firstName: _firstNameController.text,
             lastName: _lastNameController.text,
@@ -233,14 +233,34 @@ class _RegisterState extends State<Register> {
                             ),
                             const SizedBox(height: 20),
                             ButtonWidget(
-                              onPress: () {
-                                //Registration Function Call Here
+                              onPress: () async {
+                                // Set loading to true to show the spinner
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
+                                // Registration Function Call Here
                                 if (_registerformKey.currentState!.validate()) {
                                   registerUser();
+
+                                  // Set loading back to false when registration is complete
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                } else {
+                                  // Set loading back to false if form validation fails
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
                                 }
                               },
                               text: 'Create Account',
-                            )
+                            ),
+
+                            // Display a loading indicator while `_isLoading` is true
+                            _isLoading
+                                ? CircularProgressIndicator()
+                                : Container(),
                           ],
                         ))
                   ],

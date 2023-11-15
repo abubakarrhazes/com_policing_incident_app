@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
@@ -32,5 +36,13 @@ class Preferences {
 
   Future<bool> setUserId(String id) {
     return _sharedPreferences.setString("userId", id);
+  }
+
+  Future<void> logOutUser(BuildContext context) async {
+    final value = await _sharedPreferences;
+
+    value.clear();
+    Navigator.pushAndRemoveUntil(
+        context, routes.login as Route<Object?>, (route) => false);
   }
 }

@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:com_policing_incident_app/admin/features/admin.dart';
-
 import 'package:com_policing_incident_app/models/report_incident_model.dart';
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
@@ -19,9 +17,11 @@ import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incide
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';
+import 'package:com_policing_incident_app/admin/features/controllers/MenuAppController.dart';
 
 //flimport 'package:com_policing_incident_app/screens/screen_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +34,7 @@ Future<void> main() async {
   isViewed = preferences.getBool('isViewed') ?? false;
   await preferences.setBool('isViewed', true);
   runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: ((context) => MenuAppController())),
     ChangeNotifierProvider(create: ((context) => UserAdapter())),
   ], child: MyApp()));
 }
@@ -73,10 +74,11 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
         useMaterial3: true,
       ),
       onGenerateRoute: routes.controller,
-      initialRoute: isViewed == false ? routes.onboard : routes.register,
+      initialRoute: isViewed == false ? routes.onboard : routes.login,
     );
   }
 }

@@ -103,7 +103,8 @@ class _OnboardState extends State<Onboard> {
                     onPress: () async {
                       if (currentPageIndex == 2) {
                         //await _storeOnboardInfo();
-                        Navigator.pushNamed(context, routes.welcome);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, routes.welcome, (route) => false);
                       }
                       pageController.nextPage(
                           duration: const Duration(milliseconds: 300),

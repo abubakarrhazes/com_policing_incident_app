@@ -36,20 +36,37 @@ class AuthProvider extends ChangeNotifier {
       'Content-Type': 'application/json',
     };
 
-    final body = registerModel.toJson();
+    // final body = registerModel.toJson();
 
     try {
-      http.Response response =
-          await http.post(Uri.parse(url), headers: requestHeaders, body: body);
+      //http.Response response = await http.post(Uri.parse(url), headers: requestHeaders, body: body);
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.fields['firstName'] = registerModel.firstName;
+      request.fields['lastName'] = registerModel.lastName;
+      request.fields['otherName'] = registerModel.otherName;
+      request.fields['email'] = registerModel.email;
+      request.fields['phoneNumber'] = registerModel.phoneNumber;
+      request.fields['DOB'] = registerModel.DOB;
+      request.fields['state'] = registerModel.state;
+      request.fields['occupation'] = registerModel.occupation;
+      request.fields['address'] = registerModel.address;
+      request.fields['password'] = registerModel.password;
 
+      var file = await http.MultipartFile.fromPath(
+        'profilePicture',
+        registerModel.profilePicture,
+      );
+      request.files.add(file);
+      var response = await request.send();
       if (response.statusCode == 200) {
         _isLoading = false;
-        final reponseData = json.decode(response.body);
+        final reponseData = json.decode('${response.stream.bytesToString()}');
         _resMessage = 'Account Created $reponseData';
 
         print(_resMessage);
       } else {
-        final res = json.decode(response.body);
+        final res = json.decode('${response.stream.bytesToString()}');
 
         _resMessage = res['message'];
 
@@ -65,46 +82,6 @@ class AuthProvider extends ChangeNotifier {
 
       print(":::: $e");
     }
-  }
-
-  //Register With Profile Picture
-
-  Future<void> uploadFile(
-      RegisterModel registerModel, BuildContext context) async {
-    String url = '$requestBaseUrl/auth/signup';
-
-    try {
-      var request = http.MultipartRequest('POST', Uri.parse(url));
-      request.headers['Content-Type'] = 'multipart/form-data';
-      request.fields['firstName'] = registerModel.firstName;
-      request.fields['lastName'] = registerModel.lastName;
-      request.fields['otherName'] = registerModel.otherName;
-      request.fields['email'] = registerModel.email;
-      request.fields['phoneNumber'] = registerModel.phoneNumber;
-      request.fields['DOB'] = registerModel.DOB;
-      request.fields['state'] = registerModel.state;
-      request.fields['occupation'] = registerModel.occupation;
-      request.fields['address'] = registerModel.address;
-      request.fields['password'] = registerModel.password;
-
-      if (registerModel.profilePicture != null) {
-        var file = await http.MultipartFile.fromPath(
-          'profilePicture',
-          registerModel.profilePicture!,
-        );
-        request.files.add(file);
-      }
-      var response = await request.send();
-
-      if (response.statusCode == 200) {
-        // Handle a successful response
-        print('User registered successfully ${response}');
-      } else {
-        // Handle errors or non-200 status codes
-        print('Failed to register user. Status code: ${response.statusCode}');
-      }
-    } on SocketException catch (_) {
-    } catch (e) {}
   }
 
   //Login

@@ -1,30 +1,31 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 import 'dart:convert';
 
-class RegisterModel {
-  String firstName;
-  String lastName;
-  String otherName;
-  String email;
-  String? profilePicture;
-  String phoneNumber;
-  String DOB;
-  String state;
-  String occupation;
-  String address;
-  String password;
+import 'package:flutter/material.dart';
 
+class RegisterModel extends ChangeNotifier {
+  final String firstName;
+  final String lastName;
+  final String otherName;
+  final String DOB;
+  final String email;
+  final String address;
+  final String profilePicture;
+  final String phoneNumber;
+  final String occupation;
+  final String state;
+  final String password;
   RegisterModel({
     required this.firstName,
     required this.lastName,
     required this.otherName,
-    required this.email,
-    this.profilePicture,
-    required this.phoneNumber,
     required this.DOB,
-    required this.state,
-    required this.occupation,
+    required this.email,
     required this.address,
+    required this.profilePicture,
+    required this.phoneNumber,
+    required this.occupation,
+    required this.state,
     required this.password,
   });
 
@@ -33,13 +34,13 @@ class RegisterModel {
       'firstName': firstName,
       'lastName': lastName,
       'otherName': otherName,
+      'DOB': DOB,
       'email': email,
+      'address': address,
       'profilePicture': profilePicture,
       'phoneNumber': phoneNumber,
-      'DOB': DOB,
-      'state': state,
       'occupation': occupation,
-      'address': address,
+      'state': state,
       'password': password,
     };
   }
@@ -49,15 +50,15 @@ class RegisterModel {
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
       otherName: map['otherName'] as String,
-      email: map['email'] as String,
-      profilePicture: map['profilePicture'] != null
-          ? map['profilePicture'] as String
-          : null,
-      phoneNumber: map['phoneNumber'] as String,
       DOB: map['DOB'] as String,
-      state: map['state'] as String,
+      email: map['email'] as String,
+      address: map['officeAddress'] as String,
+      profilePicture: map['profilePicture'] as String,
+      // TODO: phoneNumber should be String
+      // phoneNumber: map['phoneNumber'] as String,
+      phoneNumber: map['phoneNumber'].toString(),
       occupation: map['occupation'] as String,
-      address: map['address'] as String,
+      state: map['state'] as String,
       password: map['password'] as String,
     );
   }
@@ -66,37 +67,4 @@ class RegisterModel {
 
   factory RegisterModel.fromJson(String source) =>
       RegisterModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'RegisterModel(firstName: $firstName, lastName: $lastName, otherName: $otherName, email: $email, profilePicture: $profilePicture, phoneNumber: $phoneNumber, DOB: $DOB, state: $state, occupation: $occupation, address: $address, password: $password)';
-  }
-
-  RegisterModel copyWith({
-    String? firstName,
-    String? lastName,
-    String? otherName,
-    String? email,
-    String? profilePicture,
-    String? phoneNumber,
-    String? DOB,
-    String? state,
-    String? occupation,
-    String? address,
-    String? password,
-  }) {
-    return RegisterModel(
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      otherName: otherName ?? this.otherName,
-      email: email ?? this.email,
-      profilePicture: profilePicture ?? this.profilePicture,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      DOB: DOB ?? this.DOB,
-      state: state ?? this.state,
-      occupation: occupation ?? this.occupation,
-      address: address ?? this.address,
-      password: password ?? this.password,
-    );
-  }
 }

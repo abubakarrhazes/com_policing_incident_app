@@ -1,8 +1,9 @@
 // ignore_for_file: constant_identifier_names, prefer_const_constructors, duplicate_ignore, non_constant_identifier_names
 
-import 'package:com_policing_incident_app/admin/features/admin.dart';
-import 'package:com_policing_incident_app/admin/features/screens/dashboard.dart';
-import 'package:com_policing_incident_app/admin/features/screens/sub-screens/add_police_station.dart';
+import 'package:com_policing_incident_app/admin/features/screens/sub-screen/add_police_station.dart';
+import 'package:com_policing_incident_app/admin/features/screens/sub-screen/admin_blog_post.dart';
+import 'package:com_policing_incident_app/admin/features/screens/sub-screen/admin_emergency_request.dart';
+import 'package:com_policing_incident_app/main.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
@@ -21,6 +22,7 @@ import 'package:com_policing_incident_app/screens/pages/sub-screen/report_succes
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
 
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';
+import 'package:com_policing_incident_app/admin/features/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 
 // Routes name
@@ -90,11 +92,13 @@ class Routes {
       //Admin Routes
 
       case '/admin':
-        return MaterialPageRoute(builder: (context) => Admin());
+        return MaterialPageRoute(builder: (context) => MainScreen());
       case '/add-police-station':
         return MaterialPageRoute(builder: (context) => AddPoliceStation());
-      case '/dashboard':
-        return MaterialPageRoute(builder: (context) => Dashboard());
+      case '/admin-blog':
+        return MaterialPageRoute(builder: (context) => AdminBlogPost());
+      case '/admin-emergency':
+        return MaterialPageRoute(builder: (context) => AdminEmergencyRequest());
 
       default:
         throw ("Undefined Routes");

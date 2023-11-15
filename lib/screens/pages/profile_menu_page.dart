@@ -4,6 +4,8 @@ import 'package:com_policing_incident_app/providers/persistance_data/user_adapte
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
+import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/profile_tab.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +59,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 },
                 text: 'User Profile',
                 navIcon: Icons.arrow_forward_ios_sharp,
+                color: KprimaryColor,
               ),
               SizedBox(
                 height: 30,
@@ -68,6 +71,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 },
                 text: 'Notifications',
                 navIcon: Icons.arrow_forward_ios_sharp,
+                color: Colors.red,
               ),
               SizedBox(
                 height: 30,
@@ -79,6 +83,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 },
                 text: 'Emergency  ',
                 navIcon: Icons.arrow_forward_ios_sharp,
+                color: KprimaryColor,
               ),
               SizedBox(
                 height: 30,
@@ -90,6 +95,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 },
                 text: 'More About',
                 navIcon: Icons.arrow_forward_ios_sharp,
+                color: KprimaryColor,
               ),
               SizedBox(
                 height: 30,
@@ -101,6 +107,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 },
                 text: 'Settings    ',
                 navIcon: Icons.arrow_forward_ios_sharp,
+                color: KprimaryColor,
               ),
               SizedBox(
                 height: 30,
@@ -112,14 +119,17 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 },
                 text: 'Help Desk ',
                 navIcon: Icons.arrow_forward_ios_sharp,
+                color: KprimaryColor,
               ),
               SizedBox(
                 height: 30,
               ),
               ProfileTab(
                 icon: Icons.logout,
+                color: Colors.red,
                 onPressed: () {
-                  print('Clicked');
+                  utils.logOutDialog(
+                      context, 'Are You Sure You want to Log Out');
                 },
                 text: 'Sign Out   ',
                 navIcon: Icons.arrow_forward_ios_sharp,

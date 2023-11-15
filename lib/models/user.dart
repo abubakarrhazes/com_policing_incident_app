@@ -3,15 +3,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-class User extends ChangeNotifier{
+class User extends ChangeNotifier {
   final String id;
   final String firstName;
   final String lastName;
   final String otherName;
   final String DOB;
   final String email;
-  final String? officeAddress;
-  final String? profilePicture;
+  final String? address;
+  ProfilePicture? profilePicture;
   final String phoneNumber;
   final String occupation;
   final String state;
@@ -24,7 +24,7 @@ class User extends ChangeNotifier{
     required this.otherName,
     required this.DOB,
     required this.email,
-    required this.officeAddress,
+    required this.address,
     this.profilePicture,
     required this.phoneNumber,
     required this.occupation,
@@ -41,7 +41,7 @@ class User extends ChangeNotifier{
       'otherName': otherName,
       'DOB': DOB,
       'email': email,
-      'officeAddress': officeAddress,
+      'address': address,
       'profilePicture': profilePicture,
       'phoneNumber': phoneNumber,
       'occupation': occupation,
@@ -59,8 +59,9 @@ class User extends ChangeNotifier{
       otherName: map['otherName'] as String,
       DOB: map['DOB'] as String,
       email: map['email'] as String,
-      officeAddress: map['officeAddress'] as String?,
-      profilePicture: map['profilePicture'] as String?,
+      address: map['officeAddress'] as String?,
+      profilePicture:
+          ProfilePicture.fromMap(map['profilePicture'] as Map<String, dynamic>),
       // TODO: phoneNumber should be String
       // phoneNumber: map['phoneNumber'] as String,
       phoneNumber: map['phoneNumber'].toString(),
@@ -76,4 +77,36 @@ class User extends ChangeNotifier{
 
   factory User.fromJson(String source) =>
       User.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
+class ProfilePicture {
+  String? public_id;
+  String? format;
+  String? url;
+  ProfilePicture({
+    this.public_id,
+    this.format,
+    this.url,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'public_id': public_id,
+      'format': format,
+      'url': url,
+    };
+  }
+
+  factory ProfilePicture.fromMap(Map<String, dynamic> map) {
+    return ProfilePicture(
+      public_id: map['public_id'] != null ? map['public_id'] as String : null,
+      format: map['format'] != null ? map['format'] as String : null,
+      url: map['url'] != null ? map['url'] as String : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ProfilePicture.fromJson(String source) =>
+      ProfilePicture.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab(
-      {required this.icon, required this.text, this.navIcon, this.onPressed});
+      {required this.icon,
+      required this.text,
+      this.navIcon,
+      this.onPressed,
+      this.color});
   final String text;
   final IconData? icon;
   final IconData? navIcon;
+  final Color? color;
   final Function()? onPressed;
 
   @override
@@ -20,7 +25,7 @@ class ProfileTab extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: KprimaryColor,
+              color: color,
             ),
             SizedBox(
               width: 10,

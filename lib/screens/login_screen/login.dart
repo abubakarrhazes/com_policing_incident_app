@@ -134,25 +134,10 @@ class _LoginPageState extends State<LoginPage> {
                               ButtonWidget(
                                 onPress: () async {
                                   if (_loginformKey.currentState!.validate()) {
-                                    User? loggedInUser = await loginUser();
-
-                                    if (loggedInUser != null) {
-                                      userAdapter.user = loggedInUser;
-
-                                      // Check user role here
-                                      if (loggedInUser.role == 'admin') {
-                                        // User is an admin, navigate to the admin dashboard
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            routes.admin,
-                                            (route) => false);
-                                      } else {
-                                        // User is a regular user, navigate to the user dashboard
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            routes.home,
-                                            (route) => false);
-                                      }
+                                    userAdapter.user = await loginUser();
+                                    if (mounted) {
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          routes.home, (route) => false);
                                     }
                                   }
                                 },

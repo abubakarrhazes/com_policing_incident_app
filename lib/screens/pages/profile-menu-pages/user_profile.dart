@@ -28,7 +28,8 @@ class _UserProfileState extends State<UserProfile> {
           children: [
             Row(
               children: [
-                Avatar.large(img: NetworkImage('')),
+                Avatar.large(
+                    img: NetworkImage('${userAdapter.user?.profilePicture}')),
                 SizedBox(
                   width: 15,
                 ),
@@ -36,7 +37,7 @@ class _UserProfileState extends State<UserProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${userAdapter.user}',
+                      '${userAdapter.user?.firstName}',
                       style: TextStyle(
                         color: KprimaryColor,
                         fontSize: 20,
@@ -47,14 +48,14 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     ProfileData(
                       icon: Icons.calendar_view_month,
-                      text: '27 Years ',
+                      text: '${userAdapter.user?.DOB}',
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     ProfileData(
                       icon: Icons.location_on,
-                      text: 'Sokoto , Nigeria',
+                      text: '${userAdapter.user?.address}',
                     ),
                   ],
                 ),
@@ -68,6 +69,7 @@ class _UserProfileState extends State<UserProfile> {
                 print('Clicked');
               },
               child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Row(
                   children: [
                     Icon(

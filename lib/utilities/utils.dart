@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
+import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -168,6 +170,55 @@ class Utils {
                 style: TextStyle(color: buttonTextColor),
               ),
             ),
+          ],
+        );
+      },
+    );
+  }
+
+  void logOutDialog(
+    BuildContext context,
+    String message,
+  ) {
+    Color dialogBackgroundColor = KprimaryColor;
+    Color titleColor = Colors.white;
+    Color contentColor = Colors.black;
+    Color buttonTextColor = Colors.white;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: dialogBackgroundColor,
+          title: Text(
+            'Sign Out',
+            style: TextStyle(color: titleColor),
+          ),
+          content: Text(
+            message,
+            style: TextStyle(color: titleColor),
+          ),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () async {},
+                child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: titleColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(child: Text('Yes')))),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: titleColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(child: Text('No')))),
           ],
         );
       },

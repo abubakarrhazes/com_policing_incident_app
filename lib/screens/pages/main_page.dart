@@ -61,9 +61,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   left: 20,
                 ),
                 child: Row(children: <Widget>[
-                  const Avatar.medium(
+                  Avatar.medium(
                     img: NetworkImage(
-                        'https://www.shutterstock.com/image-photo/close-face-young-stylish-woman-600w-1671900778.jpg'),
+                        '${userAdapter.user?.profilePicture!.url}'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -123,6 +123,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       color: Color.fromRGBO(41, 30, 83, 1), radius: 4),
                   tabs: const [
                     Tab(text: 'What we offer'),
+                    Tab(
+                      text: 'Police Stations',
+                    )
                   ]),
             )),
             const SizedBox(height: 10),
@@ -186,7 +189,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const Text('Lawyers Avaliable',
+                          const Text('Registered Police Stations',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
