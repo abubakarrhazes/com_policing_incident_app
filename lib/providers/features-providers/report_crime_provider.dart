@@ -3,7 +3,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:com_policing_incident_app/models/police_station.dart';
 import 'package:com_policing_incident_app/models/report_crime_model.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
@@ -34,15 +36,16 @@ class ReportCrimeProvider {
       ReportCrimeModel reportCrimeModel, BuildContext context) async {
     _isLoading = true;
     _status = true;
+    final preferences = await Preferences.getInstance();
 
-    final userAdapter = Provider.of<UserAdapter>(context, listen: false);
+    final token = preferences.getAccessToken();
 
     String url = '$requestBaseUrl/api/v1/crime';
 
     final requestHeaders = {
       'Accept': 'application/vnd.api+json',
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${userAdapter.user?.accessToken} '
+      'Authorization': 'Bearer ${token} '
     };
 
     final body = reportCrimeModel.toJson();
@@ -79,6 +82,19 @@ class ReportCrimeProvider {
       _resMessage = "Internet connection is not available`";
     } catch (e) {
       print(":::: ${e.toString()}");
+    }
+  }
+
+//Fetch Police
+
+  Future<List<PoliceStation>> fetchPoliceStations() async {
+    String url = '$requestBaseUrl/api/v1/station';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body)['data'];
+      return data.map((json) => PoliceStation.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load police stations');
     }
   }
 

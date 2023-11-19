@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, use_build_context_synchronously
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, use_build_context_synchronously, prefer_final_fields
 
 import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final Utils utils = Utils();
+  bool _isLoading = false;
 
   final AuthProvider authProvider = AuthProvider();
 
@@ -134,15 +135,44 @@ class _LoginPageState extends State<LoginPage> {
                               ButtonWidget(
                                 onPress: () async {
                                   if (_loginformKey.currentState!.validate()) {
-                                    userAdapter.user = await loginUser();
-                                    if (mounted) {
-                                      Navigator.pushNamedAndRemoveUntil(context,
-                                          routes.home, (route) => false);
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    User? loggedInUser = await loginUser();
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    if (loggedInUser != null) {
+                                      userAdapter.user = loggedInUser;
+
+                                      print(
+                                          'Logged in user role: ${loggedInUser.roles}');
+
+                                      if (loggedInUser.roles == 'admin') {
+                                        // User is an admin, navigate to the admin dashboard
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            routes.admin,
+                                            (route) => false);
+                                      } else {
+                                        // User is a regular user, navigate to the user dashboard
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            routes.home,
+                                            (route) => false);
+                                      }
                                     }
                                   }
                                 },
                                 text: 'Login',
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              if (_isLoading)
+                                CircularProgressIndicator(
+                                  color: KprimaryColor,
+                                ),
                             ],
                           ))
                     ],

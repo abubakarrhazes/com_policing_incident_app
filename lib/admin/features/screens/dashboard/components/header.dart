@@ -1,5 +1,7 @@
 import 'package:com_policing_incident_app/admin/features/controllers/MenuAppController.dart';
 import 'package:com_policing_incident_app/admin/features/responsive.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +43,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userAdapter = Provider.of<UserAdapter>(context);
     return Container(
       margin: EdgeInsets.only(left: defaultPadding),
       padding: EdgeInsets.symmetric(
@@ -54,15 +57,13 @@ class ProfileCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.asset(
-            "assets/images/profile_pic.png",
-            height: 38,
-          ),
+          Avatar.large(
+              img: NetworkImage('${userAdapter.user?.profilePicture!.url}')),
           if (!Responsive.isMobile(context))
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text("Angelina Jolie"),
+              child: Text("${userAdapter.user?.firstName}"),
             ),
           Icon(Icons.keyboard_arrow_down),
         ],

@@ -105,7 +105,7 @@ class _RegisterState extends State<Register> {
     super.dispose();
   }
 
-  void registerUser() {
+  registerUser() {
     authProvider.registerUser(
         RegisterModel(
             firstName: _firstNameController.text,
@@ -147,61 +147,104 @@ class _RegisterState extends State<Register> {
                           color: KprimaryColor),
                     ),
                     const SizedBox(height: 8),
-                    Stack(
-                      children: [
-                        imagePath != null
-                            ? Avatar.large(img: FileImage(File(imagePath!)))
-                            : Avatar.large(img: NetworkImage('')),
-                        Positioned(
-                          child: IconButton(
-                            onPressed: selectImages,
-                            icon: Icon(
-                              Icons.add_a_photo,
-                              color: KprimaryColor,
-                            ),
-                          ),
-                          bottom: -13,
-                          left: 70,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
                     Form(
                         key: _registerformKey,
                         child: Column(
                           children: [
+                            Stack(
+                              children: [
+                                imagePath != null
+                                    ? Avatar.large(
+                                        img: FileImage(File(imagePath!)))
+                                    : Avatar.large(
+                                        img: NetworkImage(
+                                            'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?w=826&t=st=1700222239~exp=1700222839~hmac=5ce3ad75c38b8cbd3d394d9f4ed41b0481a6494c824a24c9e98cdb8f41071f44')),
+                                Positioned(
+                                  child: IconButton(
+                                    onPressed: selectImages,
+                                    icon: Icon(
+                                      Icons.add_a_photo,
+                                      color: KprimaryColor,
+                                    ),
+                                  ),
+                                  bottom: -13,
+                                  left: 70,
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             MyInputField(
                               hintText: 'Firsname',
                               controller: _firstNameController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'FirstName Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
                               hintText: 'Lastname',
                               controller: _lastNameController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'LastName Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
                               hintText: 'Othername',
                               controller: _otherNameController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'OtherName Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
-                              hintText: 'Email',
-                              keyboardType: TextInputType.emailAddress,
-                              controller: _emailNameController,
-                            ),
+                                hintText: 'Email',
+                                keyboardType: TextInputType.emailAddress,
+                                controller: _emailNameController,
+                                validator: (value) {
+                                  RegExp emailRegExp = RegExp(
+                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+
+                                  if (value == null || value.isEmpty) {
+                                    return 'Email can\'t be empty';
+                                  } else if (!emailRegExp.hasMatch(value)) {
+                                    return 'Enter a correct email';
+                                  }
+                                  return null;
+                                }),
                             const SizedBox(height: 15),
                             MyInputField(
                               hintText: 'Phone',
                               keyboardType: TextInputType.phone,
                               controller: _phoneNumberController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Phone Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
                                 hintText: 'Date Of Birth',
                                 keyboardType: TextInputType.datetime,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Date Of Birth Required';
+                                  }
+                                  return null;
+                                },
                                 onTap: () {
                                   _selectDate(context).toString();
                                 },
@@ -211,18 +254,36 @@ class _RegisterState extends State<Register> {
                               hintText: 'State',
                               keyboardType: TextInputType.text,
                               controller: _stateController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'State Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
                               hintText: 'Occupation',
                               keyboardType: TextInputType.text,
                               controller: _occupationController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Occupation Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
                               hintText: 'Address',
                               keyboardType: TextInputType.text,
                               controller: _addressController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Address Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 15),
                             MyInputField(
@@ -230,25 +291,23 @@ class _RegisterState extends State<Register> {
                               isPassword: true,
                               keyboardType: TextInputType.visiblePassword,
                               controller: _passwordController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Password Required';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 20),
                             ButtonWidget(
                               onPress: () async {
-                                // Set loading to true to show the spinner
-                                setState(() {
-                                  _isLoading = true;
-                                });
-
                                 // Registration Function Call Here
                                 if (_registerformKey.currentState!.validate()) {
-                                  registerUser();
-
-                                  // Set loading back to false when registration is complete
                                   setState(() {
-                                    _isLoading = false;
+                                    _isLoading = true;
                                   });
-                                } else {
-                                  // Set loading back to false if form validation fails
+                                  registerUser();
+                                  // Set loading back to false when registration is complete
                                   setState(() {
                                     _isLoading = false;
                                   });
@@ -258,9 +317,10 @@ class _RegisterState extends State<Register> {
                             ),
 
                             // Display a loading indicator while `_isLoading` is true
-                            _isLoading
-                                ? CircularProgressIndicator()
-                                : Container(),
+                            if (_isLoading)
+                              CircularProgressIndicator(
+                                color: KprimaryColor,
+                              ),
                           ],
                         ))
                   ],

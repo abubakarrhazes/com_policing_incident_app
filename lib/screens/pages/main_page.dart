@@ -208,8 +208,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     const Image(
-                                        image:
-                                            AssetImage('assets/images/law.png'),
+                                        image: NetworkImage(
+                                            'https://upload.wikimedia.org/wikipedia/en/1/1c/Nigeria_Police_logo.jpg'),
                                         height: 80,
                                         width: 80),
                                     Column(
@@ -248,8 +248,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     const Image(
-                                        image: AssetImage(
-                                            'assets/images/law1.png'),
+                                        image: NetworkImage(
+                                            'https://upload.wikimedia.org/wikipedia/en/1/1c/Nigeria_Police_logo.jpg'),
                                         height: 80,
                                         width: 80),
                                     Column(
@@ -288,8 +288,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     const Image(
-                                        image: AssetImage(
-                                            'assets/images/law 2.png'),
+                                        image: NetworkImage(
+                                            'https://upload.wikimedia.org/wikipedia/en/1/1c/Nigeria_Police_logo.jpg'),
                                         height: 80,
                                         width: 80),
                                     Column(

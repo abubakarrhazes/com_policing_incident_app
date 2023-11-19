@@ -39,7 +39,7 @@ class Preferences {
   }
 
   Future<void> logOutUser(BuildContext context) async {
-    final value = await _sharedPreferences;
+    final value = _sharedPreferences;
 
     value.clear();
     Navigator.pushAndRemoveUntil(

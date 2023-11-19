@@ -1,9 +1,14 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, avoid_unnecessary_containers, empty_catches
 
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:com_policing_incident_app/models/police_station.dart';
 import 'package:com_policing_incident_app/models/report_crime_model.dart';
 import 'package:com_policing_incident_app/providers/features-providers/report_crime_provider.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
@@ -15,6 +20,8 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ReportCrime extends StatefulWidget {
   ReportCrime({super.key});
@@ -26,11 +33,11 @@ class ReportCrime extends StatefulWidget {
 class _ReportCrimeState extends State<ReportCrime> {
   final TextEditingController _detailsController = TextEditingController();
   final ReportCrimeProvider reportCrimeProvider = ReportCrimeProvider();
+  final requestBaseUrl = Config.AuthBaseUrl;
   double latitude = 0.0;
   double logitude = 0.0;
   String address = '';
   String categories = 'Homocide';
-  String stations = 'zaria police station';
   String? path;
 
   List<String> imagesPath = [];
@@ -53,11 +60,50 @@ class _ReportCrimeState extends State<ReportCrime> {
     'Cultism',
   ];
 
-  List<String> policeStations = [
-    'zaria police station',
-    'Dan Marina Police Division,Sokoto',
-    'Dadin Kowa Police Division,Sokoto',
-  ];
+  String? selectedStation;
+  List<PoliceStation> policeStations = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch data when the widget is first created
+    fetchData();
+  }
+
+  Future<List<PoliceStation>?> fetchData() async {
+    final preferences = await Preferences.getInstance();
+    final token = preferences.getAccessToken();
+
+    print('JWT Token $token');
+
+    final requestHeaders = {
+      'Accept': 'application/vnd.api+json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      String url = '$requestBaseUrl/station';
+      final response = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body)['data'];
+        print(data);
+        //return data.map((json) => PoliceStation.fromJson(json)).toList();
+        setState(() {
+          policeStations =
+              data.map((json) => PoliceStation.fromJson(json)).toList();
+        });
+      } else {
+        final errorMessage = json.decode(response.body)['message'];
+        throw Exception(
+            'Failed to load police stations  ${response.statusCode} error ${errorMessage}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+    return null;
+
+    // ignore: dead_code
+  }
 
   void selectImages() async {
     final pathFolder = await utils.pickImage(ImageSource.gallery);
@@ -129,10 +175,12 @@ class _ReportCrimeState extends State<ReportCrime> {
           category: categories,
           details: _detailsController.text,
           file: [imagesPath, audio, video, address],
-          policeUnit: stations,
+          policeUnit: selectedStation!,
           location: UserLocationData(latitude: latitude, logitude: logitude),
         ),
         context);
+
+    print(selectedStation);
   }
 
   @override
@@ -356,22 +404,28 @@ class _ReportCrimeState extends State<ReportCrime> {
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
-                      child: Column(
-                        children: [
-                          DropdownButton(
-                            value: stations,
-                            items: policeStations.map((String item) {
-                              return DropdownMenuItem(
-                                  value: item, child: Text(item));
-                            }).toList(),
-                            onChanged: (String? newval) {
-                              setState(() {
-                                stations = newval!;
-                              });
-                            },
-                          ),
-                        ],
+                    SingleChildScrollView(
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            DropdownButton(
+                              value: selectedStation,
+                              items:
+                                  policeStations.map((PoliceStation station) {
+                                return DropdownMenuItem(
+                                  value: station.id,
+                                  child: Text(station.name),
+                                );
+                              }).toList(),
+                              onChanged: (String? newval) {
+                                setState(() {
+                                  selectedStation = newval;
+                                });
+                              },
+                              hint: Text('Select a Police Station'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(

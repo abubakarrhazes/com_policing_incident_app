@@ -102,12 +102,17 @@ class AuthProvider extends ChangeNotifier {
           await http.post(Uri.parse(url), headers: requestHeaders, body: body);
 
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
+        final responseData = json.decode(response.body);
         _isLoading = false;
         _resMessage = 'Login Successfully $responseData';
 
+        _resMessage = responseData['message'];
+
+        utils.showToast(context, _resMessage);
+
         print(_resMessage);
-        User user = User.fromMap(responseData['data']['user']);
+        User user =
+            User.fromMap(responseData['data']['user'] as Map<String, dynamic>);
 
         final preferences = await Preferences.getInstance();
         preferences.setAccessToken(responseData['data']['accessToken']);

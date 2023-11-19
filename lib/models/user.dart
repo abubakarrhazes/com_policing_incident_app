@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
+// ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names, constant_pattern_never_matches_value_type
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -11,11 +11,11 @@ class User extends ChangeNotifier {
   final String DOB;
   final String email;
   final String? address;
-  ProfilePicture? profilePicture;
+  final ProfilePicture? profilePicture;
   final String phoneNumber;
   final String occupation;
   final String state;
-  final String? role;
+  final String? roles;
   final String? accessToken;
   User({
     required this.id,
@@ -29,7 +29,7 @@ class User extends ChangeNotifier {
     required this.phoneNumber,
     required this.occupation,
     required this.state,
-    this.role,
+    this.roles,
     this.accessToken,
   });
 
@@ -46,7 +46,7 @@ class User extends ChangeNotifier {
       'phoneNumber': phoneNumber,
       'occupation': occupation,
       'state': state,
-      'role': role,
+      'roles': roles,
       'accessToken': accessToken,
     };
   }
@@ -59,7 +59,7 @@ class User extends ChangeNotifier {
       otherName: map['otherName'] as String,
       DOB: map['DOB'] as String,
       email: map['email'] as String,
-      address: map['officeAddress'] as String?,
+      address: map['address'] as String?,
       profilePicture:
           ProfilePicture.fromMap(map['profilePicture'] as Map<String, dynamic>),
       // TODO: phoneNumber should be String
@@ -67,7 +67,7 @@ class User extends ChangeNotifier {
       phoneNumber: map['phoneNumber'].toString(),
       occupation: map['occupation'] as String,
       state: map['state'] as String,
-      role: map['role'] != null ? map['role'] as String : null,
+      roles: map['roles'] != null ? map['roles'] as String : null,
       accessToken:
           map['accessToken'] != null ? map['accessToken'] as String : null,
     );
@@ -77,6 +77,21 @@ class User extends ChangeNotifier {
 
   factory User.fromJson(String source) =>
       User.fromMap(json.decode(source) as Map<String, dynamic>);
+  /*
+
+  static UserRoles _mapStringToUserRole(String role) {
+    switch (role) {
+      case 'user':
+        return UserRoles.user;
+      case 'policeStation':
+        return UserRoles.policeStation;
+      case 'admin':
+        return UserRoles.admin;
+      default:
+        throw ArgumentError('Invalid role: $role');
+    }
+  }
+  */
 }
 
 class ProfilePicture {
