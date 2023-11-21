@@ -3,8 +3,15 @@ const Crime = require("../models/crimeModel");
 const { CustomError } = require("../errors/customError");
 const { default: mongoose } = require("mongoose");
 const refNum = require("../utils/genRef");
-const {sendEmail,crimeResponse} = require("../utils/notification");
+const { sendEmail, crimeResponse } = require("../utils/notification");
 const User = require("../models/userModel");
+const {
+  videoUpload,
+  audioUpload,
+  photoUpload,
+  fileUpload,
+} = require("../utils/uploadFile");
+const cloudinary = require("cloudinary").v2;
 
 const getAllCrime = asyncHandler(async (req, res) => {
   const { status } = req.query;
@@ -13,7 +20,7 @@ const getAllCrime = asyncHandler(async (req, res) => {
   if (status) {
     queryObject["status"] = status;
   }
-  const crime = await Crime.find(queryObject).populate('user');
+  const crime = await Crime.find(queryObject).populate("user");
   if (crime.length <= 0) return res.json({ message: "No crime reported yet" });
   res.json({
     status: 200,
@@ -23,8 +30,8 @@ const getAllCrime = asyncHandler(async (req, res) => {
 });
 
 const getMyCrime = asyncHandler(async (req, res) => {
-  const {userId} = req.params;
-  const crime = await Crime.find({ user: userId }).populate('user');
+  const { userId } = req.params;
+  const crime = await Crime.find({ user: userId }).populate("user");
   if (!crime) return res.json({ message: "No crime reported yet" });
   res.json({
     status: 200,
@@ -35,7 +42,7 @@ const getMyCrime = asyncHandler(async (req, res) => {
 const getSingleCrime = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (mongoose.isValidObjectId(id)) throw CustomError("Not a valid ID");
-  const crime = await Crime.findById(id).populate('user');
+  const crime = await Crime.findById(id).populate("user");
   if (!crime) {
     throw CustomError("Crime with ID not found");
   }
@@ -47,10 +54,8 @@ const getSingleCrime = asyncHandler(async (req, res) => {
 });
 const createCrime = asyncHandler(async (req, res) => {
   const { category, details, location, policeUnit } = req.body;
-  const { photo, video, audio, file } = req.body;
 
   const ref = refNum("CR");
-  console.log(req);
   const user = req.userId;
 
   if (!category || !details) {
@@ -61,10 +66,25 @@ const createCrime = asyncHandler(async (req, res) => {
   }
   if (!user) throw CustomError("You must be logged in", 401);
 
-  const foundUser = await User.findById(user).exec()
-  if(!foundUser) throw CustomError("Invalid JWT, You must be logged in", 401);
+  const foundUser = await User.findById(user).exec();
+  if (!foundUser) throw CustomError("Invalid JWT, You must be logged in", 401);
+  if (!policeUnit) throw CustomError("Police Unit required", 400);
+
   // process photo,video,audio,file with multer
+  let videoUP = null;
+  let audioUP = null;
+  let imageUP = null;
+  let fileUP = null;
+
   // ******************************************
+  if (req.files) {
+    const { image, video, audio, file } = req.files;
+    console.log(req.files);
+    videoUP = await videoUpload(video);
+    audioUP = await audioUpload(audio);
+    imageUP = await photoUpload(image);
+    fileUP = await fileUpload(file);
+  }
 
   const crime = await Crime.create({
     category,
@@ -72,24 +92,24 @@ const createCrime = asyncHandler(async (req, res) => {
     location,
     ref,
     user,
-    photo,
-    video,
-    audio,
-    file,
+    photo: imageUP,
+    video: videoUP,
+    audio: audioUP,
+    file: fileUP,
     policeUnit,
   });
 
-  const subject = 'Crime Report!'
-  const message = crimeResponse(foundUser.firstName, crime.ref)
-  
-  sendEmail(foundUser.email, subject, message)
-  
+  const subject = "Crime Report!";
+  const message = crimeResponse(foundUser.firstName, crime.ref);
+
+  sendEmail(foundUser.email, subject, message);
+
   return res.status(200).json({ status: 200, message: "success", data: crime });
 });
 const updateCrime = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { category, details, location, policeUnit } = req.body;
-  const { photo, video, audio, file } = req.file;
+  // const { photo, video, audio, file } = req.file;
   const user = req.userId;
   const queryItem = {};
 
@@ -105,10 +125,6 @@ const updateCrime = asyncHandler(async (req, res) => {
     category,
     details,
     location,
-    photo,
-    video,
-    audio,
-    file,
     policeUnit,
   };
   const crime = await Crime.findByIdAndUpdate(id, queryItem);
