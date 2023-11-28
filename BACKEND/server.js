@@ -24,20 +24,6 @@ cloudinary.config({
 // Connect to MongoDB
 connectDB();
 
-
-
-// cloudinary.api
-// .create_upload_preset(
-//   { name: "my_preset", 
-//     unsigned: true, 
-//     categorization: "google_tagging,google_video_tagging",
-//     auto_tagging: 0.75,
-//     folder: "new-products" })
-//   .then(result => console.log(result));
-  
-// cloudinary.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
-//   { public_id: "olympic_flag",upload_preset: "my_preset" },
-// function(error, result) {console.log(result); });
   
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -51,41 +37,52 @@ app.get("/", (req, res) => {
   res.send("index route");
 });
 
-// app.use(
-//   upload.fields([
-//     { name: "profilePicture", maxCount: 1 },
-//     { name: "photo", maxCount: 1 },
-//     { name: "video", maxCount: 1 },
-//     { name: "audio", maxCount: 1 },
-//     { name: "file", maxCount: 1 },
-//     { name: "image", maxCount: 1 },
-//   ])
-// );
+
 
 // const num = '+2347053225992'
 // createMessage('THIS IS TESTING TWILIO',num)
 
-
-
-// sendEmail('joshuaadah30@gmail.com')
 app.use(
   "/api/v1/auth",
   upload.single("profilePicture"),
   require("./routes/auth")
 );
 
-app.use(verifyJWT);
 app.use("/api/v1/auth", require("./routes/verifyEmail"));
+app.use(verifyJWT);
 
 app.use(permissions);
 app.use("/api/v1/user", require("./routes/user"));
-app.use("/api/v1/crime", require("./routes/crime"));
-app.use("/api/v1/incident", require("./routes/incident"));
+app.use("/api/v1/station", require("./routes/station"));
+app.use(
+  "/api/v1/crime",
+  upload.fields([
+    { name: "profilePicture", maxCount: 1 },
+    { name: "photo", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+    { name: "audio", maxCount: 1 },
+    { name: "file", maxCount: 1 },
+    { name: "image", maxCount: 1 },
+  ]),
+  require("./routes/crime")
+);
+app.use(
+  "/api/v1/incident",
+  upload.fields([
+    { name: "profilePicture", maxCount: 1 },
+    { name: "photo", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+    { name: "audio", maxCount: 1 },
+    { name: "file", maxCount: 1 },
+    { name: "image", maxCount: 1 },
+  ]),
+  require("./routes/incident")
+);
 app.use("/api/v1/emergency", require("./routes/emergency"));
 app.use("/api/v1/sos", require("./routes/SOS"));
 app.use("/api/v1/blog/post", upload.single("image"), require("./routes/post"));
 
-app.use("/*", (req, res) => {
+app.use("*", (req, res) => {
   res.send("<h1>ROUTE NOT FOUND</h1>");
 });
 
@@ -99,3 +96,5 @@ mongoose.connection.once("open", () => {
 mongoose.connection.on("error", (err) => {
   console.log(err);
 });
+
+module.exports = cloudinary;

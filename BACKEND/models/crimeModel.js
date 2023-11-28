@@ -20,7 +20,6 @@ const crimeSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: [true, "User is required"],
-
     },
     category: {
       type: String,
@@ -41,9 +40,9 @@ const crimeSchema = new mongoose.Schema(
       default: "pending",
     },
     policeUnit: {
-      type: String,
-      enum: ["zaria police station", "kastina police station"],
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Station",
+      required: [true, "Station ID is required"],
     },
     location: {
       latitude: {
@@ -55,10 +54,10 @@ const crimeSchema = new mongoose.Schema(
         required: true,
       },
     },
-    photo: String,
-    video: String,
-    audio: String,
-    file: String,
+    photo: Object,
+    video: Object,
+    audio: Object,
+    file: Object,
   },
   {
     timestamps: true,

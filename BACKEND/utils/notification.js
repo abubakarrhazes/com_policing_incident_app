@@ -36,59 +36,103 @@ const crimeResponse = function(username,ref_num){
   }
   return res
 }
-const verifyEmailResponse = function(username,access_token){
+const verifyEmailResponse = function (username, access_token) {
   const res = {
     body: {
-      greeting: 'Dear',
+      greeting: "Dear",
       signature: false,
       name: `${username}`,
       intro: "Email Verification",
-    action: [
-      {
-          instructions: 'To get started with COM Policing, please click the button:',
+      action: [
+        {
+          instructions:
+            "To get started with COM Policing, please click the button:",
           button: {
-              color: '#22BC66',
-              text: 'Confirm your account',
-              link: `${api_url}/auth/verify/?token=${access_token}`,
-              fallback: true
-          }
-            }
+            color: "#22BC66",
+            text: "Confirm your account",
+            link: `${api_url}/api/v1/auth/verify/?token=${access_token}`,
+            fallback: true,
+          },
+        },
       ],
-      outro: 'Best regards,<br /> ComCop Team.'
-    }
-  }
-  return res
-}
-
-
+      outro: "Best regards,<br /> ComCop Team.",
+    },
+  };
+  return res;
+};
+const resetPasswordResponse = function (username, access_token) {
+  const res = {
+    body: {
+      greeting: "Dear",
+      signature: false,
+      name: `${username}`,
+      intro: "Reset Password",
+      action: [
+        {
+          instructions: "Reset Password",
+          button: {
+            color: "#22BC66",
+            text: "Confirm your account",
+            link: `${api_url}/api/v1/auth/reset/password/?token=${access_token}`,
+            fallback: true,
+          },
+        },
+      ],
+      outro: "Best regards,<br /> ComCop Team.",
+    },
+  };
+  return res;
+};
 
 // require('fs').writeFileSync('preview.html', crimeEmailBody, 'utf8');
 
+const sendEmail = async (email, subject, message) => {
+  const maxRetries = 3; // Set the maximum number of retries
+  let currentRetry = 0;
 
-const sendEmail = (email, subject, message) => {
-  
   let EmailBody = mailGenerator.generate(message);
 
-   const mailOptions = {
+  const mailOptions = {
     from: my_email,
     to: email,
     subject: subject,
     html: EmailBody,
   };
 
- try {
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-      console.log('error',error)
-    throw CustomError('Server Error',400)
-    } else {
-      console.log('Email sent:', info.response);
+  while (currentRetry < maxRetries) {
+    try {
+      const info = await new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log("Error sending email:", error);
+            if (currentRetry < maxRetries) {
+              currentRetry++;
+              console.log(`Retrying (attempt ${currentRetry})...`);
+              reject("Retry");
+            } else {
+              console.log("Max retries reached. Email not sent.");
+              reject(error);
+              // Notify someone about the failure, e.g., through another service or log
+            }
+          } else {
+            console.log("Email sent:", info.response);
+            resolve(info);
+            // You can include a success callback here if needed
+          }
+        });
+      });
+      return info; // Email sent successfully, return info
+    } catch (error) {
+      if (error !== "Retry") {
+        console.error("Error sending email:", error);
+        throw CustomError("Error while sending email", error);
+      }
     }
-  }); 
- } catch (error) {
-    throw CustomError(error.message)
- }
-}
+  }
+
+  // If max retries reached without success, throw an error
+  throw CustomError("Max retries reached. Email not sent.");
+};
 
 
 
@@ -97,4 +141,4 @@ const sendEmail = (email, subject, message) => {
 //   const body = Dear user
 // }
 
-module.exports = {sendEmail,crimeResponse,verifyEmailResponse}
+module.exports = {sendEmail,crimeResponse,verifyEmailResponse,resetPasswordResponse}

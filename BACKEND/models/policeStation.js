@@ -6,10 +6,10 @@ const stationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    DPO: {
-      type: String,
-      required: true,
-    },
+    // DPO: {
+    //   type: String,
+    //   required: true,
+    // },
   },
   {
     timestamps: true,

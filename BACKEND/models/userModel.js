@@ -26,12 +26,12 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
     },
     roles: {
-      type: [String],
+      type: String,
       enum: ["user", "policeStation", "admin"],
       default: "user",
     },
     profilePicture: {
-      type: String,
+      type: Object,
       default: "",
     },
     phoneNumber: {
@@ -59,8 +59,8 @@ const userSchema = new mongoose.Schema(
     },
     isActive: {
       type: Boolean,
-      default:false
-    }
+      default: false,
+    },
   },
   {
     timestamps: true,
