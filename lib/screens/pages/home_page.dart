@@ -59,23 +59,21 @@ class _HomePageState extends State<HomePage> {
           currentIndex: currentIndex,
           selectedItemColor: KprimaryColor,
           unselectedItemColor: Colors.grey.withOpacity(0.5),
-          showSelectedLabels: false,
+          showSelectedLabels: true,
           showUnselectedLabels: false,
           elevation: 0,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.apps), tooltip: 'Home', label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.location_on),
-                tooltip: 'Location',
-                label: 'Location'),
+                icon: Icon(Icons.location_on), label: 'Location'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.chat),
                 tooltip: 'Chat Room',
                 label: 'Chat Room'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.file_copy),
-                tooltip: 'Reorts',
+                tooltip: 'Reports',
                 label: 'Reports'),
             BottomNavigationBarItem(
                 icon: Icon(

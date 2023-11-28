@@ -10,11 +10,13 @@ import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/notif
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/settings.dart';
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/user_profile.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/blogs.dart';
-import 'package:com_policing_incident_app/screens/pages/sub-screen/emergency.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/emergency_request.dart';
+
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
+import 'package:com_policing_incident_app/screens/test.dart';
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +33,7 @@ class Routes {
   String home = '/home';
   String report_crime = '/report-crime';
   String report_incident = '/report-incident';
-  String emergency = '/emergency';
+  String emergency_request = '/emergency-request';
   String blog = '/blog';
   String user_profile = '/user';
   String notifications = '/notifications';
@@ -40,6 +42,7 @@ class Routes {
   String help_desk = '/help-desk';
   String report_success = '/success';
   String sign_out = '/sign-out';
+  String test = '/test';
 
   Route<dynamic> controller(RouteSettings settings) {
     switch (settings.name) {
@@ -59,8 +62,7 @@ class Routes {
         return MaterialPageRoute(builder: (context) => ReportCrime());
       case '/report-incident':
         return MaterialPageRoute(builder: (context) => MyWidget());
-      case '/emergency':
-        return MaterialPageRoute(builder: (context) => Emergency());
+
       case '/blog':
         return MaterialPageRoute(builder: (context) => Blog());
       case '/user':
@@ -75,6 +77,10 @@ class Routes {
         return MaterialPageRoute(builder: (context) => HelpDesk());
       case '/success':
         return MaterialPageRoute(builder: (context) => ReportSuccess());
+      case '/test':
+        return MaterialPageRoute(builder: (context) => Test());
+      case '/emergency-request':
+        return MaterialPageRoute(builder: (context) => EmergencyRequest());
 
       default:
         throw ("Undefined Routes");

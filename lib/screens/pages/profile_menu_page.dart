@@ -70,7 +70,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
               ProfileTab(
                 icon: Icons.emergency,
                 onPressed: () {
-                  Navigator.pushNamed(context, routes.emergency);
+                  Navigator.pushNamed(context, routes.emergency_request);
                 },
                 text: 'Emergency  ',
                 navIcon: Icons.arrow_forward_ios_sharp,
