@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Password Reset</title>
+    <style>
+
+*{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Password Reset</h1>
+<p>Enter email to reset password</p>
+<form id="passwordForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <input type="submit" value="Reset Password">
+        <p id="root"></p>
+    </form>
+<script>
+    let email = document.getElementById('email')
+    let root = document.getElementById('root')
+    let passwordForm = document.getElementById('passwordForm')
+
+    passwordForm.addEventListener('submit', sendEmail)
+
+    email.addEventListener('input', e => {
+        root.innerHTML('')
+    })
+
+    async function sendEmail(e) {
+        e.preventDefault()
+        root.innerHTML = ''
+        const data = {
+            email: email.value,
+        }
+
+        const res = await fetch('/api/v1/auth/forget/password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        const res_data = await res.json()
+        if (res.ok) {
+            root.innerHTML = `A  link has been sent to ${email.value}`;
+            root.style.color = "green";
+        }
+        if (!res.ok) {
+            root.innerHTML = res_data.message || "Failed to send email";
+            root.style.color = "red";
+        }
+    }
+</script>
+</body>
+
+</html>

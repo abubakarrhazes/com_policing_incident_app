@@ -18,19 +18,19 @@ const permissions = expressAsyncHandler(async (req, res, next) => {
         );
   }
 
-  if (req.url.includes("/api/v1/blog/post")) {
+  if (
+    req.url.includes("/api/v1/blog/post") ||
+    req.url.includes("/api/v1/station")
+  ) {
     if (
       req.method === "POST" ||
       req.method === "PATCH" ||
       req.method === "DELETE"
     ) {
-      if (!userRoles.includes("admin"))
+      if (!userRoles.includes("admin") || userRoles !== "admin")
         throw CustomError(
           "Forbidden! only admin has permission to perform such action"
         );
-      else {
-        next();
-      }
     }
   }
 
@@ -40,7 +40,7 @@ const permissions = expressAsyncHandler(async (req, res, next) => {
       req.method === "PATCH" ||
       req.method === "DELETE"
     ) {
-      if (!userRoles.includes("admin"))
+      if (!userRoles.includes("admin") || userRoles !== "admin")
         throw CustomError(
           "Forbidden! only admin has permission to perform such action"
         );
