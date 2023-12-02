@@ -7,14 +7,20 @@ class ReportCrimeModel {
   String category;
   String details;
   String policeUnit;
-  UserLocationData location;
-  List<dynamic>? file = [];
+  final UserLocationData location;
+  final String photo;
+  final String? video;
+  final String? audio;
+  final String? file;
 
   ReportCrimeModel({
     required this.category,
     required this.details,
     required this.policeUnit,
     required this.location,
+    required this.photo,
+    this.video,
+    this.audio,
     this.file,
   });
 
@@ -23,8 +29,7 @@ class ReportCrimeModel {
       'category': category,
       'details': details,
       'policeUnit': policeUnit,
-      'location': location.toMap(),
-      'file': file,
+      'location': location.toJson(),
     };
   }
 
@@ -35,9 +40,10 @@ class ReportCrimeModel {
       policeUnit: map['policeUnit'] as String,
       location:
           UserLocationData.fromMap(map['location'] as Map<String, dynamic>),
-      file: map['file'] != null
-          ? List<String>.from(map['file'] as List<dynamic>)
-          : null,
+      photo: map['photo'] as String,
+      video: map['video'] != null ? map['video'] as String : null,
+      audio: map['audio'] != null ? map['audio'] as String : null,
+      file: map['file'] != null ? map['file'] as String : null,
     );
   }
 

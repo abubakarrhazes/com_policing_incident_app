@@ -44,7 +44,8 @@ class _OnboardState extends State<Onboard> {
           TextButton(
             onPressed: () async {
               //await _storeOnboardInfo();
-              Navigator.pushNamed(context, routes.welcome);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, routes.login, (route) => false);
             },
             child: const Text(
               'Skip',

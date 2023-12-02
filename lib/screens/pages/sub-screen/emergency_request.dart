@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:com_policing_incident_app/models/add_emergency_contacts_model.dart';
+import 'package:com_policing_incident_app/providers/features-providers/request_emergency_providers.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,31 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
   final _emergencyRelationController = TextEditingController();
   final _emergencyAddressController = TextEditingController();
   final _emergencyFormKey = GlobalKey<FormState>();
+  final RequestEmergecyProvider requestEmergecyProvider =
+      RequestEmergecyProvider();
+
+  @override
+  void dispose() {
+    _emergencyNameController.dispose();
+    _emergencyEmailController.dispose();
+    _emergencyPhoneController.dispose();
+    _emergencyRelationController.dispose();
+    _emergencyAddressController.dispose();
+
+    super.dispose();
+  }
+
+  void addContacts() {
+    requestEmergecyProvider.addEmergencyContactDetails(
+        AddEmergencyContactsModel(
+            name: _emergencyNameController.text,
+            mobileNumber: _emergencyPhoneController.text,
+            email: _emergencyEmailController.text,
+            relation: _emergencyRelationController.text,
+            address: _emergencyAddressController.text),
+        context);
+  }
+
   void showEmegencyContactDialog(BuildContext context, String title) {
     showDialog(
       context: context,
@@ -89,7 +116,7 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
                     borderRadius: BorderRadius.circular(10),
                   )),
               onPressed: () {
-                Navigator.of(context).pop();
+                addContacts();
               },
               child: Text(
                 'Add Contact',
@@ -103,17 +130,6 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _emergencyNameController.dispose();
-    _emergencyEmailController.dispose();
-    _emergencyPhoneController.dispose();
-    _emergencyRelationController.dispose();
-    _emergencyAddressController.dispose();
-
-    super.dispose();
   }
 
   @override

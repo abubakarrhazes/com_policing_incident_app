@@ -16,10 +16,12 @@ import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/user_
 import 'package:com_policing_incident_app/screens/pages/sub-screen/blogs.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/emergency_request.dart';
 
-import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/report_crime.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/user_reports.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
+import 'package:com_policing_incident_app/screens/splash_screen/splash_screen.dart';
 
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';
 import 'package:com_policing_incident_app/admin/features/screens/main/main_screen.dart';
@@ -31,6 +33,7 @@ import 'package:flutter/material.dart';
 
 class Routes {
   String onboard = '/';
+  String splash = '/splash';
   String welcome = '/welcome';
   String login = '/login';
   String register = '/register';
@@ -48,6 +51,7 @@ class Routes {
   String report_success = '/success';
   String sign_out = '/sign-out';
   String test = '/test';
+  String report_list = '/crime-report-list';
   String admin = '/admin';
   String addPoliceStations = '/add-police-station';
   String dashboard = '/dashboard';
@@ -56,6 +60,8 @@ class Routes {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (context) => Onboard());
+      case '/splash':
+        return MaterialPageRoute(builder: (context) => SplashScreen());
       case '/welcome':
         return MaterialPageRoute(builder: (context) => WelcomeScreen());
       case '/login':
@@ -70,7 +76,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => ReportCrime());
       case '/report-incident':
         return MaterialPageRoute(builder: (context) => MyWidget());
-
+      case '/crime-report-list':
+        return MaterialPageRoute(builder: (context) => UserReports());
       case '/blog':
         return MaterialPageRoute(builder: (context) => Blog());
       case '/user':

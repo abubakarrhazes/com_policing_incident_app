@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, unused_field
 
+import 'package:com_policing_incident_app/providers/auth_provider.dart';
+import 'package:com_policing_incident_app/screens/forgot_password_screen/model/forgot_password_model.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -17,6 +19,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final formResult = {};
   final TextEditingController _forgotPasswordController =
       TextEditingController();
+  final AuthProvider authProvider = AuthProvider();
 
   @override
   void dispose() {
@@ -27,12 +30,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   void forgotUserPassword() {
     // Make Api Call From Auth Services Class
+    authProvider.forgotPasswor(
+        ForgotPasswordModel(email: _forgotPasswordController.text), context);
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(

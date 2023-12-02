@@ -60,7 +60,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ButtonWidget(
                     onPress: () {
                       _viwedWelcomeScreen();
-                      Navigator.pushNamed(context, routes.login);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, routes.login, (route) => false);
                     },
                     text: 'Login',
                   ),
@@ -70,7 +71,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ButtonWidget(
                     onPress: () {
                       _viwedWelcomeScreen();
-                      Navigator.pushNamed(context, routes.register);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, routes.register, (route) => false);
                     },
                     text: 'Register',
                   ),

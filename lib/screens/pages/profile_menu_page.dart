@@ -43,7 +43,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 height: 15,
               ),
               Text(
-                '${userAdapter.user?.firstName}  ${userAdapter.user?.lastName} ${userAdapter.user?.otherName}',
+                '${userAdapter.user?.firstName}  ${userAdapter.user?.accessToken} ${userAdapter.user?.otherName}',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,

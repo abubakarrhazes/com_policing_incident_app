@@ -6,6 +6,8 @@ import 'dart:io';
 import 'package:com_policing_incident_app/models/user.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
+import 'package:com_policing_incident_app/screens/forgot_password_screen/model/forgot_password_model.dart';
 
 import 'package:com_policing_incident_app/screens/login_screen/models/login_model.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
@@ -104,11 +106,12 @@ class AuthProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         _isLoading = false;
-        _resMessage = 'Login Successfully $responseData';
+
+        print("Login Succes : $responseData");
 
         _resMessage = responseData['message'];
 
-        utils.showToast(context, _resMessage);
+        utils.successShowToast(context, _resMessage);
 
         print(_resMessage);
         User user =
@@ -137,5 +140,47 @@ class AuthProvider extends ChangeNotifier {
       print(":::: ${e.toString()}");
     }
     return null;
+  }
+
+  //Forgot Password Link
+
+  void forgotPasswor(
+      ForgotPasswordModel forgotPasswordModel, BuildContext context) async {
+    _isLoading = true;
+
+    String url = '$requestBaseUrl/auth/forget/password';
+
+    final requestHeaders = {
+      'Accept': 'application/vnd.api+json',
+      'Content-Type': 'application/json',
+    };
+
+    final body = forgotPasswordModel.toJson();
+
+    try {
+      http.Response response =
+          await http.post(Uri.parse(url), body: body, headers: requestHeaders);
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        _resMessage = responseData['message'];
+        print('Password Reset : $responseData');
+        utils.successShowToast(context, _resMessage);
+      } else {
+        final res = json.decode(response.body);
+
+        _resMessage = res['message'];
+
+        utils.showToast(context, _resMessage);
+
+        print(res);
+        _isLoading = false;
+      }
+    } on SocketException catch (_) {
+      _isLoading = false;
+      _resMessage = "Internet connection is not available`";
+      utils.showToast(context, _resMessage);
+    } catch (e) {
+      print(":::: ${e.toString()}");
+    }
   }
 }

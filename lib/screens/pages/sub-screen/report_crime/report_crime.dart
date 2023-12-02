@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, avoid_unnecessary_containers, empty_catches
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, avoid_unnecessary_containers, empty_catches, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
@@ -38,12 +38,11 @@ class _ReportCrimeState extends State<ReportCrime> {
   double logitude = 0.0;
   String address = '';
   String categories = 'Homocide';
-  String? path;
 
-  List<String> imagesPath = [];
-  List<File> audio = [];
-  List<File> video = [];
-  List<File> media = [];
+  String? imagesPath;
+  String? audioPath;
+  String? videoPath;
+  String? filePath;
 
   List<String> crimeCategories = [
     'Homocide',
@@ -72,7 +71,7 @@ class _ReportCrimeState extends State<ReportCrime> {
 
   Future<List<PoliceStation>?> fetchData() async {
     final preferences = await Preferences.getInstance();
-    final token = preferences.getAccessToken();
+    String? token = await preferences.getAccessToken();
 
     print('JWT Token $token');
 
@@ -98,7 +97,7 @@ class _ReportCrimeState extends State<ReportCrime> {
             'Failed to load police stations  ${response.statusCode} error ${errorMessage}');
       }
     } catch (error) {
-      print('Error: $error');
+      print(error);
     }
     return null;
 
@@ -106,31 +105,31 @@ class _ReportCrimeState extends State<ReportCrime> {
   }
 
   void selectImages() async {
-    final pathFolder = await utils.pickImage(ImageSource.gallery);
+    final path = await utils.pickImage(ImageSource.gallery);
 
     setState(() {
-      path = pathFolder;
+      imagesPath = path;
     });
   }
 
   void selectAudio(var audioSelect) async {
     await utils.pickUpAudio();
     setState(() {
-      audio = audioSelect;
+      audioPath = audioSelect;
     });
   }
 
   void selectVideo(var videoResponse) async {
     await utils.pickUpVideo();
     setState(() {
-      video = videoResponse;
+      videoPath = videoResponse;
     });
   }
 
   void selectMedia(var mediaResponse) async {
     await utils.pickUpMedia();
     setState(() {
-      media = mediaResponse;
+      filePath = mediaResponse;
     });
   }
 
@@ -170,11 +169,14 @@ class _ReportCrimeState extends State<ReportCrime> {
   //APi Connecting To The Model Fromtend and Backend
 
   void reportCrime() {
-    reportCrimeProvider.reportCrime(
+    reportCrimeProvider.reportCrimeWithFile(
         ReportCrimeModel(
           category: categories,
           details: _detailsController.text,
-          file: [imagesPath, audio, video, address],
+          photo: imagesPath ?? '',
+          video: videoPath,
+          audio: audioPath,
+          file: filePath,
           policeUnit: selectedStation!,
           location: UserLocationData(latitude: latitude, logitude: logitude),
         ),
@@ -288,7 +290,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                         ),
                         MediaSelection(
                           onPressed: () {
-                            selectVideo(video);
+                            selectVideo(videoPath);
                           },
                           text: 'Add Video',
                           icon: Icon(
@@ -301,7 +303,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                         ),
                         MediaSelection(
                           onPressed: () {
-                            selectAudio(audio);
+                            selectAudio(audioPath);
                           },
                           text: 'Add Audio',
                           icon: Icon(
@@ -314,7 +316,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                         ),
                         MediaSelection(
                           onPressed: () {
-                            selectMedia(media);
+                            selectMedia(filePath);
                           },
                           text: 'Add File',
                           icon: Icon(
@@ -334,13 +336,13 @@ class _ReportCrimeState extends State<ReportCrime> {
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: KprimaryColor),
                       ),
-                      child: path != null
+                      child: imagesPath != null
                           ? Container(
                               height: 200,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: FileImage(File(path!)),
+                                  image: FileImage(File(imagesPath!)),
                                 ),
                               ),
                             )

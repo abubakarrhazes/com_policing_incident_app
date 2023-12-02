@@ -53,21 +53,20 @@ class Utils {
     return '';
   }
 
-  Future<List<File>> pickUpAudio() async {
-    List<File> images = [];
+  Future<String> pickUpAudio() async {
     try {
-      var files = await FilePicker.platform
-          .pickFiles(type: FileType.audio, allowMultiple: true);
-      if (files != null && files.files.isNotEmpty) {
-        for (int i = 0; i < files.files.length; i++) {
-          images.add(File(files.files[i].path!));
-        }
+      final _files = await FilePicker.platform.pickFiles(
+        type: FileType.audio,
+      );
+      if (_files != null) {
+        return _files.toString();
       }
+      print('"No Audio Selected');
     } catch (e) {
       debugPrint(e.toString());
     }
 
-    return images;
+    return '';
   }
 
   Future<List<File>> pickUpVideo() async {
@@ -129,10 +128,29 @@ class Utils {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        closeIconColor: Colors.red,
+        closeIconColor: Colors.white,
+        backgroundColor: Colors.red,
+        shape: Border(top: BorderSide()),
         content: Text(
           message,
-          style: TextStyle(color: Colors.red, fontSize: 12),
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+        action: SnackBarAction(
+            label: 'CLOSE', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
+
+  void successShowToast(BuildContext context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        closeIconColor: Colors.white,
+        backgroundColor: Colors.green,
+        shape: Border.all(),
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.white, fontSize: 15),
         ),
         action: SnackBarAction(
             label: 'CLOSE', onPressed: scaffold.hideCurrentSnackBar),

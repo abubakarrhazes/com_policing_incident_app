@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_policing_incident_app/models/add_emergency_contacts_model.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:http/http.dart' as http;
@@ -33,14 +34,17 @@ class RequestEmergecyProvider {
       BuildContext context) async {
     _isLoading = true;
     _status = false;
+    final preferences = await Preferences.getInstance();
+    String? token = await preferences.getAccessToken();
 
-    String url = '$requestBaseUrl/api/v1/emergency';
+    print('JWT Token $token');
+
+    String url = '$requestBaseUrl/emergency';
 
     final requestHeaders = {
       'Accept': 'application/vnd.api+json',
       'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTMxMDBlZmExZDI3ZmU0MTEzZWU1Y2IiLCJpYXQiOjE2OTg1ODgzOTQsImV4cCI6MTY5ODY3NDc5NH0.c4wfOwrVD4iwJXdGexwd-Cqpic2tgJCsRDW-5V-QLTg '
+      'Authorization': 'Bearer $token '
     };
 
     final body = addEmergencyContactsModel.toJson();
