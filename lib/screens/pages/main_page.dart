@@ -62,8 +62,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 ),
                 child: Row(children: <Widget>[
                   Avatar.medium(
-                    img: NetworkImage(
-                        '${userAdapter.user?.profilePicture!.url}'),
+                    img: NetworkImage('${userAdapter.user?.profilePicture}'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),

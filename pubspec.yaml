@@ -50,6 +50,9 @@ dependencies:
   fl_chart: ^0.62.0
   image_picker: ^1.0.4
   page_transition: ^2.1.0
+  google_maps_flutter: ^2.5.0
+  flutter_polyline_points: ^2.0.0
+  location: ^5.0.3
 
 dev_dependencies:
   flutter_test:

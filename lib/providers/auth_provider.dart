@@ -144,7 +144,7 @@ class AuthProvider extends ChangeNotifier {
 
   //Forgot Password Link
 
-  void forgotPasswor(
+  void forgotPassword(
       ForgotPasswordModel forgotPasswordModel, BuildContext context) async {
     _isLoading = true;
 

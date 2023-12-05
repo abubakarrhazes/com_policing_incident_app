@@ -11,7 +11,7 @@ class User extends ChangeNotifier {
   final String DOB;
   final String email;
   final String? address;
-  final ProfilePicture? profilePicture;
+  final String? profilePicture;
   final String phoneNumber;
   final String occupation;
   final String state;
@@ -60,8 +60,10 @@ class User extends ChangeNotifier {
       DOB: map['DOB'] as String,
       email: map['email'] as String,
       address: map['address'] as String?,
-      profilePicture:
-          ProfilePicture.fromMap(map['profilePicture'] as Map<String, dynamic>),
+      profilePicture: map[' profilePicture'] != null
+          ? map[' profilePicture'] as String
+          : null,
+
       // TODO: phoneNumber should be String
       // phoneNumber: map['phoneNumber'] as String,
       phoneNumber: map['phoneNumber'].toString(),
@@ -92,36 +94,4 @@ class User extends ChangeNotifier {
     }
   }
   */
-}
-
-class ProfilePicture {
-  String? public_id;
-  String? format;
-  String? url;
-  ProfilePicture({
-    this.public_id,
-    this.format,
-    this.url,
-  });
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'public_id': public_id,
-      'format': format,
-      'url': url,
-    };
-  }
-
-  factory ProfilePicture.fromMap(Map<String, dynamic> map) {
-    return ProfilePicture(
-      public_id: map['public_id'] != null ? map['public_id'] as String : null,
-      format: map['format'] != null ? map['format'] as String : null,
-      url: map['url'] != null ? map['url'] as String : null,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory ProfilePicture.fromJson(String source) =>
-      ProfilePicture.fromMap(json.decode(source) as Map<String, dynamic>);
 }

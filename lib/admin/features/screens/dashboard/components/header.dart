@@ -58,7 +58,7 @@ class ProfileCard extends StatelessWidget {
       child: Row(
         children: [
           Avatar.large(
-              img: NetworkImage('${userAdapter.user?.profilePicture!.url}')),
+              img: NetworkImage('${userAdapter.user?.profilePicture}')),
           if (!Responsive.isMobile(context))
             Padding(
               padding:

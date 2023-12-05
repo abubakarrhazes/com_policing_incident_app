@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, unused_field
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, unused_field, prefer_final_fields, await_only_futures
 
 import 'package:com_policing_incident_app/providers/auth_provider.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/model/forgot_password_model.dart';
@@ -20,6 +20,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController _forgotPasswordController =
       TextEditingController();
   final AuthProvider authProvider = AuthProvider();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -30,7 +31,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   void forgotUserPassword() {
     // Make Api Call From Auth Services Class
-    authProvider.forgotPasswor(
+    authProvider.forgotPassword(
         ForgotPasswordModel(email: _forgotPasswordController.text), context);
   }
 
@@ -125,14 +126,35 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(
                       height: 15,
                     ),
+                    // Add this variable to track loading state
                     ButtonWidget(
-                        text: 'Reset Now',
-                        onPress: () async {
-                          if (_forgot_password_formKey.currentState!
-                              .validate()) {
-                            forgotUserPassword();
-                          }
-                        })
+                      text: _isLoading
+                          ? 'Resetting Please Wait ...'
+                          : 'Reset Now',
+                      onPress: () {
+                        if (!_isLoading &&
+                            _forgot_password_formKey.currentState!.validate()) {
+                          setState(() {
+                            _isLoading = true; // Set loading state to true
+                          });
+
+                          forgotUserPassword(); // Call the function to reset the password
+
+                          // You may remove the Future.delayed block if forgotUserPassword is synchronous.
+                          // This block is here to simulate an asynchronous operation.
+                          Future.delayed(Duration(seconds: 3), () {
+                            // After the simulated operation is complete, reset the loading state
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          });
+                        }
+                      },
+                    ),
+
+                    SizedBox(
+                      height: 15,
+                    ),
                   ],
                 ),
               ),
