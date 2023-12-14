@@ -3,11 +3,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
 import 'package:com_policing_incident_app/models/police_station.dart';
-import 'package:com_policing_incident_app/models/report_crime_model.dart';
+
+import 'package:com_policing_incident_app/models/report_incident_model.dart';
 import 'package:com_policing_incident_app/providers/features-providers/report_crime_provider.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/blog/models/blog_post.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
@@ -170,15 +173,18 @@ class _ReportCrimeState extends State<ReportCrime> {
 
   void reportCrime() {
     reportCrimeProvider.reportCrimeWithFile(
-        ReportCrimeModel(
+        CrimeData(
           category: categories,
           details: _detailsController.text,
-          photo: imagesPath ?? '',
+          photo: imagesPath,
           video: videoPath,
           audio: audioPath,
           file: filePath,
           policeUnit: selectedStation!,
-          location: UserLocationData(latitude: latitude, logitude: logitude),
+          location: UserLocation(
+            latitude: latitude.toString(), // replace with actual latitude
+            logitude: logitude.toString(), // replace with actual longitude
+          ),
         ),
         context);
 

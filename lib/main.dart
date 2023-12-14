@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       onGenerateRoute: routes.controller,
-      initialRoute: isViewed == false ? routes.onboard : routes.login,
+      initialRoute: isViewed == false ? routes.splash : routes.login,
     );
   }
 }

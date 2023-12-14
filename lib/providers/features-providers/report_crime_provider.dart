@@ -1,11 +1,12 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unused_local_variable
 
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
+import 'package:com_policing_incident_app/models/get-models/police.dart';
 import 'package:com_policing_incident_app/models/get-models/report_model.dart';
 import 'package:com_policing_incident_app/models/police_station.dart';
-import 'package:com_policing_incident_app/models/report_crime_model.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 import 'package:com_policing_incident_app/services/config.dart';
@@ -33,85 +34,25 @@ class ReportCrimeProvider {
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
 
-  void reportCrime(
-      ReportCrimeModel reportCrimeModel, BuildContext context) async {
+  void reportCrimeWithFile(CrimeData crimeReport, BuildContext context) async {
     _isLoading = true;
-    _status = true;
+
+    String url = '$requestBaseUrl/crime';
     final preferences = await Preferences.getInstance();
 
     String? token = await preferences.getAccessToken();
 
-    String url = '$requestBaseUrl/crime';
-
-    final requestHeaders = {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token '
-    };
-
-    final body = reportCrimeModel.toJson();
-
     try {
-      http.Response response =
-          await http.post(Uri.parse(url), headers: requestHeaders, body: body);
-
-      if (response.statusCode == 200) {
-        final responseData = response.body;
-        _resMessage = "Crime Reported Succesfully";
-        utils.showToast(context, _resMessage);
-        print(responseData);
-        _status = false;
-      } else {
-        final res = json.decode(response.body);
-
-        _resMessage = res['message'];
-
-        utils.showToast(context, _resMessage);
-
-        print(res);
-        _isLoading = false;
-      }
-    } on SocketException catch (_) {
-      _resMessage = "Internet connection is not available`";
-    } catch (e) {
-      print(":::: ${e.toString()}");
-    }
-  }
-
-  void reportCrimeWithFile(
-      ReportCrimeModel reportCrimeModel, BuildContext context) async {
-    _isLoading = true;
-
-    String url = '$requestBaseUrl/crime';
-
-    try {
-      var request = http.MultipartRequest('POST', Uri.parse(url));
-      request.fields['category'] = reportCrimeModel.category;
-      request.fields['details'] = reportCrimeModel.details;
-      request.fields['location'] =
-          json.encode(reportCrimeModel.location.toMap());
-      var photo = await http.MultipartFile.fromPath(
-        'photo',
-        reportCrimeModel.photo!,
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(url),
       );
-      var video = await http.MultipartFile.fromPath(
-        'video',
-        reportCrimeModel.video!,
-      );
-      var audio = await http.MultipartFile.fromPath(
-        'audio',
-        reportCrimeModel.audio!,
-      );
-      var file = await http.MultipartFile.fromPath(
-        'file',
-        reportCrimeModel.file!,
-      );
-      request.files.addAll([
-        photo,
-        video,
-        audio,
-        file,
-      ]);
+      request.fields['category'] = json.encode(crimeReport.category);
+      request.fields['details'] = json.encode(crimeReport.details);
+      request.fields['location'] = json.encode(crimeReport.location);
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['Authorization'] = 'Bearer $token';
+
       var response = await request.send();
       if (response.statusCode == 200) {
         _isLoading = false;
@@ -123,6 +64,7 @@ class ReportCrimeProvider {
         final res = json.decode('${response.stream.bytesToString()}');
 
         _resMessage = res['message'];
+        utils.successShowToast(context, _resMessage);
 
         print(res);
         _isLoading = false;
@@ -140,7 +82,7 @@ class ReportCrimeProvider {
 
   //Fetch Police
 
-  Future<List<PoliceStation>?> fetchStation() async {
+  Future<Police> getStation() async {
     final preferences = await Preferences.getInstance();
     String? token = await preferences.getAccessToken();
 
@@ -155,10 +97,8 @@ class ReportCrimeProvider {
       String url = '$requestBaseUrl/station';
       final response = await http.get(Uri.parse(url), headers: requestHeaders);
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body)['data'];
-        print(data);
-        //return data.map((json) => PoliceStation.fromJson(json)).toList();
-        data.map((json) => PoliceStation.fromJson(json)).toList();
+        final data = json.decode(response.body.toString());
+        return Police.fromJson(data);
       } else {
         final errorMessage = json.decode(response.body)['message'];
         throw Exception(
@@ -167,7 +107,7 @@ class ReportCrimeProvider {
     } catch (error) {
       print(error);
     }
-    return null;
+    throw Exception('Failed to load  error');
 
     // ignore: dead_code
   }
@@ -209,7 +149,7 @@ class ReportCrimeProvider {
 
   //Get Report By User ID
 
-  Future<List<ReportModels>?> getreportCrimeByUserId() async {
+  Future<CrimeReport> getreportCrimeByUserId() async {
     _isLoading = true;
     _status = true;
     final preferences = await Preferences.getInstance();
@@ -217,6 +157,7 @@ class ReportCrimeProvider {
     String? userId = await preferences.getUserId();
 
     print('JWT Token $token');
+    print('User Id $userId');
 
     final requestHeaders = {
       'Accept': 'application/vnd.api+json',
@@ -225,21 +166,19 @@ class ReportCrimeProvider {
     };
 
     try {
-      String url = '$requestBaseUrl/crime/$userId/my_crimes';
+      String url = '$requestBaseUrl/crime/?userId=$userId/my_crimes';
       final response = await http.get(Uri.parse(url), headers: requestHeaders);
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body)['data'];
-        print(data);
-        //return data.map((json) => PoliceStation.fromJson(json)).toList();
-        data.map((json) => ReportData.fromJson(json)).toList();
+        final data = json.decode(response.body.toString());
+        return CrimeReport.fromJson(data);
       } else {
         final errorMessage = json.decode(response.body)['message'];
         throw Exception(
-            'Failed to load police stations  ${response.statusCode} error ${errorMessage}');
+            'Failed to load police   ${response.statusCode} error ${errorMessage}');
       }
     } catch (error) {
-      print(error);
+      print(":::: $error");
     }
-    return null;
+    throw Exception('Failed to load  error');
   }
 }

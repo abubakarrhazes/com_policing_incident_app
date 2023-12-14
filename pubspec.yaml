@@ -52,6 +52,8 @@ dependencies:
   page_transition: ^2.1.0
   google_maps_flutter: ^2.5.0
   flutter_polyline_points: ^2.0.0
+  flutter_native_splash: ^2.3.6
+
   location: ^5.0.3
 
 dev_dependencies:
@@ -67,7 +69,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/police.png
+  
+  android: true
+  ios: true
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -75,6 +82,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  
+
 
   # To add assets to your application, add an assets section, like this:
   assets:

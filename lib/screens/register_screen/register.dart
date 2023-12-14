@@ -157,8 +157,8 @@ class _RegisterState extends State<Register> {
                                     ? Avatar.large(
                                         img: FileImage(File(imagePath!)))
                                     : Avatar.large(
-                                        img: NetworkImage(
-                                            'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?w=826&t=st=1700222239~exp=1700222839~hmac=5ce3ad75c38b8cbd3d394d9f4ed41b0481a6494c824a24c9e98cdb8f41071f44')),
+                                        img: AssetImage(
+                                            'assets/images/pass.png')),
                                 Positioned(
                                   child: IconButton(
                                     onPressed: selectImages,
@@ -300,27 +300,33 @@ class _RegisterState extends State<Register> {
                             ),
                             const SizedBox(height: 20),
                             ButtonWidget(
-                              onPress: () async {
-                                // Registration Function Call Here
-                                if (_registerformKey.currentState!.validate()) {
+                              text: _isLoading
+                                  ? 'Creating Please Wait ...'
+                                  : 'Create Account',
+                              onPress: () {
+                                if (!_isLoading &&
+                                    _registerformKey.currentState!.validate()) {
                                   setState(() {
-                                    _isLoading = true;
+                                    _isLoading =
+                                        true; // Set loading state to true
                                   });
-                                  registerUser();
-                                  // Set loading back to false when registration is complete
-                                  setState(() {
-                                    _isLoading = false;
+
+                                  registerUser(); // Call the function to reset the password
+
+                                  // You may remove the Future.delayed block if forgotUserPassword is synchronous.
+                                  // This block is here to simulate an asynchronous operation.
+                                  Future.delayed(Duration(seconds: 3), () {
+                                    // After the simulated operation is complete, reset the loading state
+                                    setState(() {
+                                      _isLoading = false;
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          routes.login, (route) => false);
+                                    });
                                   });
                                 }
                               },
-                              text: 'Create Account',
                             ),
-
                             // Display a loading indicator while `_isLoading` is true
-                            if (_isLoading)
-                              CircularProgressIndicator(
-                                color: KprimaryColor,
-                              ),
                           ],
                         ))
                   ],

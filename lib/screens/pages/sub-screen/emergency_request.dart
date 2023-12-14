@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:com_policing_incident_app/models/add_emergency_contacts_model.dart';
+import 'package:com_policing_incident_app/models/emergency_contact.dart';
 import 'package:com_policing_incident_app/providers/features-providers/request_emergency_providers.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/crime_detail_page.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
   final _emergencyEmailController = TextEditingController();
   final _emergencyRelationController = TextEditingController();
   final _emergencyAddressController = TextEditingController();
+  bool isLoading = false;
   final _emergencyFormKey = GlobalKey<FormState>();
   final RequestEmergecyProvider requestEmergecyProvider =
       RequestEmergecyProvider();
@@ -36,12 +38,13 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
 
   void addContacts() {
     requestEmergecyProvider.addEmergencyContactDetails(
-        AddEmergencyContactsModel(
-            name: _emergencyNameController.text,
-            mobileNumber: _emergencyPhoneController.text,
-            email: _emergencyEmailController.text,
-            relation: _emergencyRelationController.text,
-            address: _emergencyAddressController.text),
+        Data(
+          name: _emergencyNameController.text,
+          mobileNumber: _emergencyPhoneController.text,
+          email: _emergencyEmailController.text,
+          relation: _emergencyRelationController.text,
+          address: _emergencyAddressController.text,
+        ),
         context);
   }
 
@@ -65,6 +68,12 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
                         label: 'Enter Name',
                         controller: _emergencyNameController,
                         prefix: Icon(Icons.person),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Name is Required';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -74,6 +83,12 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
                         label: 'Enter Phone',
                         controller: _emergencyPhoneController,
                         prefix: Icon(Icons.contact_phone),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Mobile Number Required';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -82,6 +97,17 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
                       MyInputField(
                         controller: _emergencyEmailController,
                         label: 'Enter Email',
+                        validator: (value) {
+                          RegExp emailRegExp = RegExp(
+                              r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+
+                          if (value == null || value.isEmpty) {
+                            return 'Email can\'t be empty';
+                          } else if (!emailRegExp.hasMatch(value)) {
+                            return 'Enter a correct email';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -90,6 +116,12 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
                       MyInputField(
                         controller: _emergencyRelationController,
                         label: 'Enter Relation',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Relation is Required';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -98,6 +130,12 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
                       MyInputField(
                         controller: _emergencyAddressController,
                         label: 'Enter Address',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Address Required';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -115,16 +153,28 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   )),
-              onPressed: () {
-                addContacts();
-              },
               child: Text(
-                'Add Contact',
+                isLoading ? 'Adding ....' : 'Add Contact',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
+              onPressed: () {
+                if (!isLoading && _emergencyFormKey.currentState!.validate()) {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  addContacts();
+                  Future.delayed(Duration(seconds: 3), () {
+                    // After the simulated operation is complete, reset the loading state
+                    setState(() {
+                      isLoading = false;
+                      Navigator.of(context).pop();
+                    });
+                  });
+                }
+              },
             ),
           ],
         );
@@ -176,7 +226,52 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
                     ),
                   )
                 ],
-              )
+              ),
+              Expanded(
+                child: FutureBuilder<EmergencyContact>(
+                  future: requestEmergecyProvider.getEmergencyContact(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.data!.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                height: 80,
+                                decoration: BoxDecoration(
+                                    color: KprimaryColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: ListTile(
+                                  onTap: () {},
+                                  title: Text(
+                                    'Name: ${snapshot.data!.data![index].name} ',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                  subtitle: Text(
+                                    'Phone Number: ${snapshot.data!.data![index].mobileNumber}',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                  // Add more UI components as needed
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
             ],
           ),
         ),

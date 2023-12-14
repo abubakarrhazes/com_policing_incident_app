@@ -13,7 +13,7 @@ import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/more_
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/notifications.dart';
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/settings.dart';
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/user_profile.dart';
-import 'package:com_policing_incident_app/screens/pages/sub-screen/blogs.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/blog/blogs.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/emergency_request.dart';
 
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/report_crime.dart';
@@ -79,7 +79,7 @@ class Routes {
       case '/crime-report-list':
         return MaterialPageRoute(builder: (context) => UserReports());
       case '/blog':
-        return MaterialPageRoute(builder: (context) => Blog());
+        return MaterialPageRoute(builder: (context) => Blogs());
       case '/user':
         return MaterialPageRoute(builder: (context) => UserProfile());
       case '/notifications':

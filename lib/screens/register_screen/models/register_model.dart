@@ -10,7 +10,7 @@ class RegisterModel extends ChangeNotifier {
   final String DOB;
   final String email;
   final String address;
-  final String profilePicture;
+  final String? profilePicture;
   final String phoneNumber;
   final String occupation;
   final String state;
@@ -53,7 +53,9 @@ class RegisterModel extends ChangeNotifier {
       DOB: map['DOB'] as String,
       email: map['email'] as String,
       address: map['officeAddress'] as String,
-      profilePicture: map['profilePicture'] as String,
+      profilePicture: map['profilePicture'] != null
+          ? map['profilePicture'] as String
+          : null,
       // TODO: phoneNumber should be String
       // phoneNumber: map['phoneNumber'] as String,
       phoneNumber: map['phoneNumber'].toString(),

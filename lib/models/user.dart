@@ -60,8 +60,8 @@ class User extends ChangeNotifier {
       DOB: map['DOB'] as String,
       email: map['email'] as String,
       address: map['address'] as String?,
-      profilePicture: map[' profilePicture'] != null
-          ? map[' profilePicture'] as String
+      profilePicture: map['profilePicture'] != null
+          ? map['profilePicture'] as String
           : null,
 
       // TODO: phoneNumber should be String

@@ -128,15 +128,33 @@ class Utils {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        closeIconColor: Colors.white,
+        content: Row(
+          children: [
+            Icon(
+              Icons.info_outline,
+              color: Colors.white,
+            ),
+            SizedBox(width: 8),
+            Text(
+              message,
+              style: TextStyle(color: Colors.white, fontSize: 10),
+            ),
+          ],
+        ),
         backgroundColor: Colors.red,
-        shape: Border(top: BorderSide()),
-        content: Text(
-          message,
-          style: TextStyle(color: Colors.white, fontSize: 15),
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+          side: BorderSide(color: Colors.white),
         ),
         action: SnackBarAction(
-            label: 'CLOSE', onPressed: scaffold.hideCurrentSnackBar),
+          label: 'CLOSE',
+          textColor: Colors.white,
+          onPressed: () {
+            scaffold.hideCurrentSnackBar();
+          },
+        ),
       ),
     );
   }
@@ -145,15 +163,33 @@ class Utils {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        closeIconColor: Colors.white,
+        content: Row(
+          children: [
+            Icon(
+              Icons.check_circle_outline,
+              color: Colors.white,
+            ),
+            SizedBox(width: 8),
+            Text(
+              message,
+              style: TextStyle(color: Colors.white, fontSize: 10),
+            ),
+          ],
+        ),
         backgroundColor: Colors.green,
-        shape: Border.all(),
-        content: Text(
-          message,
-          style: TextStyle(color: Colors.white, fontSize: 15),
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+          side: BorderSide(color: Colors.white),
         ),
         action: SnackBarAction(
-            label: 'CLOSE', onPressed: scaffold.hideCurrentSnackBar),
+          label: 'CLOSE',
+          textColor: Colors.white,
+          onPressed: () {
+            scaffold.hideCurrentSnackBar();
+          },
+        ),
       ),
     );
   }

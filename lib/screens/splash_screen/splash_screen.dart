@@ -21,7 +21,7 @@ class SplashScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: Colors.white,
-      nextScreen: Text(routes.login),
+      nextScreen: Onboard(),
       splashIconSize: 200,
       splashTransition: SplashTransition.fadeTransition,
       duration: 8000,

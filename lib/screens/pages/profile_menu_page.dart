@@ -33,8 +33,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Avatar.large(
-                      img: NetworkImage(
-                          'https://www.shutterstock.com/image-photo/close-face-young-stylish-woman-600w-1671900778.jpg'),
+                      img: NetworkImage('${userAdapter.user?.profilePicture}'),
                     )
                   ],
                 ),
@@ -43,7 +42,7 @@ class _ProfileMenuPageState extends State<ProfileMenuPage> {
                 height: 15,
               ),
               Text(
-                '${userAdapter.user?.firstName}  ${userAdapter.user?.accessToken} ${userAdapter.user?.otherName}',
+                '${userAdapter.user?.firstName} ${userAdapter.user!.lastName} ',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:com_policing_incident_app/models/get-models/report_model.dart';
-import 'package:com_policing_incident_app/models/report_crime_model.dart';
+
 import 'package:com_policing_incident_app/providers/features-providers/report_crime_provider.dart';
 import 'package:flutter/material.dart';
 

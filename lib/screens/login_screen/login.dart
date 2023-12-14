@@ -81,6 +81,9 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               child: Image.asset('assets/images/login.png'),
             ),
+            SizedBox(
+              height: 20,
+            ),
             Card(
               margin: const EdgeInsets.only(left: 22, right: 22),
               shape: RoundedRectangleBorder(

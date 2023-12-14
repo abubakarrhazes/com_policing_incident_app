@@ -41,8 +41,10 @@ class _ReportsState extends State<Reports> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TabBarView(children: [
+          child: TabBarView(
+            children: [
             GetCases(),
+            
           ]),
         ),
       ),

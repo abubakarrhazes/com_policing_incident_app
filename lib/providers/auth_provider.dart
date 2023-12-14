@@ -57,7 +57,7 @@ class AuthProvider extends ChangeNotifier {
 
       var file = await http.MultipartFile.fromPath(
         'profilePicture',
-        registerModel.profilePicture,
+        registerModel.profilePicture ?? '',
       );
       request.files.add(file);
       var response = await request.send();
@@ -120,6 +120,9 @@ class AuthProvider extends ChangeNotifier {
         final preferences = await Preferences.getInstance();
         preferences.setAccessToken(responseData['data']['accessToken']);
         preferences.setUserId(user.id);
+
+        print(user.email);
+        print(user.profilePicture);
 
         return user;
       } else {

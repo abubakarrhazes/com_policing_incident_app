@@ -1,15 +1,24 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
+import 'package:com_policing_incident_app/models/get-models/police.dart';
+import 'package:com_policing_incident_app/models/police_station.dart';
+import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
+import 'package:com_policing_incident_app/services/config.dart';
+import 'package:com_policing_incident_app/utilities/global_variables.dart';
 
 import 'package:com_policing_incident_app/widgets/action_button.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/custom_delegate.dart';
+import 'package:com_policing_incident_app/widgets/get_cases.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -34,7 +43,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     'https://cdn-icons-png.flaticon.com/512/5862/5862869.png',
     'https://cdn-icons-png.flaticon.com/512/8972/8972994.png',
   ];
-
+  final requestBaseUrl = Config.AuthBaseUrl;
+  List<PoliceStation> policeStations = [];
   List jibby = [
     'Report Crime',
     'Report Incident',
@@ -42,7 +52,47 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     'Emergency call',
   ];
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   var pickedIndex = 3;
+
+  Future<List<PoliceStation>?> fetchData() async {
+    final preferences = await Preferences.getInstance();
+    String? token = await preferences.getAccessToken();
+
+    print('JWT Token $token');
+
+    final requestHeaders = {
+      'Accept': 'application/vnd.api+json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    try {
+      String url = '$requestBaseUrl/station';
+      final response = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body)['data'];
+        print(data);
+        //return data.map((json) => PoliceStation.fromJson(json)).toList();
+        setState(() {
+          policeStations =
+              data.map((json) => PoliceStation.fromJson(json)).toList();
+        });
+      } else {
+        final errorMessage = json.decode(response.body)['message'];
+        throw Exception(
+            'Failed to load police stations  ${response.statusCode} error ${errorMessage}');
+      }
+    } catch (error) {
+      print(error);
+    }
+    return null;
+
+    // ignore: dead_code
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +112,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 ),
                 child: Row(children: <Widget>[
                   Avatar.medium(
-                    img: NetworkImage('${userAdapter.user?.profilePicture}'),
+                    img: NetworkImage('${userAdapter.user!.profilePicture}'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -124,6 +174,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     Tab(text: 'What we offer'),
                     Tab(
                       text: 'Police Stations',
+                    ),
+                    Tab(
+                      text: 'Discover More',
                     )
                   ]),
             )),
@@ -184,139 +237,86 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     },
                   ),
                   SingleChildScrollView(
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const Text('Registered Police Stations',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 20), //40
-                          InkWell(
-                            splashColor: Colors.grey,
-                            onTap: () {
-                              Navigator.pushNamed(context, '/lawyer_1');
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 20),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    const Image(
-                                        image: NetworkImage(
-                                            'https://upload.wikimedia.org/wikipedia/en/1/1c/Nigeria_Police_logo.jpg'),
-                                        height: 80,
-                                        width: 80),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: const <Widget>[
-                                        Text('Barrister Esther jones',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold)),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          'Supreme Court',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ]),
-                            ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          'Registered Police Stations',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 20), //40
-                          InkWell(
-                            splashColor: Colors.grey,
-                            onTap: () {
-                              Navigator.pushNamed(context, '/lawyer_2');
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 20),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    const Image(
-                                        image: NetworkImage(
-                                            'https://upload.wikimedia.org/wikipedia/en/1/1c/Nigeria_Police_logo.jpg'),
-                                        height: 80,
-                                        width: 80),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: const <Widget>[
-                                        Text('Barrister Janet jacob',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold)),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          'Federal high court',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
+                        ),
+                        const SizedBox(height: 20),
+                        FutureBuilder<Police>(
+                          future: reportCrimeProvider.getStation(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                  child: Text('Error: ${snapshot.error}'));
+                            } else {
+                              return ListView.builder(
+                                shrinkWrap:
+                                    true, // Important: Make sure to set shrinkWrap to true
+                                itemCount: snapshot.data!.data!.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    splashColor: Colors.grey,
+                                    onTap: () {
+                                      Navigator.pushNamed(context, '/lawyer_1');
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 20),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          const Image(
+                                            image: AssetImage(
+                                                'assets/images/police.png'),
+                                            height: 80,
+                                            width: 80,
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ]),
-                            ),
-                          ),
-                          const SizedBox(height: 20), //40
-                          InkWell(
-                            splashColor: Colors.grey,
-                            onTap: () {
-                              Navigator.pushNamed(context, '/lawyer_2');
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 20),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    const Image(
-                                        image: NetworkImage(
-                                            'https://upload.wikimedia.org/wikipedia/en/1/1c/Nigeria_Police_logo.jpg'),
-                                        height: 80,
-                                        width: 80),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: const <Widget>[
-                                        Text('Barrister malcom Omon',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold)),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          'Supreme high court',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ]),
-                            ),
-                          )
-                        ],
-                      ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                '${snapshot.data!.data![index].name}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                'Supreme Court',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ),
+
                   // donations screen
                   Container(
                     child: Column(
