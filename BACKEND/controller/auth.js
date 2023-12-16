@@ -68,11 +68,13 @@ const register = asyncHandler(async (req, res) => {
           .end(req.file.buffer);
       });
 
-      profilePicture = {
-        public_id: result.public_id,
-        format: result.format,
-        url: result.url,
-      };
+      // profilePicture = {
+      //   public_id: result.public_id,
+      //   format: result.format,
+      //   url: result.url,
+      // };
+
+      profilePicture = result.url;
     } catch (error) {
       console.error("Error uploading image:", error);
       return res.status(500).json({ message: "Error uploading image" });
@@ -101,13 +103,8 @@ const register = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     status: 200,
-
     message: `New user ${newUser.firstName} created. We sent you a confirmation email`,
     data: { user: user, accessToken: accessToken },
-
-    message: `New user ${newUser.firstName} created`,
-    data: { accessToken: accessToken },
-
   });
 });
 
@@ -139,7 +136,7 @@ const login = asyncHandler(async (req, res) => {
   return res.status(200).json({
     status: 200,
     message: "Success",
-    data: { accessToken: accessToken },
+    data: { user: user, accessToken: accessToken },
   });
 });
 

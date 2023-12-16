@@ -9,10 +9,16 @@ const {
   photoUpload,
   fileUpload,
 } = require("../utils/uploadFile");
+const User = require("../models/userModel");
 
 const getAllIncident = asyncHandler(async (req, res) => {
   const { status } = req.query;
   const queryObject = {};
+
+  const userId = req.userId;
+  const foundUser = await User.findById(userId).exec();
+  if (foundUser.roles !== "admin")
+    throw CustomError("Only admin can access this route");
 
   if (status) {
     queryObject["status"] = status;
@@ -29,6 +35,7 @@ const getAllIncident = asyncHandler(async (req, res) => {
 
 const getMyIncident = asyncHandler(async (req, res) => {
   const { userId } = req.params;
+
   const incident = await Incident.find({ user: userId }).populate("user");
   if (!incident) return res.json({ message: "No incident reported yet" });
   res.json({

@@ -17,9 +17,15 @@ const getAllCrime = asyncHandler(async (req, res) => {
   const { status } = req.query;
   const queryObject = {};
 
+  const userId = req.userId;
+  const foundUser = await User.findById(userId).exec();
+  if (foundUser.roles !== "admin")
+    throw CustomError("Only admin can access this route");
+
   if (status) {
     queryObject["status"] = status;
   }
+
   const crime = await Crime.find(queryObject).populate("user");
   if (crime.length <= 0) return res.json({ message: "No crime reported yet" });
   res.json({
@@ -31,12 +37,15 @@ const getAllCrime = asyncHandler(async (req, res) => {
 
 const getMyCrime = asyncHandler(async (req, res) => {
   const { userId } = req.params;
+
   const crime = await Crime.find({ user: userId }).populate("user");
+  const data = crime.filter((k) => k.user._id == userId);
+
   if (!crime) return res.json({ message: "No crime reported yet" });
   res.json({
     status: 200,
     message: "success",
-    data: crime,
+    data: data,
   });
 });
 const getSingleCrime = asyncHandler(async (req, res) => {

@@ -4,7 +4,7 @@ const { CustomError } = require("../errors/customError");
 
 const getAllPost = asyncHandler(async (req, res) => {
   const { title, description } = req.query;
-  const post = await Post.find({ title, description });
+  const post = await Post.find({});
   if (post.length <= 0) {
     return res.json({ message: "No post found yet" });
   }
@@ -28,19 +28,22 @@ const getSinglePost = asyncHandler(async (req, res) => {
 
 const createPost = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
-  const { image } = req.file;
   const userId = req.userId;
 
-  const imageLink = "";
+  let imageUP = null;
   // process image
   if (!title || !description)
     throw CustomError("Title and description are required");
   if (!userId) throw CustomError("Login to to create post");
 
+  if (req.files) {
+    const { image } = req.file;
+    imageUP = await photoUpload(image);
+  }
   const newPost = await Post.create({
     title,
     description,
-    imageLink,
+    image: imageUP,
     user: userId,
   });
   res.json({
