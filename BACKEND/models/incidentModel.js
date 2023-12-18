@@ -1,19 +1,17 @@
 const { default: mongoose } = require("mongoose");
 
 const categoryEnum = [
-  "Homocide",
-  "Robbery",
-  "Sexual assault and rape",
-  "Domestic violence",
-  "Kidnapping",
-  "Reckless Driving",
-  "Online fraud",
-  "Motor Vehicle Theft",
-  "Arson",
-  "Ritual Killings",
-  "Drug trafficking/ Possession",
-  "Cultism",
-  "Exam Malpractice",
+  'Malware Attack',
+  'Phishing',
+  'Data Breach',
+  'Break-ins or Burglaries',
+  'Vandalism',
+  'Assaults or Violent Incidents',
+  'Kidnappings',
+  'Vehicle Accidents',
+  'Social Media Crises',
+  'Fire Outbreak',
+  'Exam Malpractice'
 ];
 
 const incidentSchema = new mongoose.Schema(
