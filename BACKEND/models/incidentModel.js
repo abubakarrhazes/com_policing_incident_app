@@ -13,7 +13,9 @@ const categoryEnum = [
   "Ritual Killings",
   "Drug trafficking/ Possession",
   "Cultism",
+  "Exam Malpractice",
 ];
+
 const incidentSchema = new mongoose.Schema(
   {
     user: {
@@ -40,9 +42,9 @@ const incidentSchema = new mongoose.Schema(
       default: "pending",
     },
     policeUnit: {
-      type: String,
-      enum: ["zaria police station", "kastina police station"],
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Station",
+      required: [true, "Station ID is required"],
     },
     location: {
       latitude: {
