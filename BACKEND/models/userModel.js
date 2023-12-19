@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     profilePicture: {
-      type: Object,
+      type: String,
       default: "",
     },
     phoneNumber: {

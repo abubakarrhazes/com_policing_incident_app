@@ -1,19 +1,19 @@
 const { default: mongoose } = require("mongoose");
 
 const categoryEnum = [
-  "Homocide",
-  "Robbery",
-  "Sexual assault and rape",
-  "Domestic violence",
-  "Kidnapping",
-  "Reckless Driving",
-  "Online fraud",
-  "Motor Vehicle Theft",
-  "Arson",
-  "Ritual Killings",
-  "Drug trafficking/ Possession",
-  "Cultism",
+  'Malware Attack',
+  'Phishing',
+  'Data Breach',
+  'Break-ins or Burglaries',
+  'Vandalism',
+  'Assaults or Violent Incidents',
+  'Kidnappings',
+  'Vehicle Accidents',
+  'Social Media Crises',
+  'Fire Outbreak',
+  'Exam Malpractice'
 ];
+
 const incidentSchema = new mongoose.Schema(
   {
     user: {
@@ -40,9 +40,9 @@ const incidentSchema = new mongoose.Schema(
       default: "pending",
     },
     policeUnit: {
-      type: String,
-      enum: ["zaria police station", "kastina police station"],
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Station",
+      required: [true, "Station ID is required"],
     },
     location: {
       latitude: {
