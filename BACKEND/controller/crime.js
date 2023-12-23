@@ -17,6 +17,9 @@ const getAllCrime = asyncHandler(async (req, res) => {
   const { status } = req.query;
   const queryObject = {};
 
+  console.log("hey");
+
+
   const userId = req.userId;
   const foundUser = await User.findById(userId).exec();
   if (foundUser.roles !== "admin")

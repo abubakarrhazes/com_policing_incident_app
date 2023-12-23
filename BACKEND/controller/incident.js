@@ -10,6 +10,7 @@ const {
   fileUpload,
 } = require("../utils/uploadFile");
 const User = require("../models/userModel");
+const refNum = require("../utils/genRef");
 
 const getAllIncident = asyncHandler(async (req, res) => {
   const { status } = req.query;
