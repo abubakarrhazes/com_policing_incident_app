@@ -29,6 +29,77 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
 
+  /*
+
+  Future<void> registerUser(
+      RegisterModel registerModel, BuildContext context) async {
+    String url = '$requestBaseUrl/auth/signup';
+    try {
+      var response = await _postFormData(url, registerModel);
+
+      if (response.statusCode == 200) {
+        _handleSuccessResponse(response, context);
+      } else {
+        _handleErrorResponse(response, context);
+      }
+    } on SocketException catch (_) {
+      _handleError(context, "Internet connection is not available");
+    }
+  }
+
+  Future<http.StreamedResponse> _postFormData(
+      String url, RegisterModel registerModel) async {
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.headers['Content-Type'] = 'multipart/form-data';
+    request.fields['firstName'] = registerModel.firstName;
+    request.fields['lastName'] = registerModel.lastName;
+    request.fields['otherName'] = registerModel.otherName;
+    request.fields['email'] = registerModel.email;
+    request.fields['phoneNumber'] = registerModel.phoneNumber;
+    request.fields['DOB'] = registerModel.DOB;
+    request.fields['state'] = registerModel.state;
+    request.fields['occupation'] = registerModel.occupation;
+    request.fields['address'] = registerModel.address;
+    request.fields['password'] = registerModel.password;
+
+    var file = await http.MultipartFile.fromPath(
+      'profilePicture',
+      registerModel.profilePicture!,
+    );
+    request.files.add(file);
+
+    return await request.send();
+  }
+
+  void _handleSuccessResponse(
+      http.StreamedResponse response, BuildContext context) async {
+    _isLoading = false;
+    final responseBody = response.stream.bytesToString();
+    final responseData = await json.decode(responseBody.toString());
+    _resMessage = 'Account Created $responseData';
+
+    print(_resMessage);
+    utils.successShowToast(context, _resMessage);
+  }
+
+  void _handleErrorResponse(
+      http.StreamedResponse response, BuildContext context) {
+    final responseBody = response.stream.bytesToString();
+    final res = json.decode(responseBody.toString());
+    _resMessage = res['message'];
+    utils.showToast(context, _resMessage);
+
+    _isLoading = false;
+  }
+
+  void _handleError(BuildContext context, String errorMessage) {
+    _isLoading = false;
+    _resMessage = errorMessage;
+    utils.showToast(context, _resMessage);
+  }
+
+  
+
   void registerUser(RegisterModel registerModel, BuildContext context) async {
     _isLoading = true;
     String url = '$requestBaseUrl/auth/signup';
@@ -57,7 +128,7 @@ class AuthProvider extends ChangeNotifier {
 
       var file = await http.MultipartFile.fromPath(
         'profilePicture',
-        registerModel.profilePicture ?? '',
+        registerModel.profilePicture!,
       );
       request.files.add(file);
       var response = await request.send();
@@ -67,12 +138,14 @@ class AuthProvider extends ChangeNotifier {
         _resMessage = 'Account Created $reponseData';
 
         print(_resMessage);
+
+        utils.successShowToast(context, _resMessage);
       } else {
         final res = json.decode('${response.stream.bytesToString()}');
 
         _resMessage = res['message'];
+        utils.showToast(context, _resMessage);
 
-        print(res);
         _isLoading = false;
       }
     } on SocketException catch (_) {
@@ -81,9 +154,95 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       _resMessage = "Please try again`";
-
-      print(":::: $e");
+      utils.showToast(context, _resMessage);
     }
+  }
+  */
+
+  //Register New User
+  Future<void> registerUser(
+      RegisterModel registerModel, BuildContext context) async {
+    String url = '$requestBaseUrl/auth/signup';
+    try {
+      var response = await _postFormData(url, registerModel);
+
+      if (response.statusCode == 200) {
+        _handleSuccessResponse(response, context);
+      } else {
+        _handleErrorResponse(response, context);
+      }
+    } on SocketException catch (_) {
+      _handleError(context, "Internet connection is not available");
+    } catch (e) {
+      _handleError(context, "Please try again");
+    }
+  }
+
+  Future<http.StreamedResponse> _postFormData(
+      String url, RegisterModel registerModel) async {
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.headers['Content-Type'] = 'multipart/form-data';
+    request.fields['firstName'] = registerModel.firstName;
+    request.fields['lastName'] = registerModel.lastName;
+    request.fields['otherName'] = registerModel.otherName;
+    request.fields['email'] = registerModel.email;
+    request.fields['phoneNumber'] = registerModel.phoneNumber;
+    request.fields['DOB'] = registerModel.DOB;
+    request.fields['state'] = registerModel.state;
+    request.fields['occupation'] = registerModel.occupation;
+    request.fields['address'] = registerModel.address;
+    request.fields['password'] = registerModel.password;
+
+    var file = await http.MultipartFile.fromPath(
+      'profilePicture',
+      registerModel.profilePicture!,
+    );
+    request.files.add(file);
+
+    return await request.send();
+  }
+
+  void _handleSuccessResponse(
+      http.StreamedResponse response, BuildContext context) async {
+    _isLoading = false;
+
+    try {
+      final responseData = await _parseResponse(response);
+      _resMessage = responseData["message"];
+      utils.successShowToast(context, _resMessage);
+      Navigator.pushNamedAndRemoveUntil(
+          context, routes.login, (route) => false);
+      print(_resMessage);
+    } catch (e) {
+      print('Error handling success response: $e');
+      utils.showToast(context, 'Error handling success response');
+    }
+  }
+
+  void _handleErrorResponse(
+      http.StreamedResponse response, BuildContext context) async {
+    try {
+      final res = await _parseResponse(response);
+      _resMessage = res['message'];
+      utils.showToast(context, _resMessage);
+
+      _isLoading = false;
+    } catch (e) {
+      print('Error handling error response: $e');
+      utils.showToast(context, 'Error handling error response');
+    }
+  }
+
+  Future<dynamic> _parseResponse(http.StreamedResponse response) async {
+    final String responseBody = await response.stream.bytesToString();
+    final dynamic decodedResponse = json.decode(responseBody);
+    return decodedResponse;
+  }
+
+  void _handleError(BuildContext context, String errorMessage) {
+    _isLoading = false;
+    _resMessage = errorMessage;
+    utils.showToast(context, _resMessage);
   }
 
   //Login

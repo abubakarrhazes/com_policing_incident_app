@@ -88,7 +88,7 @@ class RequestEmergecyProvider {
     };
 
     try {
-      String url = '$requestBaseUrl/emergency';
+      String url = '$requestBaseUrl/emergency/info';
       final response = await http.get(Uri.parse(url), headers: requestHeaders);
       if (response.statusCode == 200) {
         final data = json.decode(response.body.toString());

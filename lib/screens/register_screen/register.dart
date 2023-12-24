@@ -148,187 +148,186 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 8),
                     Form(
-                        key: _registerformKey,
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                imagePath != null
-                                    ? Avatar.large(
-                                        img: FileImage(File(imagePath!)))
-                                    : Avatar.large(
-                                        img: AssetImage(
-                                            'assets/images/pass.png')),
-                                Positioned(
-                                  child: IconButton(
-                                    onPressed: selectImages,
-                                    icon: Icon(
-                                      Icons.add_a_photo,
-                                      color: KprimaryColor,
-                                    ),
+                      key: _registerformKey,
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              imagePath != null
+                                  ? Avatar.large(
+                                      img: FileImage(File(imagePath!)))
+                                  : Avatar.large(
+                                      img:
+                                          AssetImage('assets/images/pass.png')),
+                              Positioned(
+                                child: IconButton(
+                                  onPressed: selectImages,
+                                  icon: Icon(
+                                    Icons.add_a_photo,
+                                    color: KprimaryColor,
                                   ),
-                                  bottom: -13,
-                                  left: 70,
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            MyInputField(
-                              hintText: 'Firsname',
-                              controller: _firstNameController,
+                                ),
+                                bottom: -13,
+                                left: 70,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          MyInputField(
+                            hintText: 'Firsname',
+                            controller: _firstNameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'FirstName Required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                            hintText: 'Lastname',
+                            controller: _lastNameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'LastName Required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                            hintText: 'Othername',
+                            controller: _otherNameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'OtherName Required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                              hintText: 'Email',
+                              keyboardType: TextInputType.emailAddress,
+                              controller: _emailNameController,
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'FirstName Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'Lastname',
-                              controller: _lastNameController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'LastName Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'Othername',
-                              controller: _otherNameController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'OtherName Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                                hintText: 'Email',
-                                keyboardType: TextInputType.emailAddress,
-                                controller: _emailNameController,
-                                validator: (value) {
-                                  RegExp emailRegExp = RegExp(
-                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+                                RegExp emailRegExp = RegExp(
+                                    r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
 
-                                  if (value == null || value.isEmpty) {
-                                    return 'Email can\'t be empty';
-                                  } else if (!emailRegExp.hasMatch(value)) {
-                                    return 'Enter a correct email';
-                                  }
-                                  return null;
-                                }),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'Phone',
-                              keyboardType: TextInputType.phone,
-                              controller: _phoneNumberController,
+                                if (value == null || value.isEmpty) {
+                                  return 'Email can\'t be empty';
+                                } else if (!emailRegExp.hasMatch(value)) {
+                                  return 'Enter a correct email';
+                                }
+                                return null;
+                              }),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                            hintText: 'Phone',
+                            keyboardType: TextInputType.phone,
+                            controller: _phoneNumberController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Phone Required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                              hintText: 'Date Of Birth',
+                              keyboardType: TextInputType.datetime,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Phone Required';
+                                  return 'Date Of Birth Required';
                                 }
                                 return null;
                               },
-                            ),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                                hintText: 'Date Of Birth',
-                                keyboardType: TextInputType.datetime,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Date Of Birth Required';
-                                  }
-                                  return null;
-                                },
-                                onTap: () {
-                                  _selectDate(context).toString();
-                                },
-                                controller: _dateOfBithController),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'State',
-                              keyboardType: TextInputType.text,
-                              controller: _stateController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'State Required';
-                                }
-                                return null;
+                              onTap: () {
+                                _selectDate(context).toString();
                               },
-                            ),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'Occupation',
-                              keyboardType: TextInputType.text,
-                              controller: _occupationController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Occupation Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'Address',
-                              keyboardType: TextInputType.text,
-                              controller: _addressController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Address Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            MyInputField(
-                              hintText: 'Password',
-                              isPassword: true,
-                              keyboardType: TextInputType.visiblePassword,
-                              controller: _passwordController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Password Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            ButtonWidget(
-                              text: _isLoading
-                                  ? 'Creating Please Wait ...'
-                                  : 'Create Account',
-                              onPress: () {
-                                if (!_isLoading &&
-                                    _registerformKey.currentState!.validate()) {
+                              controller: _dateOfBithController),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                            hintText: 'State',
+                            keyboardType: TextInputType.text,
+                            controller: _stateController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'State Required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                            hintText: 'Occupation',
+                            keyboardType: TextInputType.text,
+                            controller: _occupationController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Occupation Required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                            hintText: 'Address',
+                            keyboardType: TextInputType.text,
+                            controller: _addressController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Address Required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          MyInputField(
+                            hintText: 'Password',
+                            isPassword: true,
+                            keyboardType: TextInputType.visiblePassword,
+                            controller: _passwordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Password Required';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          ButtonWidget(
+                            text: _isLoading
+                                ? 'Creating Please Wait ...'
+                                : 'Create Account',
+                            onPress: () {
+                              if (!_isLoading &&
+                                  _registerformKey.currentState!.validate()) {
+                                setState(() {
+                                  _isLoading =
+                                      true; // Set loading state to true
+                                });
+
+                                registerUser(); // Call the function to reset the password
+
+                                // You may remove the Future.delayed block if forgotUserPassword is synchronous.
+                                // This block is here to simulate an asynchronous operation.
+                                Future.delayed(Duration(seconds: 15), () {
+                                  // After the simulated operation is complete, reset the loading state
                                   setState(() {
-                                    _isLoading =
-                                        true; // Set loading state to true
+                                    _isLoading = false;
                                   });
-
-                                  registerUser(); // Call the function to reset the password
-
-                                  // You may remove the Future.delayed block if forgotUserPassword is synchronous.
-                                  // This block is here to simulate an asynchronous operation.
-                                  Future.delayed(Duration(seconds: 3), () {
-                                    // After the simulated operation is complete, reset the loading state
-                                    setState(() {
-                                      _isLoading = false;
-                                      Navigator.pushNamedAndRemoveUntil(context,
-                                          routes.login, (route) => false);
-                                    });
-                                  });
-                                }
-                              },
-                            ),
-                            // Display a loading indicator while `_isLoading` is true
-                          ],
-                        ))
+                                });
+                              }
+                            },
+                          ),
+                          // Display a loading indicator while `_isLoading` is true
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

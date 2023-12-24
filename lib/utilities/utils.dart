@@ -170,9 +170,11 @@ class Utils {
               color: Colors.white,
             ),
             SizedBox(width: 8),
-            Text(
-              message,
-              style: TextStyle(color: Colors.white, fontSize: 10),
+            Expanded(
+              child: Text(
+                message,
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
             ),
           ],
         ),

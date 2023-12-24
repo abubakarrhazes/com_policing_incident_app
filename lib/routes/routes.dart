@@ -19,7 +19,7 @@ import 'package:com_policing_incident_app/screens/pages/sub-screen/emergency_req
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/report_crime.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
-import 'package:com_policing_incident_app/screens/pages/sub-screen/user_reports.dart';
+
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
 import 'package:com_policing_incident_app/screens/splash_screen/splash_screen.dart';
 
@@ -76,8 +76,7 @@ class Routes {
         return MaterialPageRoute(builder: (context) => ReportCrime());
       case '/report-incident':
         return MaterialPageRoute(builder: (context) => MyWidget());
-      case '/crime-report-list':
-        return MaterialPageRoute(builder: (context) => UserReports());
+
       case '/blog':
         return MaterialPageRoute(builder: (context) => Blogs());
       case '/user':

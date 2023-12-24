@@ -5,10 +5,12 @@ import 'dart:io';
 
 import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
 import 'package:com_policing_incident_app/models/get-models/police.dart';
-import 'package:com_policing_incident_app/models/get-models/report_model.dart';
+
 import 'package:com_policing_incident_app/models/police_station.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/model/report_crime_model.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,99 @@ class ReportCrimeProvider {
   //Getters
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
+
+  Future<void> reportCrimeWithFiles(
+      ReportCrimeModel reportCrimeModel, BuildContext context) async {
+    String url = '$requestBaseUrl/crime';
+
+    try {
+      var response = await _postFormData(url, reportCrimeModel);
+
+      if (response.statusCode == 200) {
+        _handleSuccessResponse(response, context);
+      } else {
+        _handleErrorResponse(response, context);
+      }
+    } on SocketException catch (_) {
+      _handleError(context, "Internet connection is not available");
+    } catch (e) {
+      _handleError(context, " $e Please try again");
+      print(e);
+    }
+  }
+
+  Future<http.StreamedResponse> _postFormData(
+      String url, ReportCrimeModel reportCrimeModel) async {
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    final preferences = await Preferences.getInstance();
+    String? token = await preferences.getAccessToken();
+    print("Report JWT $token");
+    request.headers['Content-Type'] = 'multipart/form-data';
+    request.fields['category'] = reportCrimeModel.category;
+    request.fields['details'] = reportCrimeModel.details;
+    request.fields['location'] = jsonEncode(reportCrimeModel.toJson());
+    request.fields['policeUnit'] = reportCrimeModel.policeUnit;
+    request.headers['Content-Type'] = 'multipart/form-data';
+    request.headers['Authorization'] = 'Bearer $token';
+
+    if (reportCrimeModel.photo != null) {
+      request.files.add(
+          await http.MultipartFile.fromPath('photo', reportCrimeModel.photo!));
+    }
+
+    if (reportCrimeModel.video != null) {
+      request.files.add(
+          await http.MultipartFile.fromPath('video', reportCrimeModel.video!));
+    }
+
+    return await request.send();
+  }
+
+  void _handleSuccessResponse(
+      http.StreamedResponse response, BuildContext context) async {
+    _isLoading = false;
+
+    try {
+      final responseData = await _parseResponse(response);
+      _resMessage = responseData["message"];
+      utils.successShowToast(context, _resMessage);
+      Navigator.pushNamedAndRemoveUntil(
+          context, routes.report_success, (route) => false);
+      print(_resMessage);
+    } catch (e) {
+      print('Error handling success response: $e');
+      utils.showToast(context, 'Error handling success response');
+    }
+  }
+
+  void _handleErrorResponse(
+      http.StreamedResponse response, BuildContext context) async {
+    try {
+      final res = await _parseResponse(response);
+      _resMessage = res['message'];
+      print(_resMessage);
+      utils.showToast(context, _resMessage);
+
+      _isLoading = false;
+    } catch (e) {
+      print('Error handling error response: $e');
+      utils.showToast(context, 'Error handling error response');
+    }
+  }
+
+  Future<dynamic> _parseResponse(http.StreamedResponse response) async {
+    final String responseBody = await response.stream.bytesToString();
+    final dynamic decodedResponse = json.decode(responseBody);
+    return decodedResponse;
+  }
+
+  void _handleError(BuildContext context, String errorMessage) {
+    _isLoading = false;
+    _resMessage = errorMessage;
+    utils.showToast(context, _resMessage);
+  }
+
+  /*
 
   void reportCrimeWithFile(CrimeData crimeReport, BuildContext context) async {
     _isLoading = true;
@@ -79,6 +174,7 @@ class ReportCrimeProvider {
       print('::::: $e');
     }
   }
+  */
 
   //Fetch Police
 
@@ -114,39 +210,6 @@ class ReportCrimeProvider {
 
   //Get All - Reports
 
-  Future<List<ReportModels>?> getreportCrime() async {
-    _isLoading = true;
-    _status = true;
-    final preferences = await Preferences.getInstance();
-    String? token = await preferences.getAccessToken();
-
-    print('JWT Token $token');
-
-    final requestHeaders = {
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token '
-    };
-
-    try {
-      String url = '$requestBaseUrl/crime';
-      final response = await http.get(Uri.parse(url), headers: requestHeaders);
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body)['data'];
-        print(data);
-        //return data.map((json) => PoliceStation.fromJson(json)).toList();
-        data.map((json) => ReportData.fromJson(json)).toList();
-      } else {
-        final errorMessage = json.decode(response.body)['message'];
-        throw Exception(
-            'Failed to load police stations  ${response.statusCode} error ${errorMessage}');
-      }
-    } catch (error) {
-      print(error);
-    }
-    return null;
-  }
-
   //Get Report By User ID
 
   Future<CrimeReport> getreportCrimeByUserId() async {
@@ -166,7 +229,7 @@ class ReportCrimeProvider {
     };
 
     try {
-      String url = '$requestBaseUrl/crime/?userId=$userId/my_crimes';
+      String url = '$requestBaseUrl/crime/$userId/my_crimes';
       final response = await http.get(Uri.parse(url), headers: requestHeaders);
       if (response.statusCode == 200) {
         final data = json.decode(response.body.toString());

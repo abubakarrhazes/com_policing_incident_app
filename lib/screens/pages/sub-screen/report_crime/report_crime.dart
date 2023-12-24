@@ -11,6 +11,7 @@ import 'package:com_policing_incident_app/providers/features-providers/report_cr
 import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/blog/models/blog_post.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/model/report_crime_model.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
@@ -36,7 +37,9 @@ class ReportCrime extends StatefulWidget {
 class _ReportCrimeState extends State<ReportCrime> {
   final TextEditingController _detailsController = TextEditingController();
   final ReportCrimeProvider reportCrimeProvider = ReportCrimeProvider();
+  final _reportformKey = GlobalKey<FormState>();
   final requestBaseUrl = Config.AuthBaseUrl;
+  bool _isLoading = false;
   double latitude = 0.0;
   double logitude = 0.0;
   String address = '';
@@ -172,7 +175,31 @@ class _ReportCrimeState extends State<ReportCrime> {
   //APi Connecting To The Model Fromtend and Backend
 
   void reportCrime() {
-    reportCrimeProvider.reportCrimeWithFile(
+    if (selectedStation != null) {
+      reportCrimeProvider.reportCrimeWithFiles(
+        ReportCrimeModel(
+          category: categories,
+          details: _detailsController.text,
+          photo: imagesPath,
+          audio: audioPath,
+          video: videoPath,
+          file: filePath,
+          location: UserLoc(latitude: latitude, logitude: logitude),
+          policeUnit: selectedStation!,
+        ),
+        context,
+      );
+      print(selectedStation);
+    } else {
+      // Handle the case where selectedStation is null
+      print('selectedStation is null');
+    }
+  }
+
+  /*
+
+  void reportCrime() {
+    reportCrimeProvider.reportCrimeWithFiles(
         CrimeData(
           category: categories,
           details: _detailsController.text,
@@ -182,14 +209,15 @@ class _ReportCrimeState extends State<ReportCrime> {
           file: filePath,
           policeUnit: selectedStation!,
           location: UserLocation(
-            latitude: latitude.toString(), // replace with actual latitude
-            logitude: logitude.toString(), // replace with actual longitude
-          ),
+              latitude: latitude.toString(), // replace with actual latitude
+              logitude: logitude.toString() // replace with actual longitude
+              ),
         ),
         context);
 
     print(selectedStation);
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -211,6 +239,7 @@ class _ReportCrimeState extends State<ReportCrime> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Form(
+                key: _reportformKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -353,14 +382,15 @@ class _ReportCrimeState extends State<ReportCrime> {
                               ),
                             )
                           : Center(
-                              child: Text(
-                                'No Media Selected',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
+                              child: Container(
+                              height: 200,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://cytonus.com/wp-content/themes/native/assets/images/no_image_resized_675-450.jpg')),
                               ),
-                            ),
+                            )),
                     ),
                     SizedBox(
                       height: 20,
@@ -440,10 +470,29 @@ class _ReportCrimeState extends State<ReportCrime> {
                       height: 20,
                     ),
                     ButtonWidget(
-                        text: 'Send Report',
-                        onPress: () {
-                          reportCrime();
-                        })
+                      text: _isLoading
+                          ? 'Reporting Please Wait ...'
+                          : 'Report Crime',
+                      onPress: () {
+                        if (!_isLoading &&
+                            _reportformKey.currentState!.validate()) {
+                          setState(() {
+                            _isLoading = true; // Set loading state to true
+                          });
+
+                          reportCrime(); // Call the function to reset the password
+
+                          // You may remove the Future.delayed block if forgotUserPassword is synchronous.
+                          // This block is here to simulate an asynchronous operation.
+                          Future.delayed(Duration(seconds: 10), () {
+                            // After the simulated operation is complete, reset the loading state
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          });
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
