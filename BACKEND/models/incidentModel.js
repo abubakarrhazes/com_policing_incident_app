@@ -36,7 +36,7 @@ const incidentSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Approved", "Rejected"],
+      enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
     policeUnit: {
@@ -55,6 +55,7 @@ const incidentSchema = new mongoose.Schema(
       },
     },
     photo: String,
+    address: String,
     video: String,
     audio: String,
     file: String,

@@ -10,6 +10,7 @@ const {
   fileUpload,
 } = require("../utils/uploadFile");
 const User = require("../models/userModel");
+const refNum = require("../utils/genRef");
 
 const getAllIncident = asyncHandler(async (req, res) => {
   const { status } = req.query;
@@ -58,12 +59,14 @@ const getSingleIncident = asyncHandler(async (req, res) => {
   });
 });
 const createIncident = asyncHandler(async (req, res) => {
-  const { category, details, location, policeUnit } = req.body;
+  const { category, details, location, policeUnit, address } = req.body;
 
   const user = req.userId;
 
   const ref = refNum("IC");
-
+  if (!address) {
+    throw CustomError("Address is required");
+  }
   if (!category || !details) {
     throw CustomError("Category and details are required");
   }
@@ -103,6 +106,7 @@ const createIncident = asyncHandler(async (req, res) => {
     video: videoUP,
     audio: audioUP,
     file: fileUP,
+    address,
   });
   const subject = "Incident Report!";
   const message = crimeResponse(foundUser.firstName, incident.ref);
@@ -113,8 +117,8 @@ const createIncident = asyncHandler(async (req, res) => {
 });
 const updateIncident = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { category, details, location, policeUnit } = req.body;
-  const { photo, video, audio, file } = req.files;
+  const { category, details, location, policeUnit, address } = req.body;
+  // const { photo, video, audio, file } = req.files;
   const user = req.userId;
   const queryItem = {};
 
@@ -131,10 +135,7 @@ const updateIncident = asyncHandler(async (req, res) => {
     details,
     policeUnit,
     location,
-    photo,
-    video,
-    audio,
-    file,
+    address,
   };
   const incident = await Incident.findByIdAndUpdate(id, queryItem);
   if (!incident) throw CustomError("Incident not found", 401);

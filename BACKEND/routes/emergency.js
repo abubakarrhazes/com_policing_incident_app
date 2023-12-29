@@ -16,7 +16,7 @@ router.use(verifyJWT);
 router.route("/").get(getAllEmergency).post(createEmergency);
 
 // GET USER EMERGENCIIES BY JWT
-router.get("/info", getMyEmergency);
+router.get("/:userId/info", getMyEmergency);
 
 // GET USER EMERGENCIES BY EMERGENCY ID,UPDATE AND DELETE BY ID,
 router

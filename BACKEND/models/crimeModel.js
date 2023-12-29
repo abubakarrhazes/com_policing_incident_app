@@ -54,6 +54,7 @@ const crimeSchema = new mongoose.Schema(
         required: true,
       },
     },
+    address: String,
     photo: String,
     video: String,
     audio: String,

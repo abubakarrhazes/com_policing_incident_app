@@ -15,7 +15,7 @@ const getAllEmergency = asyncHandler(async (req, res) => {
 });
 
 const getMyEmergency = asyncHandler(async (req, res) => {
-  const userId = req.userId;
+  const { userId } = req.params;
   const emergency = await Emergency.find({ user: userId }).populate('user');
   if (!emergency) return res.json({ message: "No emergency reported yet" });
   res.json({

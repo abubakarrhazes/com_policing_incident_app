@@ -28,8 +28,8 @@ const getSingleStation = asyncHandler(async (req, res) => {
   });
 });
 const createStation = asyncHandler(async (req, res) => {
-    const {name} = req.body
-    const station = await Station.create({ name });     
+    const { name, address, telephone } = req.body;
+    const station = await Station.create({ name, address, telephone });     
       return res.json({
         status: 200,
         message: "success",

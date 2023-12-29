@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema(
     phoneNumber: {
       type: Number,
       required: [true, "Phone number is required"],
+      unique: [true, "Phone number is already used"],
     },
     DOB: {
       type: Date,
