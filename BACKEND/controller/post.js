@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const Post = require("../models/post");
 const { CustomError } = require("../errors/customError");
 
+const { photoUpload, singleUpload } = require("../utils/uploadFile");
+
 const getAllPost = asyncHandler(async (req, res) => {
   const { title, description } = req.query;
   const post = await Post.find({});
@@ -36,9 +38,9 @@ const createPost = asyncHandler(async (req, res) => {
     throw CustomError("Title and description are required");
   if (!userId) throw CustomError("Login to to create post");
 
-  if (req.files) {
-    const { image } = req.file;
-    imageUP = await photoUpload(image);
+  if (req.file) {
+    const image = req.file;
+    imageUP = await singleUpload(image);
   }
   const newPost = await Post.create({
     title,

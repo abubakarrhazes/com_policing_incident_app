@@ -6,6 +6,10 @@ const stationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    address: {
+      type: String,
+    },
+    telephone: String,
     // DPO: {
     //   type: String,
     //   required: true,

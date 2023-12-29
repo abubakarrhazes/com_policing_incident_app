@@ -1,7 +1,7 @@
 const { CustomError } = require("../errors/customError");
 const Comment = require("../models/comment");
 const Post = require("../models/post");
-
+const asyncHandler = require("express-async-handler");
 const getPostComment = asyncHandler(async (req, res) => {
   const { postId } = req.body;
   if (!postId) throw CustomError("Comment id is required");

@@ -65,13 +65,16 @@ const getSingleCrime = asyncHandler(async (req, res) => {
   });
 });
 const createCrime = asyncHandler(async (req, res) => {
-  const { category, details, location, policeUnit } = req.body;
+  const { category, details, location, policeUnit, address } = req.body;
 
   const ref = refNum("CR");
   const user = req.userId;
 
   if (!category || !details) {
     throw CustomError("Category and details are required");
+  }
+  if (!address) {
+    throw CustomError("Address is required");
   }
   if (!location) {
     throw CustomError("Location is required");
@@ -109,6 +112,7 @@ const createCrime = asyncHandler(async (req, res) => {
     audio: audioUP,
     file: fileUP,
     policeUnit,
+    address,
   });
 
   const subject = "Crime Report!";
@@ -120,7 +124,7 @@ const createCrime = asyncHandler(async (req, res) => {
 });
 const updateCrime = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { category, details, location, policeUnit } = req.body;
+  const { category, details, location, policeUnit, address } = req.body;
   // const { photo, video, audio, file } = req.file;
   const user = req.userId;
   const queryItem = {};
@@ -138,6 +142,7 @@ const updateCrime = asyncHandler(async (req, res) => {
     details,
     location,
     policeUnit,
+    address,
   };
   const crime = await Crime.findByIdAndUpdate(id, queryItem);
   if (!crime) throw CustomError("Crime not found", 401);
