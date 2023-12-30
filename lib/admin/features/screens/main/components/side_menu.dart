@@ -1,4 +1,5 @@
 import 'package:com_policing_incident_app/admin/features/constants.dart';
+import 'package:com_policing_incident_app/admin/features/screens/sub-screen/admin_blog_post.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:flutter/material.dart';
@@ -43,12 +44,16 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Add Police Station",
             svgSrc: "assets/icons/menu_store.svg",
-            press: () {},
+            press: () {
+              Navigator.pushNamed(context, routes.addPoliceStations);
+            },
           ),
           DrawerListTile(
             title: "Blog Section",
             svgSrc: "assets/icons/menu_notification.svg",
-            press: () {},
+            press: () {
+              Navigator.pushNamed(context, routes.admin_blog);
+            },
           ),
           DrawerListTile(
             title: "Profile",

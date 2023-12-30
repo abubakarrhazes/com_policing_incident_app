@@ -315,7 +315,7 @@ class _RegisterState extends State<Register> {
 
                                 // You may remove the Future.delayed block if forgotUserPassword is synchronous.
                                 // This block is here to simulate an asynchronous operation.
-                                Future.delayed(Duration(seconds: 15), () {
+                                Future.delayed(Duration(seconds: 20), () {
                                   // After the simulated operation is complete, reset the loading state
                                   setState(() {
                                     _isLoading = false;

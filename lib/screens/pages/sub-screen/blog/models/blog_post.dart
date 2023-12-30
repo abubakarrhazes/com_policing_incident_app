@@ -3,7 +3,7 @@
 class BlogPost {
   int? status;
   String? message;
-  List<Data>? data;
+  List<DataPost>? data;
 
   BlogPost({this.status, this.message, this.data});
 
@@ -12,7 +12,7 @@ class BlogPost {
     message = json["message"];
     data = json["data"] == null
         ? null
-        : (json["data"] as List).map((e) => Data.fromJson(e)).toList();
+        : (json["data"] as List).map((e) => DataPost.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -26,7 +26,7 @@ class BlogPost {
   }
 }
 
-class Data {
+class DataPost {
   String? id;
   String? user;
   String? title;
@@ -36,7 +36,7 @@ class Data {
   String? updatedAt;
   int? v;
 
-  Data(
+  DataPost(
       {this.id,
       this.user,
       this.title,
@@ -46,7 +46,7 @@ class Data {
       this.updatedAt,
       this.v});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataPost.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
     user = json["user"];
     title = json["title"];

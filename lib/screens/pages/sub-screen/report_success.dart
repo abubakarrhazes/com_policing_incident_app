@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
+import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 
 class ReportSuccess extends StatefulWidget {
-  const ReportSuccess({super.key});
+  ReportSuccess({super.key});
 
   @override
   State<ReportSuccess> createState() => _ReportSuccessState();
@@ -49,7 +51,7 @@ class _ReportSuccessState extends State<ReportSuccess> {
               height: 10,
             ),
             Text(
-              'Reference Number : ZTYVXHDGWIIGG11',
+              'Go to Report to View Report Details',
               style: TextStyle(
                   color: KprimaryColor,
                   fontSize: 15,
@@ -58,7 +60,12 @@ class _ReportSuccessState extends State<ReportSuccess> {
             SizedBox(
               height: 20,
             ),
-            ButtonWidget(text: 'Return to Dashboard', onPress: () {})
+            ButtonWidget(
+                text: 'Return to Home',
+                onPress: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, routes.home, (route) => false);
+                })
           ],
         ),
       ),

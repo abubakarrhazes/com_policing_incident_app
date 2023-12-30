@@ -1,28 +1,28 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors
 
 import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
-import 'package:com_policing_incident_app/providers/auth_provider.dart';
-import 'package:com_policing_incident_app/providers/features-providers/report_crime_provider.dart';
-import 'package:com_policing_incident_app/screens/onboard_screen/model/onboard_model.dart';
+import 'package:com_policing_incident_app/providers/features-providers/report_incident_provider.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/crime_detail_page.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident/incident_details_page.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/widgets/get_cases.dart';
 import 'package:flutter/material.dart';
 
-class GetCases extends StatefulWidget {
-  const GetCases({super.key});
+class GetIncidentCases extends StatefulWidget {
+  const GetIncidentCases({super.key});
 
   @override
-  State<GetCases> createState() => _GetCasesState();
+  State<GetIncidentCases> createState() => _GetIncidentCasesState();
 }
 
-final ReportCrimeProvider reportCrimeProvider = ReportCrimeProvider();
-
-class _GetCasesState extends State<GetCases> {
+class _GetIncidentCasesState extends State<GetIncidentCases> {
+  final ReportIncidentProvider reportIncidentProvider =
+      ReportIncidentProvider();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<CrimeReport>(
-        future: reportCrimeProvider.getreportCrimeByUserId(),
+        future: reportIncidentProvider.getreportIncidentByUserId(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -40,17 +40,15 @@ class _GetCasesState extends State<GetCases> {
                     Container(
                       height: 80,
                       decoration: BoxDecoration(
-                          color: KprimaryColor,
+                          color: Colors.blue,
                           borderRadius: BorderRadius.circular(10)),
                       child: ListTile(
                         onTap: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CrimeDetailPage(
-                                  crimeData: snapshot.data!.data![index]),
-                            ),
-                          );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => IncidentDetailsPage(
+                                      crimeData: snapshot.data!.data![index])));
                         },
                         title: Text(
                           'Category: ${snapshot.data!.data![index].category} ',

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:com_policing_incident_app/admin/features/controllers/MenuAppController.dart';
 import 'package:com_policing_incident_app/admin/features/responsive.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
@@ -57,7 +59,7 @@ class ProfileCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Avatar.large(
+          Avatar.medium(
               img: NetworkImage('${userAdapter.user?.profilePicture}')),
           if (!Responsive.isMobile(context))
             Padding(

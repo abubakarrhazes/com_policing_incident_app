@@ -36,6 +36,8 @@ class ReportCrimeProvider {
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
 
+  /*
+
   Future<void> reportCrimeWithFiles(
       ReportCrimeModel reportCrimeModel, BuildContext context) async {
     String url = '$requestBaseUrl/crime';
@@ -65,20 +67,21 @@ class ReportCrimeProvider {
     request.headers['Content-Type'] = 'multipart/form-data';
     request.fields['category'] = reportCrimeModel.category;
     request.fields['details'] = reportCrimeModel.details;
-    request.fields['location'] = jsonEncode(reportCrimeModel.toJson());
+    request.fields['location[latitude]'] =
+        jsonEncode(reportCrimeModel.location.latitude);
+    request.fields['location[logitude]'] =
+        jsonEncode(reportCrimeModel.location.logitude);
+
+    print(reportCrimeModel.location.latitude);
     request.fields['policeUnit'] = reportCrimeModel.policeUnit;
+    request.fields['address'] = reportCrimeModel.address;
     request.headers['Content-Type'] = 'multipart/form-data';
     request.headers['Authorization'] = 'Bearer $token';
 
-    if (reportCrimeModel.photo != null) {
-      request.files.add(
-          await http.MultipartFile.fromPath('photo', reportCrimeModel.photo!));
-    }
+    var photo =
+        await http.MultipartFile.fromPath('file', reportCrimeModel.photo!);
 
-    if (reportCrimeModel.video != null) {
-      request.files.add(
-          await http.MultipartFile.fromPath('video', reportCrimeModel.video!));
-    }
+    request.files.add(photo);
 
     return await request.send();
   }
@@ -91,8 +94,7 @@ class ReportCrimeProvider {
       final responseData = await _parseResponse(response);
       _resMessage = responseData["message"];
       utils.successShowToast(context, _resMessage);
-      Navigator.pushNamedAndRemoveUntil(
-          context, routes.report_success, (route) => false);
+      Navigator.pushNamed(context, routes.report_success);
       print(_resMessage);
     } catch (e) {
       print('Error handling success response: $e');
@@ -118,6 +120,8 @@ class ReportCrimeProvider {
   Future<dynamic> _parseResponse(http.StreamedResponse response) async {
     final String responseBody = await response.stream.bytesToString();
     final dynamic decodedResponse = json.decode(responseBody);
+    
+    print(decodedResponse);
     return decodedResponse;
   }
 
@@ -126,55 +130,99 @@ class ReportCrimeProvider {
     _resMessage = errorMessage;
     utils.showToast(context, _resMessage);
   }
+  */
 
-  /*
-
-  void reportCrimeWithFile(CrimeData crimeReport, BuildContext context) async {
-    _isLoading = true;
-
+  Future<void> reportCrimeWithFiles(
+      CrimeData crimeData, BuildContext context) async {
     String url = '$requestBaseUrl/crime';
-    final preferences = await Preferences.getInstance();
-
-    String? token = await preferences.getAccessToken();
 
     try {
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(url),
-      );
-      request.fields['category'] = json.encode(crimeReport.category);
-      request.fields['details'] = json.encode(crimeReport.details);
-      request.fields['location'] = json.encode(crimeReport.location);
-      request.headers['Content-Type'] = 'multipart/form-data';
-      request.headers['Authorization'] = 'Bearer $token';
+      var response = await _postFormData(url, crimeData);
 
-      var response = await request.send();
       if (response.statusCode == 200) {
-        _isLoading = false;
-        final reponseData = json.decode('${response.stream.bytesToString()}');
-        _resMessage = 'Crime Reported Successfully $reponseData';
-
-        print(_resMessage);
+        _handleSuccessResponse(response, context);
       } else {
-        final res = json.decode('${response.stream.bytesToString()}');
-
-        _resMessage = res['message'];
-        utils.successShowToast(context, _resMessage);
-
-        print(res);
-        _isLoading = false;
+        _handleErrorResponse(response, context);
       }
     } on SocketException catch (_) {
-      _isLoading = false;
-      _resMessage = "Internet connection is not available`";
-      utils.showToast(context, _resMessage);
+      _handleError(context, "Internet connection is not available");
     } catch (e) {
-      _isLoading = false;
-      _resMessage = "PLease Try Again";
-      print('::::: $e');
+      _handleError(context, " $e Please try again");
+      print(e);
     }
   }
-  */
+
+  Future<http.StreamedResponse> _postFormData(
+      String url, CrimeData crimeData) async {
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    final preferences = await Preferences.getInstance();
+    String? token = await preferences.getAccessToken();
+    print("Report JWT $token");
+    request.headers['Content-Type'] = 'multipart/form-data';
+    request.fields['category'] = crimeData.category!;
+    request.fields['details'] = crimeData.details!;
+    request.fields['location[latitude]'] =
+        jsonEncode(crimeData.location!.latitude);
+    request.fields['location[logitude]'] =
+        jsonEncode(crimeData.location!.logitude);
+
+    print(crimeData.location!.latitude);
+    request.fields['policeUnit'] = crimeData.policeUnit!;
+    request.fields['address'] = crimeData.address!;
+    request.headers['Content-Type'] = 'multipart/form-data';
+    request.headers['Authorization'] = 'Bearer $token';
+
+    var image = await http.MultipartFile.fromPath('image', crimeData.image!);
+
+    request.files.add(image);
+
+    return await request.send();
+  }
+
+  void _handleSuccessResponse(
+      http.StreamedResponse response, BuildContext context) async {
+    _isLoading = false;
+
+    try {
+      final responseData = await _parseResponse(response);
+      _resMessage = responseData["message"];
+      utils.successShowToast(context, _resMessage);
+      Navigator.pushNamed(context, routes.report_success);
+      print(_resMessage);
+    } catch (e) {
+      print('Error handling success response: $e');
+      utils.showToast(context, 'Error handling success response');
+    }
+  }
+
+  void _handleErrorResponse(
+      http.StreamedResponse response, BuildContext context) async {
+    try {
+      final res = await _parseResponse(response);
+      _resMessage = res['message'];
+      print(_resMessage);
+      utils.showToast(context, _resMessage);
+
+      _isLoading = false;
+    } catch (e) {
+      print('Error handling error response: $e');
+      utils.showToast(context, 'Error handling error response');
+    }
+  }
+
+  Future<dynamic> _parseResponse(http.StreamedResponse response) async {
+    final String responseBody = await response.stream.bytesToString();
+    final dynamic decodedResponse = json.decode(responseBody);
+
+    print(decodedResponse);
+    return decodedResponse;
+  }
+
+  void _handleError(BuildContext context, String errorMessage) {
+    _isLoading = false;
+    _resMessage = errorMessage;
+    utils.showToast(context, _resMessage);
+  }
 
   //Fetch Police
 

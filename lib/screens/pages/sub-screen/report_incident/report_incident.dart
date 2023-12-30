@@ -1,21 +1,17 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, avoid_unnecessary_containers, empty_catches, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
 import 'package:com_policing_incident_app/models/police_station.dart';
-
-import 'package:com_policing_incident_app/models/report_incident_model.dart';
 import 'package:com_policing_incident_app/providers/features-providers/report_crime_provider.dart';
+import 'package:com_policing_incident_app/providers/features-providers/report_incident_provider.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
-import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
-import 'package:com_policing_incident_app/screens/pages/sub-screen/blog/models/blog_post.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/model/report_crime_model.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
-import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/media_selection.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
@@ -23,46 +19,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ReportCrime extends StatefulWidget {
-  ReportCrime({super.key});
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
 
   @override
-  State<ReportCrime> createState() => _ReportCrimeState();
+  State<MyWidget> createState() => _MyWidgetState();
 }
 
-class _ReportCrimeState extends State<ReportCrime> {
+class _MyWidgetState extends State<MyWidget> {
   final TextEditingController _detailsController = TextEditingController();
-  final ReportCrimeProvider reportCrimeProvider = ReportCrimeProvider();
+  final ReportIncidentProvider reportIncidentProvider =
+      ReportIncidentProvider();
   final _reportformKey = GlobalKey<FormState>();
   final requestBaseUrl = Config.AuthBaseUrl;
   bool _isLoading = false;
   double latitude = 0.0;
   double logitude = 0.0;
   String address = '';
-  String categories = 'Homocide';
+  String categories = 'Malware Attack';
 
-  String? imagePath;
+  String? imagesPath;
   String? audioPath;
   String? videoPath;
   String? filePath;
 
   List<String> crimeCategories = [
-    'Homocide',
-    'Robbery',
-    'Sexual Assault and Rape',
-    'Domestic Violence',
-    'Kidnapping',
-    'Reckless Driving',
-    'Online Fraud',
-    'Motor Vehicle Theft',
-    'Arson',
-    'Ritual Killings',
-    'Drug Trafficking / Possession',
-    'Cultism',
+    'Malware Attack',
+    'Phishing',
+    'Data Breach',
+    'Break-ins or Burglaries',
+    'Vandalism',
+    'Assaults or Violent Incidents',
+    'Kidnappings',
+    'Vehicle Accidents',
+    'Social Media Crises',
+    'Fire Outbreak',
+    'Exam Malpractice'
   ];
 
   String? selectedStation;
@@ -114,7 +109,7 @@ class _ReportCrimeState extends State<ReportCrime> {
     final path = await utils.pickImage(ImageSource.gallery);
 
     setState(() {
-      imagePath = path;
+      imagesPath = path;
     });
   }
 
@@ -174,13 +169,13 @@ class _ReportCrimeState extends State<ReportCrime> {
 
   //APi Connecting To The Model Fromtend and Backend
 
-  void reportCrime() {
+  void reportInci() {
     if (selectedStation != null) {
-      reportCrimeProvider.reportCrimeWithFiles(
+      reportIncidentProvider.reportIncident(
         CrimeData(
           category: categories,
           details: _detailsController.text,
-          image: imagePath,
+          image: imagesPath,
           audio: audioPath,
           video: videoPath,
           file: filePath,
@@ -192,10 +187,9 @@ class _ReportCrimeState extends State<ReportCrime> {
         context,
       );
       print(selectedStation);
+
       print(latitude);
       print(logitude);
-      print(address);
-      print(imagePath);
     } else {
       // Handle the case where selectedStation is null
       print('selectedStation is null');
@@ -233,7 +227,7 @@ class _ReportCrimeState extends State<ReportCrime> {
         body: Column(children: [
           Center(
             child: Text(
-              'Report Crime',
+              'Report Incident',
               style: TextStyle(
                 color: KprimaryColor,
                 fontSize: 20,
@@ -250,7 +244,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Select Crime Category',
+                      'Select Incident Category',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 10,
@@ -293,7 +287,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                     MyInputField(
                       min: 1,
                       max: 200,
-                      hintText: 'Briefly Decribe about the crime',
+                      hintText: 'Briefly Decribe about the Incident',
                       controller: _detailsController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -371,32 +365,32 @@ class _ReportCrimeState extends State<ReportCrime> {
                       height: 20,
                     ),
                     Container(
+                      width: 200,
                       height: 100,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: KprimaryColor),
                       ),
-                      child: imagePath != null
+                      child: imagesPath != null
                           ? Container(
                               height: 200,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: FileImage(File(imagePath!))),
+                                  image: FileImage(File(imagesPath!)),
+                                ),
                               ),
                             )
                           : Center(
                               child: Container(
-                                height: 200,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          'https://cytonus.com/wp-content/themes/native/assets/images/no_image_resized_675-450.jpg')),
-                                ),
+                              height: 200,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://cytonus.com/wp-content/themes/native/assets/images/no_image_resized_675-450.jpg')),
                               ),
-                            ),
+                            )),
                     ),
                     SizedBox(
                       height: 20,
@@ -478,7 +472,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                     ButtonWidget(
                       text: _isLoading
                           ? 'Reporting Please Wait ...'
-                          : 'Report Crime',
+                          : 'Report Incident',
                       onPress: () {
                         if (!_isLoading &&
                             _reportformKey.currentState!.validate()) {
@@ -486,7 +480,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                             _isLoading = true; // Set loading state to true
                           });
 
-                          reportCrime(); // Call the function to reset the password
+                          reportInci(); // Call the function to reset the password
 
                           // You may remove the Future.delayed block if forgotUserPassword is synchronous.
                           // This block is here to simulate an asynchronous operation.

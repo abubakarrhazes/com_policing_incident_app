@@ -9,6 +9,7 @@ class ReportCrimeModel {
   final String? audio;
   final String? file;
   final String policeUnit;
+  final String address;
   final UserLoc location;
 
   ReportCrimeModel({
@@ -19,6 +20,7 @@ class ReportCrimeModel {
     this.audio,
     this.file,
     required this.policeUnit,
+    required this.address,
     required this.location,
   });
 
@@ -30,6 +32,7 @@ class ReportCrimeModel {
       'video': video,
       'audio': audio,
       'file': file,
+      'address': address,
       'policeUnit': policeUnit,
       'location': location.toMap(),
     };
@@ -44,8 +47,8 @@ class ReportCrimeModel {
       audio: map['audio'] != null ? map['audio'] as String : null,
       file: map['file'] != null ? map['file'] as String : null,
       policeUnit: map['policeUnit'] as String,
-      location:
-          UserLoc.fromMap(map['location'] as Map<String, dynamic>),
+      address: map['address'] as String,
+      location: UserLoc.fromMap(map['location'] as Map<String, dynamic>),
     );
   }
 

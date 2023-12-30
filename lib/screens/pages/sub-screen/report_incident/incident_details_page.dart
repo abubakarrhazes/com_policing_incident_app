@@ -1,14 +1,12 @@
-// crime_detail_page.dart
-
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:clipboard/clipboard.dart';
 import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/crime_detail_page.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
@@ -18,16 +16,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-class CrimeDetailPage extends StatefulWidget {
+class IncidentDetailsPage extends StatefulWidget {
   final CrimeData crimeData;
-
-  CrimeDetailPage({required this.crimeData});
+  const IncidentDetailsPage({super.key, required this.crimeData});
 
   @override
-  State<CrimeDetailPage> createState() => _CrimeDetailPageState();
+  State<IncidentDetailsPage> createState() => _IncidentDetailsPageState();
 }
 
-class _CrimeDetailPageState extends State<CrimeDetailPage> {
+class _IncidentDetailsPageState extends State<IncidentDetailsPage> {
   final requestBaseUrl = Config.AuthBaseUrl;
 
   Future<void> deleteData(BuildContext context) async {
@@ -53,7 +50,7 @@ class _CrimeDetailPageState extends State<CrimeDetailPage> {
     );
 
     if (confirmDelete == true) {
-      String url = '$requestBaseUrl/crime/${widget.crimeData.id}';
+      String url = '$requestBaseUrl/incident/${widget.crimeData.id}';
 
       final preferences = await Preferences.getInstance();
       String? token = await preferences.getAccessToken();
@@ -72,6 +69,7 @@ class _CrimeDetailPageState extends State<CrimeDetailPage> {
           // Successful deletion
           final responseData = json.decode(response.body)['message'];
           utils.successShowToast(context, responseData);
+          Navigator.pop(context);
         } else {
           // Handle errors
           final responseData = json.decode(response.body)['message'];
@@ -121,7 +119,7 @@ class _CrimeDetailPageState extends State<CrimeDetailPage> {
                 ),
 
                 Text(
-                  'Report Details',
+                  'Report Incident Details',
                   style: TextStyle(
                       color: KprimaryColor,
                       fontSize: 20,
@@ -201,38 +199,6 @@ class _CrimeDetailPageState extends State<CrimeDetailPage> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CrimeDetails extends StatelessWidget {
-  const CrimeDetails({
-    super.key,
-    required this.userDetail,
-    required this.userDetail2,
-  });
-
-  final String userDetail;
-  final String userDetail2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Text(
-            userDetail,
-            style: TextStyle(
-                color: KprimaryColor,
-                fontSize: 15,
-                fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Expanded(child: Text(userDetail2))
-        ],
       ),
     );
   }

@@ -12,7 +12,7 @@ import 'package:com_policing_incident_app/screens/pages/home_page.dart';
 import 'package:com_policing_incident_app/screens/pages/main_page.dart';
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/user_profile.dart';
 import 'package:com_policing_incident_app/screens/pages/report.dart';
-import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident/report_incident.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';

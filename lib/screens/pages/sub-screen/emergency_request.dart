@@ -187,6 +187,9 @@ class _EmergencyRequestState extends State<EmergencyRequest> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          elevation: 0,
+        ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(

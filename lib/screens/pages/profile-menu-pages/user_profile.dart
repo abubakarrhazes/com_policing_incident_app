@@ -2,6 +2,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/widgets/button_widget.dart';
+import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
@@ -16,15 +18,91 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _otherNameController = TextEditingController();
+  final TextEditingController _emailNameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  final TextEditingController _dateOfBithController = TextEditingController();
+
+  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _occupationController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+
+  void _showBottomModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 500,
+          width: double.infinity,
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Form(
+                child: Column(
+                  children: [
+                    MyInputField(
+                      hintText: 'Firsname',
+                      controller: _firstNameController,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    MyInputField(
+                      hintText: 'OtherField',
+                      controller: _firstNameController,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    ButtonWidget(
+                        text: 'Save Edit',
+                        onPress: () {
+                          Navigator.of(context).pop();
+                        })
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _otherNameController.dispose();
+    _emailNameController.dispose();
+    _phoneNumberController.dispose();
+    _dateOfBithController.dispose();
+    _stateController.dispose();
+    _occupationController.dispose();
+    _addressController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final userAdapter = Provider.of<UserAdapter>(context);
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -66,7 +144,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
             GestureDetector(
               onTap: () {
-                print('Clicked');
+                _showBottomModal(context);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -79,43 +157,95 @@ class _UserProfileState extends State<UserProfile> {
                     SizedBox(
                       width: 5,
                     ),
-                    Text('Edit Your Profile')
+                    Text('Edit Your Profile'),
                   ],
                 ),
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
-            BuildTextField(
-              labelText: 'FirstName',
-              placeHolder: 'Abubakar Nuuman Adam',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            BuildTextField(
-              labelText: 'FirstName',
-              placeHolder: 'Abubakar Nuuman Adam',
+            Text(
+              'User Account Information',
+              style: TextStyle(
+                  color: KprimaryColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
-            BuildTextField(
-              labelText: 'FirstName',
-              placeHolder: 'Abubakar Nuuman Adam',
-            ),
+            UserDetails(
+                userDetail: 'FirstName',
+                userDetail2: userAdapter.user!.firstName),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
-            BuildTextField(
-              labelText: 'FirstName',
-              placeHolder: 'Abubakar Nuuman Adam',
-            )
+            UserDetails(
+                userDetail: 'LastName',
+                userDetail2: userAdapter.user!.lastName),
+            SizedBox(
+              height: 15,
+            ),
+            UserDetails(
+                userDetail: 'OtherName',
+                userDetail2: userAdapter.user!.otherName),
+            SizedBox(
+              height: 15,
+            ),
+            UserDetails(
+                userDetail: 'Address', userDetail2: userAdapter.user!.address!),
+            SizedBox(
+              height: 15,
+            ),
+            UserDetails(
+                userDetail: 'PhoneNumber',
+                userDetail2: userAdapter.user!.phoneNumber),
+            SizedBox(
+              height: 15,
+            ),
+            UserDetails(
+                userDetail: 'Occupation',
+                userDetail2: userAdapter.user!.occupation),
+            SizedBox(
+              height: 15,
+            ),
+            UserDetails(
+                userDetail: 'email', userDetail2: userAdapter.user!.email),
+            SizedBox(
+              height: 15,
+            ),
+            UserDetails(
+                userDetail: 'Date Of Birth',
+                userDetail2: userAdapter.user!.DOB.trim()),
+            SizedBox(
+              height: 15,
+            ),
           ],
         ),
       ),
     ));
+  }
+}
+
+class UserDetails extends StatelessWidget {
+  const UserDetails({
+    super.key,
+    required this.userDetail,
+    required this.userDetail2,
+  });
+
+  final String userDetail;
+  final String userDetail2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [Text(userDetail), Text(userDetail2)],
+      ),
+    );
   }
 }
 

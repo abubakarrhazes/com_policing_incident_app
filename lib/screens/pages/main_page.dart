@@ -8,6 +8,7 @@ import 'package:com_policing_incident_app/providers/persistance_data/preferences
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
 
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
+import 'package:com_policing_incident_app/screens/pages/explore-more-screens/search_case.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 
@@ -50,6 +51,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     'Report Incident',
     'Blog ',
     'Emergency call',
+  ];
+
+  List exploreMore = [
+    'Search  Case',
+    'Cases Stats',
+    'Hotmaps Indicators',
+    'More Info'
   ];
 
   @override
@@ -175,9 +183,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     Tab(
                       text: 'Police Stations',
                     ),
-                    Tab(
-                      text: 'Discover More',
-                    )
                   ]),
             )),
             const SizedBox(height: 10),
@@ -296,7 +301,15 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                               ),
                                               SizedBox(height: 5),
                                               Text(
-                                                'Supreme Court',
+                                                '${snapshot.data!.data![index].address}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                '${snapshot.data!.data![index].telephone}',
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 12,
@@ -544,30 +557,49 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             Container(
               width: double.maxFinite,
               height: 100,
-              margin: const EdgeInsets.only(
-                left: 20,
-              ),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: const EdgeInsets.only(right: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              image: DecorationImage(
-                                  image: NetworkImage(imgs[
-                                      index]), //AssetImage('assets/images/'+images.keys.elementAt()),
-                                  fit: BoxFit.cover)),
-                        )
-                      ],
+                  return InkWell(
+                    onTap: () {
+                      if (index == 0) {
+                        Navigator.pushNamed(context, routes.search_case);
+                      } else if (index == 1) {
+                        Navigator.pushNamed(context, routes.report_incident);
+                      } else if (index == 2) {
+                        Navigator.pushNamed(context, routes.blog);
+                      } else {
+                        Navigator.pushNamed(context, routes.emergency_request);
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 10),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: KprimaryColor,
+                                image: DecorationImage(
+                                    image: NetworkImage(imgs[
+                                        index]), //AssetImage('assets/images/'+images.keys.elementAt()),
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                            Text(
+                              exploreMore[index],
+                              style: TextStyle(
+                                  color: KprimaryColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 },

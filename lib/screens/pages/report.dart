@@ -2,6 +2,7 @@
 
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/get_cases.dart';
+import 'package:com_policing_incident_app/widgets/get_incident_cases.dart';
 import 'package:flutter/material.dart';
 
 class Reports extends StatefulWidget {
@@ -26,25 +27,20 @@ class _ReportsState extends State<Reports> {
             tabs: [
               Tab(
                 icon: Icon(Icons.file_copy),
-                text: 'Reported Cases',
+                text: 'Crimes Reported',
               ),
               Tab(
-                icon: Icon(
-                  Icons.check_circle_outline,
-                  color: Colors.green,
-                  size: 30,
-                ),
-                text: 'Approved Cases',
+                icon: Icon(Icons.file_copy),
+                text: 'Incident Reported',
               ),
             ],
           ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TabBarView(
-            children: [
+          child: TabBarView(children: [
             GetCases(),
-            
+            GetIncidentCases(),
           ]),
         ),
       ),

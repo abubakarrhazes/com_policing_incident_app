@@ -78,8 +78,10 @@ class RequestEmergecyProvider {
     _status = true;
     final preferences = await Preferences.getInstance();
     String? token = await preferences.getAccessToken();
+    String? userId = await preferences.getUserId();
 
     print('JWT Token $token');
+    print("User ID For emergency $userId");
 
     final requestHeaders = {
       'Accept': 'application/vnd.api+json',
@@ -88,13 +90,14 @@ class RequestEmergecyProvider {
     };
 
     try {
-      String url = '$requestBaseUrl/emergency/info';
+      String url = '$requestBaseUrl/emergency';
       final response = await http.get(Uri.parse(url), headers: requestHeaders);
       if (response.statusCode == 200) {
         final data = json.decode(response.body.toString());
         return EmergencyContact.fromJson(data);
       } else {
         final errorMessage = json.decode(response.body)['message'];
+        print(errorMessage);
         throw Exception(
             'Failed to load police   ${response.statusCode} error ${errorMessage}');
       }

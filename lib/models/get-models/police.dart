@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Police {
   int? status;
   String? message;
@@ -27,15 +28,27 @@ class Police {
 class Data {
   String? id;
   String? name;
+  String? address;
+  String? telephone;
   String? createdAt;
   String? updatedAt;
   int? v;
 
-  Data({this.id, this.name, this.createdAt, this.updatedAt, this.v});
+  Data({
+    this.id,
+    this.name,
+    this.address,
+    this.telephone,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
     name = json["name"];
+    address = json['address'];
+    telephone = json['telephone'];
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     v = json["__v"];
@@ -45,6 +58,8 @@ class Data {
     final Map<String, dynamic> _data = <String, dynamic>{};
     _data["_id"] = id;
     _data["name"] = name;
+    _data["address"] = address;
+    _data["telephone"] = telephone;
     _data["createdAt"] = createdAt;
     _data["updatedAt"] = updatedAt;
     _data["__v"] = v;

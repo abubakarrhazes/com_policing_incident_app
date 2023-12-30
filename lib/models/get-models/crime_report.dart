@@ -35,12 +35,13 @@ class CrimeData {
   String? details;
   String? status;
   String? policeUnit;
-  dynamic photo;
-  dynamic video;
-  dynamic audio;
-  dynamic file;
+  String? image;
+  String? video;
+  String? audio;
+  String? file;
   String? createdAt;
   String? updatedAt;
+  String? address;
   int? v;
 
   CrimeData(
@@ -52,12 +53,13 @@ class CrimeData {
       this.details,
       this.status,
       this.policeUnit,
-      this.photo,
+      this.image,
       this.video,
       this.audio,
       this.file,
       this.createdAt,
       this.updatedAt,
+      this.address,
       this.v});
 
   CrimeData.fromJson(Map<String, dynamic> json) {
@@ -71,10 +73,11 @@ class CrimeData {
     details = json["details"];
     status = json["status"];
     policeUnit = json["policeUnit"];
-    photo = json["photo"];
+    image = json["image"];
     video = json["video"];
     audio = json["audio"];
     file = json["file"];
+    address = json["address"];
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
     v = json["__v"];
@@ -92,10 +95,11 @@ class CrimeData {
     _data["details"] = details;
     _data["status"] = status;
     _data["policeUnit"] = policeUnit;
-    _data["photo"] = photo;
+    _data["image"] = image;
     _data["video"] = video;
     _data["audio"] = audio;
     _data["file"] = file;
+    _data["address"] = address;
     _data["createdAt"] = createdAt;
     _data["updatedAt"] = updatedAt;
     _data["__v"] = v;

@@ -7,6 +7,7 @@ import 'package:com_policing_incident_app/main.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
+import 'package:com_policing_incident_app/screens/pages/explore-more-screens/search_case.dart';
 import 'package:com_policing_incident_app/screens/pages/home_page.dart';
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/help_desk.dart';
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/more_about.dart';
@@ -17,7 +18,7 @@ import 'package:com_policing_incident_app/screens/pages/sub-screen/blog/blogs.da
 import 'package:com_policing_incident_app/screens/pages/sub-screen/emergency_request.dart';
 
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/report_crime.dart';
-import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident.dart';
+import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incident/report_incident.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
@@ -52,8 +53,12 @@ class Routes {
   String sign_out = '/sign-out';
   String test = '/test';
   String report_list = '/crime-report-list';
+  String search_case = '/search-case';
+  String hot_maps = '/hot-maps';
+  String case_stats = '/case-stats';
   String admin = '/admin';
   String addPoliceStations = '/add-police-station';
+  String admin_blog = '/admin-blog';
   String dashboard = '/dashboard';
 
   Route<dynamic> controller(RouteSettings settings) {
@@ -94,6 +99,9 @@ class Routes {
 
       case '/emergency-request':
         return MaterialPageRoute(builder: (context) => EmergencyRequest());
+
+      case '/search-case':
+        return MaterialPageRoute(builder: (context) => SearchCase());
 
       //Admin Routes
 
