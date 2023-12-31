@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
+import 'package:com_policing_incident_app/screens/pages/explore-more-screens/search_model.dart';
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_crime/crime_detail_page.dart';
 import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
@@ -24,9 +25,10 @@ class _SearchCaseState extends State<SearchCase> {
   final searchController = TextEditingController();
   final _searchFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  Future<CrimeReport>? _searchResult;
+  Future<SearchModel>? _searchResult;
+  SearchModel? crime;
 
-  Future<CrimeReport> searchReportReference() async {
+  Future<SearchModel> searchReportReference() async {
     final requestBaseUrl = Config.AuthBaseUrl;
     final preferences = await Preferences.getInstance();
     String? token = await preferences.getAccessToken();
@@ -39,12 +41,13 @@ class _SearchCaseState extends State<SearchCase> {
     };
 
     try {
-      String url = '$requestBaseUrl/crime/$userId/my_crimes';
+      String url =
+          '$requestBaseUrl/user/$userId/reports/${searchController.text}';
+      print('Url $url');
       final response = await http.get(Uri.parse(url), headers: requestHeaders);
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return CrimeReport.fromJson(data);
+        return SearchModel.fromJson(json.decode(response.body));
       } else {
         final errorMessage = json.decode(response.body)['message'];
         throw Exception(
@@ -136,7 +139,7 @@ class _SearchCaseState extends State<SearchCase> {
             ),
             Expanded(
               child: _searchResult != null
-                  ? FutureBuilder<CrimeReport>(
+                  ? FutureBuilder<SearchModel>(
                       future: _searchResult!,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -146,12 +149,27 @@ class _SearchCaseState extends State<SearchCase> {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
                         } else {
-                          return ListView.builder(
-                            itemCount: snapshot.data!.data!.length,
-                            itemBuilder: (context, index) {
-                              return CrimeListItem(
-                                  data: snapshot.data!.data![index]);
-                            },
+                          return Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: KprimaryColor,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  topLeft: Radius.circular(10)),
+                            ),
+                            child: ListTile(
+                              onTap: () {},
+                              title: Text(
+                                'Category: ${snapshot.data!.data.category} ',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                              subtitle: Text(
+                                'Reference Number: ${snapshot.data!.data.ref}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ),
                           );
                         }
                       },
