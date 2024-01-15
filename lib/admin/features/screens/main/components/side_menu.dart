@@ -39,7 +39,9 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Crime Reported",
             svgSrc: "assets/icons/menu_doc.svg",
-            press: () {},
+            press: () {
+              Navigator.pushNamed(context, routes.adminGetAllReported);
+            },
           ),
           DrawerListTile(
             title: "Add Police Station",

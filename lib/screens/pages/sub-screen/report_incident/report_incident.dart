@@ -40,6 +40,7 @@ class _MyWidgetState extends State<MyWidget> {
   double logitude = 0.0;
   String address = '';
   String categories = 'Malware Attack';
+  bool isLoading = false;
 
   String? imagesPath;
   String? audioPath;
@@ -138,21 +139,29 @@ class _MyWidgetState extends State<MyWidget> {
 
   void _getCurrentLocation() async {
     try {
+      // Set loading to true when starting the location retrieval process
+      setState(() {
+        isLoading = true;
+      });
+
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
+
+      // Update the state with the retrieved latitude and longitude
       setState(() {
         latitude = position.latitude;
         logitude = position.longitude;
-        //_currentLocation = 'Latitude: $latitude, Longitude: $longitude';
       });
+
       // Getting the actual Address Of The Longitude and Latitude
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude, logitude);
       Placemark place = placemarks[0];
 
+      // Update the state with the retrieved address
       setState(() {
-        address = " ${place.street}, ${place.locality}  ${place.country}";
+        address = "${place.street}, ${place.locality}  ${place.country}";
       });
     } on PlatformException catch (e) {
       if (e.code == 'IO_ERROR') {
@@ -164,6 +173,11 @@ class _MyWidgetState extends State<MyWidget> {
     } catch (e) {
       print('An error occurred: $e');
       // Handle other errors
+    } finally {
+      // Set loading to false when the location retrieval process is complete
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -365,10 +379,8 @@ class _MyWidgetState extends State<MyWidget> {
                       height: 20,
                     ),
                     Container(
-                      width: 200,
                       height: 100,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: KprimaryColor),
                       ),
                       child: imagesPath != null
@@ -377,20 +389,22 @@ class _MyWidgetState extends State<MyWidget> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: FileImage(File(imagesPath!)),
-                                ),
+                                    fit: BoxFit.cover,
+                                    image: FileImage(File(imagesPath!))),
                               ),
                             )
                           : Center(
                               child: Container(
-                              height: 200,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://cytonus.com/wp-content/themes/native/assets/images/no_image_resized_675-450.jpg')),
+                                height: 200,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          'https://cytonus.com/wp-content/themes/native/assets/images/no_image_resized_675-450.jpg')),
+                                ),
                               ),
-                            )),
+                            ),
                     ),
                     SizedBox(
                       height: 20,
@@ -413,23 +427,39 @@ class _MyWidgetState extends State<MyWidget> {
                           child: Container(
                             child: Row(
                               children: [
-                                Icon(
-                                  Icons.location_on,
-                                  size: 25,
-                                  color: KprimaryColor,
-                                ),
+                                Icon(Icons.location_on,
+                                    size: 25,
+                                    color:
+                                        KprimaryColor // Replace with your desired color
+                                    ),
                                 SizedBox(
-                                  width: 15,
+                                  width: 10,
                                 ),
-                                Text('Location'),
+                                Text(
+                                  isLoading
+                                      ? 'Fetching Location ....'
+                                      : 'Location',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                if (isLoading)
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        color: KprimaryColor,
+                                      ),
+                                    ), // Loading indicator
+                                  ),
                               ],
                             ),
                           ),
                         ),
                         SizedBox(
                           height: 20,
+                          child: Text('Location : $address'),
                         ),
-                        Text('Location : $address')
                       ],
                     ),
                     SizedBox(

@@ -218,4 +218,71 @@ class AdminProvider {
     _resMessage = errorMessage;
     utils.showToast(context, _resMessage);
   }
+
+  //Get ALl Crime
+  Future<CrimeReport> adminGetAllReporCrime() async {
+    _isLoading = true;
+
+    final preferences = await Preferences.getInstance();
+    String? token = await preferences.getAccessToken();
+    String? userId = await preferences.getUserId();
+
+    print('JWT Token $token');
+    print('User Id $userId');
+
+    final requestHeaders = {
+      'Accept': 'application/vnd.api+json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token '
+    };
+
+    try {
+      String url = '$requestBaseUrl/crime';
+      final response = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body.toString());
+        return CrimeReport.fromJson(data);
+      } else {
+        final errorMessage = json.decode(response.body)['message'];
+        throw Exception(
+            'Failed to load police   ${response.statusCode} error ${errorMessage}');
+      }
+    } catch (error) {
+      print(":::: $error");
+    }
+    throw Exception('Failed to load  error');
+  }
+
+  Future<CrimeReport> adminGetAllReportedIncident() async {
+    _isLoading = true;
+
+    final preferences = await Preferences.getInstance();
+    String? token = await preferences.getAccessToken();
+    String? userId = await preferences.getUserId();
+
+    print('JWT Token $token');
+    print('User Id $userId');
+
+    final requestHeaders = {
+      'Accept': 'application/vnd.api+json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token '
+    };
+
+    try {
+      String url = '$requestBaseUrl/incident';
+      final response = await http.get(Uri.parse(url), headers: requestHeaders);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body.toString());
+        return CrimeReport.fromJson(data);
+      } else {
+        final errorMessage = json.decode(response.body)['message'];
+        throw Exception(
+            'Failed to load police   ${response.statusCode} error $errorMessage');
+      }
+    } catch (error) {
+      print(":::: $error");
+    }
+    throw Exception('Failed to load  error');
+  }
 }

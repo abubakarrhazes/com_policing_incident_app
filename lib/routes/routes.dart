@@ -3,6 +3,7 @@
 import 'package:com_policing_incident_app/admin/features/screens/sub-screen/add_police_station.dart';
 import 'package:com_policing_incident_app/admin/features/screens/sub-screen/admin_blog_post.dart';
 import 'package:com_policing_incident_app/admin/features/screens/sub-screen/admin_emergency_request.dart';
+import 'package:com_policing_incident_app/admin/features/screens/sub-screen/crime_reported.dart';
 import 'package:com_policing_incident_app/main.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
@@ -58,6 +59,7 @@ class Routes {
   String case_stats = '/case-stats';
   String admin = '/admin';
   String addPoliceStations = '/add-police-station';
+  String adminGetAllReported = 'admin-get-all-reported';
   String admin_blog = '/admin-blog';
   String dashboard = '/dashboard';
 
@@ -111,6 +113,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => AddPoliceStation());
       case '/admin-blog':
         return MaterialPageRoute(builder: (context) => AdminBlogPost());
+      case 'admin-get-all-reported':
+        return MaterialPageRoute(builder: (context) => CrimeReported());
       case '/admin-emergency':
         return MaterialPageRoute(builder: (context) => AdminEmergencyRequest());
 

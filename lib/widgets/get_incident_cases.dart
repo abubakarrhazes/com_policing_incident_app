@@ -28,6 +28,11 @@ class _GetIncidentCasesState extends State<GetIncidentCases> {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.data!.data!.isEmpty) {
+            return Center(
+              child: Image.network(
+                  'https://dmarcly.com/blog/user/pages/01.home/how-to-fix-no-dmarc-record-found/feature.png'),
+            );
           } else {
             return ListView.builder(
               itemCount: snapshot.data!.data!.length,
