@@ -149,6 +149,18 @@ const updateCrime = asyncHandler(async (req, res) => {
 
   return res.status(200).json({ status: 200, message: "success", data: crime });
 });
+
+const updateCrimeStatus = asyncHandler(async (req, res) => { 
+  const { status } = req.body
+const {id} = req.params
+  if (!id) throw CustomError("ID must be given");
+  const crime = await Crime.findByIdAndUpdate(id, {status},{new:true});
+  if (!crime) throw CustomError("Crime not found", 401);
+
+  return res.status(200).json({ status: 200, message: "success", data: crime });
+})
+
+
 const deleteCrime = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (!id) throw CustomError("Id must be given");
@@ -162,6 +174,7 @@ const deleteCrime = asyncHandler(async (req, res) => {
 
 module.exports = {
   getAllCrime,
+  updateCrimeStatus,
   getMyCrime,
   getSingleCrime,
   createCrime,

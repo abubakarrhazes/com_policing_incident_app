@@ -16,7 +16,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 const getReportByRef = asyncHandler(async (req, res) => {
-  const { ref } = req.body;
+  const { ref } = req.params;
   if (!ref) throw CustomError("Reference number is required");
   const { id } = req.params;
 

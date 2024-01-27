@@ -8,6 +8,7 @@ const {
   updateCrime,
   deleteCrime,
   createCrime,
+  updateCrimeStatus,
 } = require("../controller/crime");
 
 router.use(verifyJWT);
@@ -23,6 +24,9 @@ router
   .get(getSingleCrime)
   //  UPDATE crime by ID,
   .patch(updateCrime)
+  //  update crime status by ID,
+  .patch("/status", updateCrimeStatus)
+
   // Delete crime by ID
   .delete(deleteCrime);
 
