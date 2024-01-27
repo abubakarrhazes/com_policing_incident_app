@@ -8,6 +8,7 @@ const {
   updateIncident,
   deleteIncident,
   createIncident,
+  updateIncidenceStatus,
 } = require("../controller/incident");
 
 router.use(verifyJWT);
@@ -24,6 +25,8 @@ router
   .get(getSingleIncident)
   //  UPDATE incident by ID,
   .patch(updateIncident)
+  // Update incidence status by ID
+  .patch("/status", updateIncidenceStatus)
   // Delete incident by ID
   .delete(deleteIncident);
 

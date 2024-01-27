@@ -1,61 +1,77 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 
 // Assuming you have a database connection established and a model/schema defined
-const Crime = require("../models/crimeModel");
-const User = require("../models/userModel");
+
+const UssdCrime = require("../models/ussdCrime");
+const UssdIncidence = require("../models/ussdIncidence");
+
+// Create an object to store session data
+const sessions = {};
 
 router.post("/", async (req, res) => {
   // Extract USSD information from the request
+  let message = "";
+
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
-  let response = "";
 
-  console.log(req.body, "african talking");
-
-  try {
-    let user = await User.findOne({ phoneNumber });
-
-    if (!user) {
-      // If user doesn't exist, create a new user
-      const userData = { phoneNumber };
-      user = await User.create(userData);
-    }
-
-    // Process USSD input and create a response based on user input
-    if (!user.firstName) {
-      if (text === "1") {
-        response = "Enter Firstname:";
-        // Update user's first name once provided
-        // For example, if you have a field 'firstName' in your User schema
-        // Replace 'firstName' with your actual field name
-        user.firstName = text; // Assuming 'text' contains the entered first name
-        await user.save();
-      } else {
-        response = 'Welcome to Your USSD App\n1. Create an account \n2. Cancel';
-      }
-    } else {
-      // Handle other USSD options once the user's first name is set
-      if (text === "1") {
-        // Perform actions related to Option One in the database
-        response = "CON Option One selected. Database updated!";
-        // Update the database or perform actions as required
-      } else if (text === "2") {
-        // Perform actions related to Option Two in the database
-        response = "CON Option Two selected. Database updated!";
-        // Update the database or perform actions as required
-      } else {
-        response = `Welcome to Your USSD App\n1. Report crime\n2. Report Incidence`;
-      }
-    }
-
-    // Send the USSD response
-    res.send(response);
-  } catch (error) {
-    console.error("Error:", error);
-    response = "CON Error processing your request. Please try again.";
-    res.send(response);
+  // Retrieve or create a session if it doesn't exist
+  if (!sessions[sessionId]) {
+    sessions[sessionId] = {
+      stage: "initial", // Tracks the current stage of the session
+      details: "", // Stores crime or incidence details
+    };
   }
+  console.log(sessions);
+  const currentSession = sessions[sessionId];
+
+  if (text === "") {
+    // Initial prompt
+    message = "Welcome to Crime Reporting\n";
+    message += "1. Report Crime\n";
+    message += "2. Report Incidence";
+    currentSession.stage = "initial";
+  } else if (text === "1") {
+    // Report Crime option
+    message = " Please type the details of the crime";
+    currentSession.stage = "crime";
+  } else if (text === "2") {
+    // Report Incidence option
+    message = " Please type the details of the incidence";
+    currentSession.stage = "incidence";
+  } else if (currentSession.stage === "crime") {
+    // Process crime details
+    currentSession.details = text;
+    // Save the crime details into the database using the UssdCrime model
+    const newUssdCrime = await UssdCrime.create({
+      details: text,
+      sessionId: sessionId,
+      serviceCode: serviceCode,
+      phoneNumber: phoneNumber,
+    });
+    message = `END Thank you for reporting the crime `;
+    delete sessions[sessionId]; // Clear the session data after completion
+  } else if (currentSession.stage === "incidence") {
+    // Process incidence details
+    currentSession.details = text;
+    // Save the incidence details into the database using the UssdCrime model
+    const newUssdIncidence = new UssdIncidence({
+      details: text,
+      sessionId: sessionId,
+      serviceCode: serviceCode,
+      phoneNumber: phoneNumber,
+      // ...other necessary fields
+    });
+    await newUssdIncidence.save();
+    message = "END Thank you for reporting the incidence";
+    delete sessions[sessionId]; // Clear the session data after completion
+  } else {
+    message = " Welcome to Crime Reporting\n";
+    message += "1. Report Crime\n";
+    message += "2. Report Incidence";
+  }
+
+  res.send(message);
 });
 
 module.exports = router;

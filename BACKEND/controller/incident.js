@@ -144,6 +144,17 @@ const updateIncident = asyncHandler(async (req, res) => {
     .status(200)
     .json({ status: 200, message: "success", data: incident });
 });
+
+const updateIncidenceStatus = asyncHandler(async (req, res) => { 
+  const { status } = req.body
+const {id} = req.params
+  if (!id) throw CustomError("ID must be given");
+  const incident = await Incident.findByIdAndUpdate(id, {status},{new:true});
+  if (!incident) throw CustomError("Incidence not found", 401);
+
+  return res.status(200).json({ status: 200, message: "success", data: incident });
+})
+
 const deleteIncident = asyncHandler(async (req, res) => {
   const { id } = req.params;
   if (!id) throw CustomError("Id must be given");
@@ -158,6 +169,7 @@ const deleteIncident = asyncHandler(async (req, res) => {
 module.exports = {
   getAllIncident,
   getMyIncident,
+  updateIncidenceStatus,
   getSingleIncident,
   createIncident,
   updateIncident,
