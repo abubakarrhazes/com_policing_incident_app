@@ -17,6 +17,7 @@ import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
+import 'package:com_policing_incident_app/widgets/custom_field.dart';
 import 'package:com_policing_incident_app/widgets/media_selection.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:file_picker/file_picker.dart';
@@ -344,7 +345,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                       SizedBox(
                         height: 5,
                       ),
-                      MyInputField(
+                      CustomField(
                         min: 1,
                         max: 200,
                         hintText: 'Briefly Decribe about the crime',
@@ -376,7 +377,7 @@ class _ReportCrimeState extends State<ReportCrime> {
                             onPressed: selectImages,
                             text: 'Add Image',
                             icon: Icon(
-                              Icons.ac_unit,
+                              Icons.add_a_photo_outlined,
                               color: Colors.white,
                             ),
                           ),

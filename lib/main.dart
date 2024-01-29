@@ -16,9 +16,11 @@ import 'package:com_policing_incident_app/screens/pages/sub-screen/report_incide
 import 'package:com_policing_incident_app/screens/pages/sub-screen/report_success.dart';
 import 'package:com_policing_incident_app/screens/register_screen/register.dart';
 import 'package:com_policing_incident_app/screens/welcome_screen.dart';
+import 'package:flutter/foundation.dart';
 
 //flimport 'package:com_policing_incident_app/screens/screen_selector.dart';
 import 'package:flutter/material.dart';
+//import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +30,7 @@ bool isViewed = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   SharedPreferences preferences = await SharedPreferences.getInstance();
   isViewed = preferences.getBool('isViewed') ?? false;
   await preferences.setBool('isViewed', true);

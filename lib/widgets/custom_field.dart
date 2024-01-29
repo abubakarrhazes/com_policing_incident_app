@@ -1,9 +1,9 @@
-// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 
-class MyInputField extends StatefulWidget {
-  const MyInputField(
+class CustomField extends StatefulWidget {
+  const CustomField(
       {Key? key,
       this.isPassword = false,
       this.hintText,
@@ -38,10 +38,10 @@ class MyInputField extends StatefulWidget {
   final TextEditingController? controller;
 
   @override
-  State<MyInputField> createState() => _MyInputFieldState();
+  State<CustomField> createState() => _MyInputFieldState();
 }
 
-class _MyInputFieldState extends State<MyInputField> {
+class _MyInputFieldState extends State<CustomField> {
   bool visiblePassword = false;
 
   @override
@@ -55,6 +55,8 @@ class _MyInputFieldState extends State<MyInputField> {
       height: widget.formFieldHeight,
       child: TextFormField(
         onTap: widget.onTap,
+        minLines: widget.min,
+        maxLines: widget.max,
         expands: widget.expandable == true,
         controller: widget.controller,
         keyboardType: widget.keyboardType,

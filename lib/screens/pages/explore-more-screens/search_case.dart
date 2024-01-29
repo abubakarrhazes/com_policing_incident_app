@@ -125,7 +125,7 @@ class _SearchCaseState extends State<SearchCase> {
                               fontWeight: FontWeight.bold),
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors
+                          backgroundColor: Colors
                               .transparent, // Make the button background transparent
                           elevation: 0, // Remove the button elevation
                           textStyle: TextStyle(

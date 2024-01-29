@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
@@ -256,7 +256,10 @@ class Utils {
           ),
           actions: <Widget>[
             TextButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  final pref = await Preferences.getInstance();
+                  pref.logOutUser(context);
+                },
                 child: Container(
                     height: 50,
                     width: 50,

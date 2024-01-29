@@ -1,79 +1,101 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:com_policing_incident_app/admin/features/models/MyFiles.dart';
+import 'package:com_policing_incident_app/models/get-models/crime_report.dart';
+import 'package:com_policing_incident_app/providers/admin-providers/admin_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../constants.dart';
 
 class FileInfoCard extends StatelessWidget {
-  const FileInfoCard({
+  FileInfoCard({
     Key? key,
-    required this.info,
+    this.info,
   }) : super(key: key);
 
-  final CloudStorageInfo info;
+  final CloudStorageInfo? info;
+  final AdminProvider adminProvider = AdminProvider();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(defaultPadding),
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: EdgeInsets.all(defaultPadding * 0.75),
-                height: 40,
-                width: 40,
+    return Scaffold(
+      body: FutureBuilder<CrimeReport>(
+          future: adminProvider.adminGetAllCrimeReported(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error ${snapshot.error}'),
+              );
+            } else {
+              return Container(
+                padding: EdgeInsets.all(defaultPadding),
                 decoration: BoxDecoration(
-                  color: info.color!.withOpacity(0.1),
+                  color: secondaryColor,
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
-                child: SvgPicture.asset(
-                  info.svgSrc!,
-                  colorFilter: ColorFilter.mode(
-                      info.color ?? Colors.black, BlendMode.srcIn),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(defaultPadding * 0.75),
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: info!.color!.withOpacity(0.1),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                          ),
+                          child: SvgPicture.asset(
+                            info!.svgSrc!,
+                            colorFilter: ColorFilter.mode(
+                                info!.color ?? Colors.black, BlendMode.srcIn),
+                          ),
+                        ),
+                        Icon(Icons.more_vert, color: Colors.white54)
+                      ],
+                    ),
+                    Text(
+                      info!.title!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    ProgressLine(
+                      color: info!.color,
+                      percentage: info!.percentage,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${snapshot.data!.data!.length} Crime Reported",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: Colors.white70),
+                        ),
+                        Text(
+                          info!.totalStorage!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
-              ),
-              Icon(Icons.more_vert, color: Colors.white54)
-            ],
-          ),
-          Text(
-            info.title!,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          ProgressLine(
-            color: info.color,
-            percentage: info.percentage,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "${info.numOfFiles} Files",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(color: Colors.white70),
-              ),
-              Text(
-                info.totalStorage!,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(color: Colors.white),
-              ),
-            ],
-          )
-        ],
-      ),
+              );
+            }
+          }),
     );
   }
 }

@@ -1,5 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors
 
+import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,8 +42,16 @@ class Preferences {
   Future<void> logOutUser(BuildContext context) async {
     final value = _sharedPreferences;
 
-    value.clear();
+    // Clear shared preferences
+    await value.clear();
+
+    // Navigate to the login screen and remove all previous routes
     Navigator.pushAndRemoveUntil(
-        context, routes.login as Route<Object?>, (route) => false);
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              LoginPage()), // Replace YourLoginScreen with the actual login screen widget
+      (route) => false,
+    );
   }
 }

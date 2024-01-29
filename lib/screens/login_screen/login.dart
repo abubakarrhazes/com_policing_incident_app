@@ -108,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               MyInputField(
                                   hintText: 'Email',
+                                  
                                   keyboardType: TextInputType.emailAddress,
                                   controller: _emailController,
                                   validator: (value) {
@@ -151,7 +152,9 @@ class _LoginPageState extends State<LoginPage> {
                                       print(
                                           'Logged in user role: ${loggedInUser.roles}');
 
-                                      if (loggedInUser.roles == 'admin' || loggedInUser.roles == 'policeStation') {
+                                      if (loggedInUser.roles == 'admin' ||
+                                          loggedInUser.roles ==
+                                              'policeStation') {
                                         // User is an admin, navigate to the admin dashboard
                                         Navigator.pushNamedAndRemoveUntil(
                                             context,

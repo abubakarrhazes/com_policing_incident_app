@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:com_policing_incident_app/admin/features/constants.dart';
 import 'package:com_policing_incident_app/admin/features/screens/sub-screen/admin_blog_post.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
+import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -17,7 +20,10 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Image.asset("assets/images/logo.png"),
+            child: Avatar.large(
+              img: NetworkImage(
+                  'https://w7.pngwing.com/pngs/408/97/png-transparent-abuja-nigeria-police-force-misau-police-officer-police-police-officer-people-logo.png'),
+            ),
           ),
           DrawerListTile(
             title: "Dashboard",

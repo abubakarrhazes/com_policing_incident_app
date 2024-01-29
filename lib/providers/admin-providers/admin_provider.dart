@@ -241,6 +241,7 @@ class AdminProvider {
       final response = await http.get(Uri.parse(url), headers: requestHeaders);
       if (response.statusCode == 200) {
         final data = json.decode(response.body.toString());
+
         return CrimeReport.fromJson(data);
       } else {
         final errorMessage = json.decode(response.body)['message'];

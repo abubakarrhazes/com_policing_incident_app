@@ -1,13 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_unnecessary_containers
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_unnecessary_containers, use_build_context_synchronously
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
+import 'package:com_policing_incident_app/providers/persistance_data/preferences.dart';
 import 'package:com_policing_incident_app/providers/persistance_data/user_adapter.dart';
+import 'package:com_policing_incident_app/services/config.dart';
+import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class UserProfile extends StatefulWidget {
@@ -29,8 +35,53 @@ class _UserProfileState extends State<UserProfile> {
   final TextEditingController _stateController = TextEditingController();
   final TextEditingController _occupationController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final requestBaseUrl = Config.AuthBaseUrl;
+
+  Future<void> userDetails(BuildContext context) async {
+    final pref = await Preferences.getInstance();
+
+    final token = pref.getAccessToken();
+    final userId = pref.getUserId();
+
+    print(userId);
+
+    String url = '$requestBaseUrl/user/$userId';
+
+    final requestHeaders = {
+      'Accept': 'application/vnd.api+json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
+    final body = {
+      'firstName': _firstNameController.text,
+      'lastName': _lastNameController.text,
+      'otherName': _otherNameController.text
+    };
+
+    print(_firstNameController);
+
+    try {
+      http.Response response = await http.post(Uri.parse(url),
+          headers: requestHeaders, body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body)['message'];
+
+        utils.successShowToast(context, responseData);
+      } else {
+        final responseData = json.decode(response.body)['message'];
+        utils.successShowToast(context, responseData);
+      }
+    } catch (error) {
+      print('Error during  request: $error');
+      utils.showToast(context, '$error');
+    }
+  }
 
   void _showBottomModal(BuildContext context) {
+    final userAdapter = Provider.of<UserAdapter>(context, listen: false);
+
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -45,14 +96,21 @@ class _UserProfileState extends State<UserProfile> {
                 child: Column(
                   children: [
                     MyInputField(
-                      hintText: 'Firsname',
+                      hintText: userAdapter.user!.firstName,
                       controller: _firstNameController,
                     ),
                     SizedBox(
                       height: 15,
                     ),
                     MyInputField(
-                      hintText: 'OtherField',
+                      hintText: userAdapter.user!.lastName,
+                      controller: _firstNameController,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    MyInputField(
+                      hintText: userAdapter.user!.otherName,
                       controller: _firstNameController,
                     ),
                     SizedBox(
@@ -61,8 +119,8 @@ class _UserProfileState extends State<UserProfile> {
                     ButtonWidget(
                         text: 'Save Edit',
                         onPress: () {
-                          Navigator.of(context).pop();
-                        })
+                          userDetails(context);
+                        }),
                   ],
                 ),
               )

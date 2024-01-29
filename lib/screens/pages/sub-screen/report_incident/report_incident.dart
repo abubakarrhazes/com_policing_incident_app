@@ -13,6 +13,7 @@ import 'package:com_policing_incident_app/services/config.dart';
 import 'package:com_policing_incident_app/utilities/global_variables.dart';
 import 'package:com_policing_incident_app/utilities/http_error_handling.dart';
 import 'package:com_policing_incident_app/widgets/button_widget.dart';
+import 'package:com_policing_incident_app/widgets/custom_field.dart';
 import 'package:com_policing_incident_app/widgets/media_selection.dart';
 import 'package:com_policing_incident_app/widgets/my_input_field.dart';
 import 'package:flutter/material.dart';
@@ -298,7 +299,7 @@ class _MyWidgetState extends State<MyWidget> {
                     SizedBox(
                       height: 5,
                     ),
-                    MyInputField(
+                    CustomField(
                       min: 1,
                       max: 200,
                       hintText: 'Briefly Decribe about the Incident',

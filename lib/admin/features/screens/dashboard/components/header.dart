@@ -65,7 +65,13 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text("${userAdapter.user?.firstName}"),
+              child: Text(
+                "${userAdapter.user?.firstName}",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
             ),
           Icon(Icons.keyboard_arrow_down),
         ],

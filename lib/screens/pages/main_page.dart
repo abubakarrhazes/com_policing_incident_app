@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'dart:convert';
 
@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -45,6 +46,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     'https://cdn-icons-png.flaticon.com/512/8972/8972994.png',
   ];
   final requestBaseUrl = Config.AuthBaseUrl;
+  bool loading = true;
   List<PoliceStation> policeStations = [];
   List jibby = [
     'Report Crime',
@@ -146,7 +148,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     ),
                   ),
                 ])),
-            const SizedBox(height: 20), //40
+            const SizedBox(height: 20),
+            //40
             Container(
                 margin: const EdgeInsets.only(left: 20),
                 child: Text(
@@ -583,7 +586,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                               height: 80,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: KprimaryColor,
                                 image: DecorationImage(
                                     image: NetworkImage(imgs[
                                         index]), //AssetImage('assets/images/'+images.keys.elementAt()),
@@ -608,6 +610,20 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           ]))),
     );
   }
+}
+
+Widget ShimmerLoading() {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: // Put your shimmer layout here
+        Container(
+      // Replace this container with your shimmer effect layout
+      height: 300,
+      width: double.maxFinite,
+      color: Colors.white,
+    ),
+  );
 }
 
 class CircleTabIndicator extends Decoration {
