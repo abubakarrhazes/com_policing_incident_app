@@ -4,10 +4,12 @@ import 'package:com_policing_incident_app/admin/features/screens/sub-screen/add_
 import 'package:com_policing_incident_app/admin/features/screens/sub-screen/admin_blog_post.dart';
 import 'package:com_policing_incident_app/admin/features/screens/sub-screen/admin_emergency_request.dart';
 import 'package:com_policing_incident_app/admin/features/screens/sub-screen/crime_reported.dart';
+import 'package:com_policing_incident_app/admin/features/screens/sub-screen/incident_reported.dart';
 import 'package:com_policing_incident_app/main.dart';
 import 'package:com_policing_incident_app/screens/forgot_password_screen/forgot_password.dart';
 import 'package:com_policing_incident_app/screens/login_screen/login.dart';
 import 'package:com_policing_incident_app/screens/onboard_screen/onboard.dart';
+import 'package:com_policing_incident_app/screens/pages/explore-more-screens/cases_stats.dart';
 import 'package:com_policing_incident_app/screens/pages/explore-more-screens/search_case.dart';
 import 'package:com_policing_incident_app/screens/pages/home_page.dart';
 import 'package:com_policing_incident_app/screens/pages/profile-menu-pages/help_desk.dart';
@@ -57,11 +59,13 @@ class Routes {
   String search_case = '/search-case';
   String hot_maps = '/hot-maps';
   String case_stats = '/case-stats';
+
   String admin = '/admin';
   String addPoliceStations = '/add-police-station';
   String adminGetAllReported = 'admin-get-all-reported';
   String admin_blog = '/admin-blog';
   String dashboard = '/dashboard';
+  String adminGetAllReportedIncident = 'admin-get-all-reported-incident';
 
   Route<dynamic> controller(RouteSettings settings) {
     switch (settings.name) {
@@ -104,7 +108,8 @@ class Routes {
 
       case '/search-case':
         return MaterialPageRoute(builder: (context) => SearchCase());
-
+      case '/case-stats':
+        return MaterialPageRoute(builder: (context) => CasesStats());
       //Admin Routes
 
       case '/admin':
@@ -115,6 +120,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => AdminBlogPost());
       case 'admin-get-all-reported':
         return MaterialPageRoute(builder: (context) => CrimeReported());
+      case 'admin-get-all-reported-incident':
+        return MaterialPageRoute(builder: (context) => IncidentReported());
       case '/admin-emergency':
         return MaterialPageRoute(builder: (context) => AdminEmergencyRequest());
 

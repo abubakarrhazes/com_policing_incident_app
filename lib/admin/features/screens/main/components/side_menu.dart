@@ -40,7 +40,9 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Incident Reported",
             svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
+            press: () {
+              Navigator.pushNamed(context, routes.adminGetAllReportedIncident);
+            },
           ),
           DrawerListTile(
             title: "Crime Reported",
@@ -66,12 +68,16 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Profile",
             svgSrc: "assets/icons/menu_profile.svg",
-            press: () {},
+            press: () {
+              Navigator.pushNamed(context, routes.user_profile);
+            },
           ),
           DrawerListTile(
             title: "Settings",
             svgSrc: "assets/icons/menu_setting.svg",
-            press: () {},
+            press: () {
+              //Navigator.pushNamed(context);
+            },
           ),
         ],
       ),

@@ -158,16 +158,31 @@ class _SearchCaseState extends State<SearchCase> {
                                   topLeft: Radius.circular(10)),
                             ),
                             child: ListTile(
-                              onTap: () {},
+                              onTap: () {
+                                //Navigator.pushNamed(context, CrimeDetails(userDetail: userDetail, userDetail2: userDetail2))
+                              },
                               title: Text(
                                 'Category: ${snapshot.data!.data.category} ',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15),
                               ),
-                              subtitle: Text(
-                                'Reference Number: ${snapshot.data!.data.ref}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Reference Number: ${snapshot.data!.data.ref}',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    'Status: ${snapshot.data!.data.status}',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                ],
                               ),
                             ),
                           );

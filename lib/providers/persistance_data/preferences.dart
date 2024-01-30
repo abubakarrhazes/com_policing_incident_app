@@ -43,7 +43,8 @@ class Preferences {
     final value = _sharedPreferences;
 
     // Clear shared preferences
-    await value.clear();
+    await value.remove("accessToken");
+    await value.remove('userId');
 
     // Navigate to the login screen and remove all previous routes
     Navigator.pushAndRemoveUntil(

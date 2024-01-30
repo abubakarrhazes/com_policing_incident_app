@@ -16,6 +16,7 @@ import 'package:com_policing_incident_app/widgets/action_button.dart';
 import 'package:com_policing_incident_app/widgets/avatar.dart';
 import 'package:com_policing_incident_app/widgets/custom_delegate.dart';
 import 'package:com_policing_incident_app/widgets/get_cases.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -267,64 +268,67 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                               return Center(
                                   child: Text('Error: ${snapshot.error}'));
                             } else {
-                              return ListView.builder(
-                                shrinkWrap:
-                                    true, // Important: Make sure to set shrinkWrap to true
-                                itemCount: snapshot.data!.data!.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    splashColor: Colors.grey,
-                                    onTap: () {
-                                      Navigator.pushNamed(context, '/lawyer_1');
-                                    },
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 20),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          const Image(
-                                            image: AssetImage(
-                                                'assets/images/police.png'),
-                                            height: 80,
-                                            width: 80,
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                '${snapshot.data!.data![index].name}',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
+                              return SingleChildScrollView(
+                                child: ListView.builder(
+                                  shrinkWrap:
+                                      true, // Important: Make sure to set shrinkWrap to true
+                                  itemCount: snapshot.data!.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      splashColor: Colors.grey,
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/lawyer_1');
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 10, right: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            const Image(
+                                              image: AssetImage(
+                                                  'assets/images/police.png'),
+                                              height: 80,
+                                              width: 80,
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  '${snapshot.data!.data![index].name}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                '${snapshot.data!.data![index].address}',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  '${snapshot.data!.data![index].address}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                '${snapshot.data!.data![index].telephone}',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  '${snapshot.data!.data![index].telephone}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
+                                    );
+                                  },
+                                ),
                               );
                             }
                           },
@@ -569,7 +573,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       if (index == 0) {
                         Navigator.pushNamed(context, routes.search_case);
                       } else if (index == 1) {
-                        Navigator.pushNamed(context, routes.report_incident);
+                        Navigator.pushNamed(context, routes.case_stats);
                       } else if (index == 2) {
                         Navigator.pushNamed(context, routes.blog);
                       } else {

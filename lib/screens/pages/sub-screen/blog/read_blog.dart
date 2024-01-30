@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously, must_be_immutable
 import 'dart:convert';
 import 'dart:io';
 
@@ -125,66 +125,69 @@ class _ReadBlogState extends State<ReadBlog> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(
-                '${widget.dataPost.title}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  '${widget.dataPost.title}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Image.network('${widget.dataPost.image}'),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                '${widget.dataPost.description}',
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Form(
-                        key: commentFormKey,
-                        child: TextFormField(
-                          controller: commentController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Description is  Required';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            hintText: 'Add a comment...',
+                SizedBox(
+                  height: 15,
+                ),
+                Image.network('${widget.dataPost.image}'),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  '${widget.dataPost.description}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Form(
+                          key: commentFormKey,
+                          child: TextFormField(
+                            controller: commentController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Description is  Required';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Add a comment...',
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 8.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Implement comment submission logic here
-                        // You may want to send the comment to your API
-                        commentPost(context);
-                      },
-                      child: Text('Comment'),
-                    ),
-                  ],
+                      SizedBox(width: 8.0),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Implement comment submission logic here
+                          // You may want to send the comment to your API
+                          commentPost(context);
+                        },
+                        child: Text('Comment'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
